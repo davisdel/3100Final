@@ -10,10 +10,20 @@
     <div class="d-flex col-12 justify-content-center align-items-center vh-100 bg-dark"></div>
         <div class="card col-12 col-md-5 col-lg-4" id="divLogin">
             <div class="card-header">
-
+                <h3>Login</h3>
             </div>
             <div class="card-body">
-
+                <form>
+                    <div class="form-group mt-4">
+                        <label for="txtLoginEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="txtLoginEmail" placeholder="johndoe3@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtLoginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="txtLoginPassword" placeholder="********">
+                    </div>
+                    <button id="btnLogin" class="btn btn-success col-12 mt-4" type="button">Login</button>
+                </form>
             </div>
         </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
