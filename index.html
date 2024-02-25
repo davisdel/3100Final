@@ -106,6 +106,20 @@
             }
         })
 
+        $('#btnReset').on('click', function(){
+            $('#txtFirstName').val('');
+            $('#txtLastName').val('');
+            $('#txtEmail').val('');
+            $('#txtPassword').val('');
+            $('#txtStreetAddress1').val('');
+            $('#txtStreetAddress2').val('');
+            $('#txtCity').val('');
+            $('#txtState').val('');
+            $('#txtZip').val('');
+            $('#telPhoneNum').val('');
+            $('#txtCoopID').val('');
+        })
+
         $('#btnLogin').on("click", function () {
             let strEmail = $('#txtLoginEmail').val().trim();
             let strPassword = $('#txtLoginPassword').val().trim();
