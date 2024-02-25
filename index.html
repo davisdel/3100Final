@@ -24,7 +24,7 @@
                     </div>
                     <button id="btnLogin" class="btn btn-success col-12 mt-4" type="button">Login</button>
                     <div class="col-12 d-flex justify-content-center">
-                        <a class="col-12 text-left btnToggle" data-card="Login">Need an Account? Register Here</a>
+                        <a class="col-12 text-center btnToggle" data-card="Login">Need an Account? Register Here</a>
                     </div>
                 </form>
             </div>
@@ -92,5 +92,127 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $('.btnToggle').on('click',function(){
+            let strCard = $(this).attr('data-card');
+            if(strCard == 'Login'){
+                $('#divLogin').slideToggle(function(){
+                    $('#divRegister').slideToggle();
+            })
+            } else {
+                $('#divRegister').slideToggle(function(){
+                    $('#divLogin').slideToggle();
+                })
+            }
+        })
+
+        $('#btnReset').on('click', function(){
+            $('#txtFirstName').val('');
+            $('#txtLastName').val('');
+            $('#txtEmail').val('');
+            $('#txtPassword').val('');
+            $('#txtStreetAddress1').val('');
+            $('#txtStreetAddress2').val('');
+            $('#txtCity').val('');
+            $('#txtState').val('');
+            $('#txtZip').val('');
+            $('#telPhoneNum').val('');
+            $('#txtCoopID').val('');
+        })
+
+        $('#btnLogin').on("click", function () {
+            let strEmail = $('#txtLoginEmail').val().trim();
+            let strPassword = $('#txtLoginPassword').val().trim();
+
+            if (strEmail.length < 1 || strPassword.length < 6) {
+                Swal.fire({
+                    title: "Oops!",
+                    html: '<p>Email and Password must be valid</p>',
+                    icon: "error"
+                });
+            } else {
+                $("#divLogin").slideToggle();
+            }
+        });
+
+
+        $('#btnRegister').on('click',function(){
+            let blnError = false;
+            let strError = '';
+
+            let strFirstName = $('#txtFirstName').val().trim();
+            let strLastName = $('#txtLastName').val().trim();
+            let strEmail = $('#txtEmail').val().trim();
+            let strPassword = $('#txtPassword').val().trim();
+            let strStreetAddress1 = $('#txtStreetAddress1').val().trim();
+            let strStreetAddress2 = $('#txtStreetAddress2').val().trim();
+            let strCity = $('#txtCity').val().trim();
+            let strState = $('#txtState').val().trim();
+            let strZip = $('#txtZip').val().trim();
+            let intPhoneNum = $('#telPhoneNum').val().trim();
+            let strCoopID = $('#txtCoopID').val().trim();
+
+            if(strFirstName.length <1){
+                blnError = true;
+                strError += '<p>First name cannot be blank.</p>'
+            }
+            if(strLastName.length <1){
+                blnError = true;
+                strError += '<p>Last name cannot be blank.</p>'
+            }
+          /*  if(strEmail.length <7){
+                blnError = true;
+                strError += '<p>Email must be valid.</p>'
+            } else if (!strEmail.includes('@')){
+                blnError = true;
+                strError += '<p>Email must be valid.</p>'
+            } else if(!strEmail.includes('.')){
+                blnError = true;
+                strError += '<p>Email must be valid.</p>'
+            }
+            if(strPassword.length <6){
+                blnError = true;
+                strError += '<p>Password must be at least 6 characters long.</p>'
+            } */
+            if(strStreetAddress1.length <1){
+                blnError = true;
+                strError += '<p>Street Address 1 cannot be blank.</p>'
+            }
+            if(strStreetAddress2.length <1){
+                blnError = true;
+                strError += '<p>Street Address 2 cannot be blank.</p>'
+            }
+            if(strCity.length <1){
+                blnError = true;
+                strError += '<p>City cannot be blank.</p>'
+            }
+            if(strState.length <1){
+                blnError = true;
+                strError += '<p>State cannot be blank.</p>'
+            }
+            if(strZip.length <1){
+                blnError = true;
+                strError += '<p>Zip code cannot be blank.</p>'
+            }
+            if(intPhoneNum.length <1){
+                blnError = true;
+                strError += '<p>Phone number cannot be blank.</p>'
+            }
+            if(strCoopID.length < 1){
+                blnError = true;
+                strError += '<p>Invalid CoopID.</p>'
+            }
+
+            if(blnError == true){
+                Swal.fire({
+                    title: "Oops!",
+                    html: strError,
+                    icon: "error"
+                });
+            } else {
+                $("#divRegister").slideUp();
+            }
+        })
+    </script>
 </body>
 </html>
