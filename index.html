@@ -106,6 +106,13 @@
             }
         })
 
+        $(document).ready(function (){
+            $("#btnLogin").on("click", function(){
+                $("#divLogin").hide();
+                $("#divDashboard").show();
+            });
+        });
+
         $('#btnRegister').on('click',function(){
             let blnError = false;
             let strError = '';
