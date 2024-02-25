@@ -106,12 +106,21 @@
             }
         })
 
-        $(document).ready(function (){
-            $("#btnLogin").on("click", function(){
-                $("#divLogin").hide();
-                $("#divDashboard").show();
-            });
+        $('#btnLogin').on("click", function () {
+            let strEmail = $('#txtLoginEmail').val().trim();
+            let strPassword = $('#txtLoginPassword').val().trim();
+
+            if (strEmail.length < 1 || strPassword.length < 6) {
+                Swal.fire({
+                    title: "Oops!",
+                    html: '<p>Email and Password must be valid</p>',
+                    icon: "error"
+                });
+            } else {
+                $("#divLogin").slideToggle();
+            }
         });
+
 
         $('#btnRegister').on('click',function(){
             let blnError = false;
