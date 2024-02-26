@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Coop</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://bootswatch.com/5/lux/bootstrap.min.css">
+        <title>Smart Coop</title>
 </head>
 <body class="bg-dark">
+
     <div class="d-flex col-12 justify-content-center align-items-center min-vh-100">
         <div class="card col-12 col-md-5 col-lg-4" id="divLogin">
             <div class="card-header">
@@ -16,20 +17,20 @@
                 <form>
                     <div class="form-group mt-4">
                         <label for="txtLoginEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="txtLoginEmail" placeholder="johndoe3@gmail.com">
+                        <input type="email" id="txtLoginEmail" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="txtLoginPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="txtLoginPassword" placeholder="********">
+                        <input type="password" id="txtLoginPassword" class="form-control">
                     </div>
-                    <button id="btnLogin" class="btn btn-success col-12 mt-4" type="button">Login</button>
-                    <div class="col-12 d-flex justify-content-center">
-                        <a class="col-12 text-center btnToggle" data-card="Login">Need an Account? Register Here</a>
+                    <button id="btnLogin" class="btn btn-success col-12 mt-4" type="button">Submit</button>
+                    <div class ="col-12 d-flex justify-content-center">
+                        <a class="col-12 text-center btnToggle" data-card="Login">Need an account? Click Here</a>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="card col-12 col-md-5 col-lg-4" id="divRegister" style="display:none;">
+        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4" id="divRegister" style="display:none;">
             <div class="card-header">
                 <h3>Registration</h3>
             </div>
@@ -89,9 +90,10 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $('.btnToggle').on('click',function(){
             let strCard = $(this).attr('data-card');
