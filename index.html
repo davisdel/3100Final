@@ -125,14 +125,29 @@
         $('#btnLogin').on("click", function () {
             let strEmail = $('#txtLoginEmail').val().trim();
             let strPassword = $('#txtLoginPassword').val().trim();
+            let regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+            let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
+            blnError = false
+            htmlError = ''
 
-            if (strEmail.length < 1 || strPassword.length < 6) {
+            if (!strEmail.match(regexEmail)){
+                blnError = true
+                htmlError += "<p>Email is invalid<p>"
+            } 
+            if (!strPassword.match(regexPassword)){
+                blnError = true
+                htmlError += '<p>Password must contain 8 characters, 1 uppercase, 1 lowercase, and 1 number.</p>'
+            }
+
+            if(blnError){
                 Swal.fire({
                     title: "Oops!",
-                    html: '<p>Email and Password must be valid</p>',
+                    html: htmlError,
                     icon: "error"
                 });
-            } else {
+            }
+
+            else {
                 $("#divLogin").slideToggle();
             }
         });
@@ -141,6 +156,8 @@
         $('#btnRegister').on('click',function(){
             let blnError = false;
             let strError = '';
+            let regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+            let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
             let strFirstName = $('#txtFirstName').val().trim();
             let strLastName = $('#txtLastName').val().trim();
@@ -162,19 +179,13 @@
                 blnError = true;
                 strError += '<p>Last name cannot be blank.</p>'
             }
-            if(strEmail.length <7){
-                blnError = true;
-                strError += '<p>Email must be valid.</p>'
-            } else if (!strEmail.includes('@')){
-                blnError = true;
-                strError += '<p>Email must be valid.</p>'
-            } else if(!strEmail.includes('.')){
-                blnError = true;
-                strError += '<p>Email must be valid.</p>'
+            if(!regexEmail.match(strEmail)){
+                blnError = true
+                strError += '<p>Email is not valid.<p>'
             }
-            if(strPassword.length <6){
+            if(!regexPassword.match(strPassword)){
                 blnError = true;
-                strError += '<p>Password must be at least 6 characters long.</p>'
+                strError += '<p>Password must contain 8 characters, 1 uppercase, 1 lowercase, and 1 number.</p>'
             }
             if(strStreetAddress1.length <1){
                 blnError = true;
