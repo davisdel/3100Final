@@ -1,27 +1,34 @@
+<!-- CoopID - TP4I2TR3 -->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Import custom CSS for background image -->
+    <link rel ="stylesheet" href="./css/index.css">
+<!-- Import Lux bootstrap theme -->
     <link rel="stylesheet" href="https://bootswatch.com/5/lux/bootstrap.min.css">
-        <title>Smart Coop</title>
+    <title>FowlDomain SmartCoop</title>
 </head>
-<body class="bg-dark">
 
+<body class="bg-dark">
     <div class="d-flex col-12 justify-content-center align-items-center min-vh-100">
+<!-- divLogin -->
         <div class="card col-12 col-md-5 col-lg-4" id="divLogin">
             <div class="card-header">
-                <h3>Login</h3>
+                <h3>FowlDomain Login</h3>
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group mt-4">
                         <label for="txtLoginEmail" class="form-label">Email</label>
-                        <input type="email" id="txtLoginEmail" class="form-control">
+                        <input type="email" id="txtLoginEmail" class="form-control" placeholder="Johndoe@gmail.com">
                     </div>
                     <div class="form-group">
                         <label for="txtLoginPassword" class="form-label">Password</label>
-                        <input type="password" id="txtLoginPassword" class="form-control">
+                        <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                     </div>
                     <button id="btnLogin" class="btn btn-success col-12 mt-4" type="button">Submit</button>
                     <div class ="col-12 d-flex justify-content-center">
@@ -30,27 +37,28 @@
                 </form>
             </div>
         </div>
+<!-- divRegister -->
         <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4" id="divRegister" style="display:none;">
             <div class="card-header">
-                <h3>Registration</h3>
+                <h3>Register for FowlDomain</h3>
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group mt-4">
                         <label for="txtEmail" class="form-label">Email</label>
-                        <input id="txtEmail" class="form-control" type="email" aria-required="true">
+                        <input id="txtEmail" class="form-control" type="email" aria-required="true" placeholder="Johndoe@gmail.com">
                     </div>
                     <div class="form-group">
                         <label for="txtPassword" class="form-label">Password</label>
-                        <input id="txtPassword" class="form-control" type="password" aria-required="true">
+                        <input id="txtPassword" class="form-control" type="password" aria-required="true" placeholder="Password">
                     </div>
                     <div class="form-group">
                         <label for="txtFirstName" class="form-label">First Name</label>
-                        <input id="txtFirstName" class="form-control" type="text" aria-required="true">
+                        <input id="txtFirstName" class="form-control" type="text" aria-required="true" placeholder="John">
                     </div>
                     <div class="form-group">
                         <label for="txtLastName" class="form-label">Last Name</label>
-                        <input id="txtLastName" class="form-control" type="text" aria-required="true">
+                        <input id="txtLastName" class="form-control" type="text" aria-required="true" placeholder="Doe">
                     </div>
                     <div class="form-group">
                         <label for="txtStreetAddress1" class="form-label">Street Address 1</label>
@@ -77,7 +85,7 @@
                         <input id="telPhoneNum" placeholder="E.g, 111-222-3333" type="tel" class="form-control" aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="txtCoopID" class="form-label">Coop ID</label>
+                        <label for="txtCoopID" class="form-label">CoopID</label>
                         <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control" aria-required="true">
                     </div>
                     
@@ -90,24 +98,38 @@
             </div>
         </div>
     </div>
+<!-- Import Bootstrap v 5.3.2 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+<!-- Import JQuery v 3.7.1 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!-- Import SweetAlerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    
+<!-- Custom Scripts -->
     <script>
+
+        var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+        var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
+        
+        // $.post('https://simplecoop.swollenhippo.com/coop.php', function(result){
+            //             result = JSON.parse(result)
+            //             // console.log(result)
+            // })
+            
+            
         $('.btnToggle').on('click',function(){
             let strCard = $(this).attr('data-card');
             if(strCard == 'Login'){
                 $('#divLogin').slideToggle(function(){
                     $('#divRegister').slideToggle();
-            })
+                })
             } else {
                 $('#divRegister').slideToggle(function(){
                     $('#divLogin').slideToggle();
                 })
             }
         })
-
+        
         $('#btnReset').on('click', function(){
             $('#txtFirstName').val('');
             $('#txtLastName').val('');
@@ -121,15 +143,13 @@
             $('#telPhoneNum').val('');
             $('#txtCoopID').val('');
         })
-
+        
         $('#btnLogin').on("click", function () {
             let strEmail = $('#txtLoginEmail').val().trim();
             let strPassword = $('#txtLoginPassword').val().trim();
-            let regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
-            let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
             blnError = false
             htmlError = ''
-
+            
             if (!strEmail.match(regexEmail)){
                 blnError = true
                 htmlError += "<p>Email is invalid<p>"
@@ -137,28 +157,26 @@
             if (!strPassword.match(regexPassword)){
                 blnError = true
                 htmlError += '<p>Password must contain 8 characters, 1 uppercase, 1 lowercase, and 1 number.</p>'
-            }
-
+            }  
             if(blnError){
                 Swal.fire({
                     title: "Oops!",
                     html: htmlError,
                     icon: "error"
                 });
-            }
-
-            else {
+            } else {
                 $("#divLogin").slideToggle();
+                $.post('https://www.thesimplehomestead.com/simpletime/sessions.php',{Email:strEmail,Password:strPassword},function(result){
+                    result = JSON.parse(result)
+                    sessionStorage.setItem("SessionID",result.SessionID)
+                })
             }
         });
-
-
+                
         $('#btnRegister').on('click',function(){
             let blnError = false;
             let strError = '';
-            let regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
-            let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
-
+            
             let strFirstName = $('#txtFirstName').val().trim();
             let strLastName = $('#txtLastName').val().trim();
             let strEmail = $('#txtEmail').val().trim();
@@ -170,7 +188,12 @@
             let strZip = $('#txtZip').val().trim();
             let intPhoneNum = $('#telPhoneNum').val().trim();
             let strCoopID = $('#txtCoopID').val().trim();
-
+            
+            const url = `https://maps.googleapis.com/maps/api/geocode/json` // API variables for geocode address validation
+            const api_key = `AIzaSyArF_datI8_9ssGUGdPYXasftsOR7-R3D4`
+            const address = strStreetAddress1 + `, ` + strCity + `, ` + strState;
+            const address2 = strStreetAddress2 + `, ` + strCity + `, ` + strState;
+            
             if(strFirstName.length <1){
                 blnError = true;
                 strError += '<p>First name cannot be blank.</p>'
@@ -179,21 +202,45 @@
                 blnError = true;
                 strError += '<p>Last name cannot be blank.</p>'
             }
-            if(!regexEmail.match(strEmail)){
+            if(!strEmail.match(regexEmail)){
                 blnError = true
                 strError += '<p>Email is not valid.<p>'
             }
-            if(!regexPassword.match(strPassword)){
+            if(!strPassword.match(regexPassword)){
                 blnError = true;
                 strError += '<p>Password must contain 8 characters, 1 uppercase, 1 lowercase, and 1 number.</p>'
             }
             if(strStreetAddress1.length <1){
                 blnError = true;
                 strError += '<p>Street Address 1 cannot be blank.</p>'
-            }
-            if(strStreetAddress2.length <1){
-                blnError = true;
-                strError += '<p>Street Address 2 cannot be blank.</p>'
+            } else {
+                $.getJSON(url, {address: address, key:api_key}, function(result) {
+                    console.log(result)
+                    if (result.status != "OK") {
+                        blnError = true;
+                        strError += "Address 1 could not be verified. "
+                    } else {
+                        let found = false;
+                        if (result.results[0]["address_components"].length > 0) {
+                            result.results[0]["address_components"].forEach(function(component) {
+                                if (component.types) {
+                                    console.log(component.types);
+                                    component.types.forEach(function(type) {
+                                        if (type == 'route') {
+                                            console.log("Found valid address!")
+                                            found = true;
+                                        }
+                                    })
+                                }
+                            })
+                            if (!found) {
+                                console.log("Could not find address")
+                                blnError = true;
+                                strError += "Address 1 could not be verified. ";
+                            }
+                        }
+                    }
+                })
             }
             if(strCity.length <1){
                 blnError = true;
@@ -203,9 +250,34 @@
                 blnError = true;
                 strError += '<p>State cannot be blank.</p>'
             }
-            if(strZip.length <5){
+            if(strZip.length < 5 || strZip.length > 5){
                 blnError = true;
                 strError += '<p>Zip code cannot be blank.</p>'
+            }    
+            if (strStreetAddress2.length > 0) {
+                $.getJSON(url, {address: address2, key:api_key}, function(result) {
+                    if (result.status != "OK") {
+                        blnError = true;
+                        strError += "Address 2 could not be verified. ";
+                    } else {
+                        let found = false;
+                        if (result.results[0]["address_components"].length > 0) {
+                            result.results[0]["address_components"].forEach(function(component) {
+                                if (component.types) {
+                                    component.types.forEach(function(type) {
+                                        if (type == 'route') {
+                                            found = true;
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                        if (!found) {
+                        blnError = true;
+                        strError += "Address 2 could not be verified. ";
+                    }
+                    }
+                })
             }
             if(intPhoneNum.length <1){
                 blnError = true;
@@ -214,8 +286,7 @@
             if(strCoopID.length <1){
                 blnError = true;
                 strError += '<p>Invalid CoopID.</p>'
-            }
-
+            } 
             if(blnError == true){
                 Swal.fire({
                     title: "Oops!",
@@ -223,9 +294,33 @@
                     icon: "error"
                 });
             } else {
-                $("#divRegister").slideUp();
+                $("#divRegister").slideUp()
+                $.post('https://simplecoop.swollenhippo.com/users.php', {Email:strEmail,Password:strPassword,FirstName:strFirstName,LastName:strLastName,CoopID:strCoopID},function(result){
+                    result = JSON.parse(result)
+                    if(result.Error){
+                        Swal.fire({
+                            title: "Oops!",
+                            html: '<p>' + result.Error + '</p>',
+                            icon: "error"
+                        });
+                    }
+                    console.log(result)
+                })
+                
+                $.post('https://simplecoop.swollenhippo.com/useraddress.php', {Email:strEmail,Street1:strStreetAddress1,Street2:strStreetAddress2,City:strCity,State:strState,ZIP:strZip},function(result){
+                    result = JSON.parse(result)
+                    if(result.Error){
+                        Swal.fire({
+                            title: "Oops!",
+                            html: '<p>' + result.Error + '</p>',
+                            icon: "error"
+                        });
+                    }
+                    console.log(result)
+                })
             }
         })
     </script>
 </body>
+
 </html>
