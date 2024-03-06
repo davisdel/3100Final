@@ -103,15 +103,15 @@
         //             // console.log(result)
         // })
 
-        $.get('https://www.thesimplehomestead.com/simpletime/sessions.php',{SessionID:sessionStorage.getItem('SimpleSession')},function(result){
+      /*  $.get('https://www.thesimplehomestead.com/simpletime/sessions.php',{SessionID:sessionStorage.getItem('SimpleSession')},function(result){
             result = JSON.parse(result)
             if(result != null){
 
             }
-            else if(result.Email){
+            else if(result.Email != null){
 
             }
-        })
+        }) */
 
         $('.btnToggle').on('click',function(){
             let strCard = $(this).attr('data-card');
@@ -202,11 +202,11 @@
                 blnError = true;
                 strError += '<p>Last name cannot be blank.</p>'
             }
-            if(!regexEmail.match(strEmail)){
+            if(!strEmail.match(regexEmail)){
                 blnError = true
                 strError += '<p>Email is not valid.<p>'
             }
-            if(!regexPassword.match(strPassword)){
+            if(!strPassword.match(regexPassword)){
                 blnError = true;
                 strError += '<p>Password must contain 8 characters, 1 uppercase, 1 lowercase, and 1 number.</p>'
             }
