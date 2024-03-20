@@ -139,6 +139,8 @@
 
         $('#btnLogout').on('click', function(){
             sessionStorage.removeItem("SessionID")
+            $('#txtLoginEmail').val('');
+            $('#txtLoginPassword').val('');
             $('#divDashboard').slideToggle(function(){
                 $('#divLogin').slideToggle();
             })
