@@ -97,6 +97,15 @@
                 </form>
             </div>
         </div>
+        <!-- divDashboard -->
+        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4" id="divDashboard" style="display:none;">
+            <div class="card-header">
+                <h3>Dashboard</h3>
+            </div>
+            <div class="card-body">
+                <button id="btnLogout" class="btn btn-danger col-12 mt-4" type="button">Logout</button>
+            </div>
+        </div>
     </div>
 <!-- Import Bootstrap v 5.3.2 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
@@ -112,11 +121,29 @@
         var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
         
         // $.post('https://simplecoop.swollenhippo.com/coop.php', function(result){
-            //             result = JSON.parse(result)
-            //             // console.log(result)
-            // })
-            
-            
+        //     result = JSON.parse(result)
+        //     console.log(result)
+        //  })
+
+        $(document).ready(function(){
+            if(sessionStorage.getItem("SessionID")){
+                $.getJSON("https://simplecoop.swollenhippo.com/sessions.php", {SessionID:sessionStorage.getItem("SessionID")}, function(result){
+                    if(result != null){
+                        $('#divLogin').slideToggle(function(){
+                            $('#divDashboard').slideToggle();
+                        })
+                    }
+                })
+            }
+        })
+
+        $('#btnLogout').on('click', function(){
+            sessionStorage.removeItem("SessionID")
+            $('#divDashboard').slideToggle(function(){
+                $('#divLogin').slideToggle();
+            })
+        })
+                 
         $('.btnToggle').on('click',function(){
             let strCard = $(this).attr('data-card');
             if(strCard == 'Login'){
@@ -165,10 +192,20 @@
                     icon: "error"
                 });
             } else {
-                $("#divLogin").slideToggle();
-                $.post('https://www.thesimplehomestead.com/simpletime/sessions.php',{Email:strEmail,Password:strPassword},function(result){
+                $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result){
                     result = JSON.parse(result)
-                    sessionStorage.setItem("SessionID",result.SessionID)
+                    if(result.Error){
+                        Swal.fire({
+                            title: "Oops!",
+                            text: result.Error,
+                            icon: "error"
+                        });
+                    } else {
+                        sessionStorage.setItem("SessionID",result.SessionID)
+                        $("#divLogin").slideToggle(function(){
+                            $("#divDashboard").slideToggle()
+                        })
+                    }
                 })
             }
         });
@@ -215,7 +252,6 @@
                 strError += '<p>Street Address 1 cannot be blank.</p>'
             } else {
                 $.getJSON(url, {address: address, key:api_key}, function(result) {
-                    console.log(result)
                     if (result.status != "OK") {
                         blnError = true;
                         strError += "Address 1 could not be verified. "
@@ -224,7 +260,6 @@
                         if (result.results[0]["address_components"].length > 0) {
                             result.results[0]["address_components"].forEach(function(component) {
                                 if (component.types) {
-                                    console.log(component.types);
                                     component.types.forEach(function(type) {
                                         if (type == 'route') {
                                             console.log("Found valid address!")
@@ -287,6 +322,7 @@
                 blnError = true;
                 strError += '<p>Invalid CoopID.</p>'
             } 
+
             if(blnError == true){
                 Swal.fire({
                     title: "Oops!",
@@ -294,7 +330,6 @@
                     icon: "error"
                 });
             } else {
-                $("#divRegister").slideUp()
                 $.post('https://simplecoop.swollenhippo.com/users.php', {Email:strEmail,Password:strPassword,FirstName:strFirstName,LastName:strLastName,CoopID:strCoopID},function(result){
                     result = JSON.parse(result)
                     if(result.Error){
@@ -303,21 +338,36 @@
                             html: '<p>' + result.Error + '</p>',
                             icon: "error"
                         });
+                    } else { 
+                        $.post('https://simplecoop.swollenhippo.com/useraddress.php', {Email:strEmail,Street1:strStreetAddress1,Street2:strStreetAddress2,City:strCity,State:strState,ZIP:strZip},function(result2){
+                            result = JSON.parse(result2)
+                            if(result.Error){
+                                Swal.fire({
+                                    title: "Oops!",
+                                    html: '<p>' + result.Error + '</p>',
+                                    icon: "error"
+                                });
+                            } else {
+                                $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result3){
+                                    result = JSON.parse(result3)
+                                    if(result.Error){
+                                        Swal.fire({
+                                            title: "Oops!",
+                                            text: result.Error,
+                                            icon: "error"
+                                        });
+                                    } else {
+                                        sessionStorage.setItem("SessionID",result.SessionID)
+                                        $("#divRegister").slideToggle(function(){
+                                            $("#divDashboard").slideToggle()
+                                        })
+                                    }
+                                })
+                            }
+                        })
                     }
-                    console.log(result)
                 })
-                
-                $.post('https://simplecoop.swollenhippo.com/useraddress.php', {Email:strEmail,Street1:strStreetAddress1,Street2:strStreetAddress2,City:strCity,State:strState,ZIP:strZip},function(result){
-                    result = JSON.parse(result)
-                    if(result.Error){
-                        Swal.fire({
-                            title: "Oops!",
-                            html: '<p>' + result.Error + '</p>',
-                            icon: "error"
-                        });
-                    }
-                    console.log(result)
-                })
+                     
             }
         })
     </script>
