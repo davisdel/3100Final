@@ -125,6 +125,18 @@
         //     console.log(result)
         //  })
 
+        $(document).ready(function(){
+            if(sessionStorage.getItem("SessionID")){
+                $.getJSON("https://simplecoop.swollenhippo.com/sessions.php", {SessionID:sessionStorage.getItem("SessionID")}, function(result){
+                    if(result != null){
+                        $('#divLogin').slideToggle(function(){
+                            $('#divDashboard').slideToggle();
+                        })
+                    }
+                })
+            }
+        })
+
         $('#btnLogout').on('click', function(){
             sessionStorage.removeItem("SessionID")
             $('#divDashboard').slideToggle(function(){
@@ -180,7 +192,7 @@
                     icon: "error"
                 });
             } else {
-                $.post('https://www.thesimplehomestead.com/simpletime/sessions.php',{Email:strEmail,Password:strPassword},function(result){
+                $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result){
                     result = JSON.parse(result)
                     if(result.Error){
                         Swal.fire({
@@ -310,6 +322,7 @@
                 blnError = true;
                 strError += '<p>Invalid CoopID.</p>'
             } 
+
             if(blnError == true){
                 Swal.fire({
                     title: "Oops!",
@@ -335,7 +348,7 @@
                                     icon: "error"
                                 });
                             } else {
-                                $.post('https://www.thesimplehomestead.com/simpletime/sessions.php',{Email:strEmail,Password:strPassword},function(result3){
+                                $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result3){
                                     result = JSON.parse(result3)
                                     if(result.Error){
                                         Swal.fire({
@@ -354,8 +367,7 @@
                         })
                     }
                 })
-                
-                
+                     
             }
         })
     </script>
