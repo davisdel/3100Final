@@ -103,7 +103,7 @@
                 <h3>Dashboard</h3>
             </div>
             <div class="card-body">
-                <form>
+               <!-- <form>
                     <div class="form-group mt-4">
                         <label for="intTemperature" class="form-label">Temperature</label>
                         <input type="number" id="intTemperature" class="form-control">
@@ -111,11 +111,21 @@
                         <label for="intHumidity" class="form-label">Humidity</label>
                         <input type="number" id="intHumidity" class="form-control">
                     </div>
-                </form>
+                </form> -->
                 <button id="btnCreateObservation" class="btn btn-primary col-12 mt-4" type="button">Create Observation</button>
                 <button id="btnLogout" class="btn btn-danger col-12 mt-4" type="button">Logout</button>
-                <button id="btnDeleteObservation" class="btn btn-danger col-12 mt-4" type="button">Delete Observation</button>
-                <button id="btnViewObservation" class="btn btn-primary col-12 mt-4" type="button">View Observation</button>
+                <form>
+                    <button id="btnFetchObservations" class="btn btn-primary col-12 mt-4" type="button">Fetch Observations</button>
+                </form>
+                
+                <div id="observationsContainer" style="display: none;">
+                    <div class="form-group mt-4">
+                        <label for="observationSelect" class="form-label">Select Observation to delete</label>
+                        <select id="observationSelect" class="form-control"></select>
+                    </div>
+                    <button id="btnDeleteObservation" class="btn btn-danger col-12 mt-4" type="button">Delete Observation</button>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -383,70 +393,145 @@
         // environment.php start
         $('#btnCreateObservation').on("click", function () {
             const sessionId = sessionStorage.getItem("SessionID");
-            const observationDateTime = new Date().toLocaleString();
-            let temperature = $('#intTemperature').val().trim();
-            let humidity = $('#intHumidity').val().trim();
 
-            $.post('https://simplecoop.swollenhippo.com/environment.php', {SessionID: sessionId,observationDateTime:observationDateTime,temperature:temperature,humidity:humidity},function(result){
-                result = JSON.parse(result);
-                if (result.Error) {
-                    Swal.fire({
-                        title: "Oops!",
-                        text: result.Error,
-                        icon: "error"
-                    });
-                } else {
-                    // Assuming the server sends back the logID in the result
-                    const logId = result.logID;
-                    // Store the logID for later use (e.g., in sessionStorage)
-                    sessionStorage.setItem("ObservationLogID", logId);
-                    Swal.fire({
-                        title: "Success!",
-                        text: "Observation created successfully. LogID: " + logId,
-                        icon: "success"
-                    });
-                }
-            }).fail(function (xhr, status, error) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "An error occurred while creating observation.",
-                    icon: "error"
+            function getRandomObservationDatetime() {
+                // Get the current date
+                var currentDate = new Date();
+                // Generate a random number of days between 0 and 100
+                var randomDays = Math.floor(Math.random() * 101);
+                // Calculate the random date within the specified range
+                var randomDate = new Date(currentDate);
+                randomDate.setDate(currentDate.getDate() - randomDays);
+                // Format the date in ISO string format
+                var observationDatetime = randomDate.toISOString();
+                return observationDatetime;
+            }
+
+            function getRandomTemperature() {
+                // Generate a random temperature between 42 and 90
+                return Math.random() * (90 - 42) + 42;
+            }
+
+            function getRandomHumidity() {
+                // Generate a random humidity between 30 and 98
+                return Math.random() * (98 - 30) + 30;
+            }
+
+            for (var i = 0; i < 100; i++) {
+                // Generate a unique logID for each observation
+                var logID = "logID_" + i;
+
+                // The SessionID and additional data with random temperature, humidity, observationdatetime, and logID
+                var requestData = {
+                    SessionID: sessionId,
+                    temperature: getRandomTemperature(),
+                    observationDateTime: getRandomObservationDatetime(),
+                    humidity: getRandomHumidity(),
+                    logID: logID // Include the logID in the requestData
+                };
+
+                // Making the AJAX request using POST for each observation
+                $.post('https://simplecoop.swollenhippo.com/environment.php', requestData, function (result) {
+                    console.log(result);
                 });
-            });
+            }
         });
 
-        $('#btnDeleteObservation').on("click", function () {
-            const sessionId = sessionStorage.getItem("SessionID");
-            const logIdToDelete = 'log_id_to_delete'; // Replace 'log_id_to_delete' with the actual log ID you want to delete
 
-            $.ajax({
-                url: 'https://simplecoop.swollenhippo.com/environment.php',
-                type: 'DELETE',
-                data: {
-                    SessionID: sessionId,
-                    logID: logIdToDelete
-                }
-            }).then(function(result) {
-                result = JSON.parse(result);
-                if (result.Outcome === "Success") {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "Observation deleted successfully.",
-                        icon: "success"
-                    });
-                } else {
+        //DELETE OBSERVATION
+        $(document).ready(function () {
+            const sessionId = sessionStorage.getItem("SessionID");
+
+            // Function to fetch environment records
+            function fetchEnvironmentRecords(days) {
+                $.ajax({
+                    url: 'https://simplecoop.swollenhippo.com/environment.php',
+                    type: 'GET',
+                    data: {
+                        SessionID: sessionId,
+                        days: days // Specify the number of days to fetch records for
+                    }
+                }).then(function (result) {
+                    const environmentRecords = JSON.parse(result);
+                    if (environmentRecords.length > 0) {
+                        // Process the fetched records here
+                        console.log(environmentRecords);
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "No environment records found.",
+                            icon: "error"
+                        });
+                    }
+                }).catch(function (xhr, status, error) {
                     Swal.fire({
                         title: "Error!",
-                        text: "An error occurred while deleting observation.",
+                        text: "An error occurred while fetching environment records.",
                         icon: "error"
                     });
-                }
-            }).catch(function(xhr, status, error) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "An error occurred while deleting observation.",
-                    icon: "error"
                 });
+            }
+
+            // Example: Fetch environment records for the last 7 days
+            fetchEnvironmentRecords(7);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+$('#btnFetchObservations').on("click", function () {
+                const sessionId = sessionStorage.getItem("SessionID");
+
+                // Function to fetch and display observations
+                function fetchObservations() {
+                    $.ajax({
+                        url: 'https://simplecoop.swollenhippo.com/environment.php',
+                        type: 'GET',
+                        data: {
+                            SessionID: sessionId,
+                            // Add any other parameters needed for fetching observations
+                        }
+                    }).then(function (result) {
+                        const observations = JSON.parse(result);
+                        if (observations.length > 0) {
+                            const observationSelect = $('#observationSelect');
+                            observationSelect.empty();
+                            observations.forEach(function (observation) {
+                                observationSelect.append($('<option>', {
+                                    value: observation.logID,
+                                    text: observation.logID + ' - ' + observation.observationDateTime
+                                }));
+                            });
+                            $('#observationsContainer').show(); // Show the container after fetching observations
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "No observations found.",
+                                icon: "error"
+                            });
+                        }
+                    }).catch(function (xhr, status, error) {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "An error occurred while fetching observations.",
+                            icon: "error"
+                        });
+                    });
+                }
+
+                // Call fetchObservations function when the button is clicked
+                fetchObservations();
+            });
+
+            // Handle delete observation button click
+            $('#btnDeleteObservation').on("click", function () {
+                const logIdToDelete = $('#observationSelect').val();
+                if (!logIdToDelete) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "No LogID specified for deletion.",
+                        icon: "error"
+                    });
+                    return;
+                }
+                // Call your delete observation function here
             });
         });
     </script>
