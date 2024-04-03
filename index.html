@@ -104,6 +104,9 @@
             </div>
             <div class="card-body">
                 <button id="btnLogout" class="btn btn-danger col-12 mt-4" type="button">Logout</button>
+                <button id="btnCreateObservation" class="btn btn-primary col-12 mt-4" type="button">Create Observation</button>
+                <button id="btnDeleteObservation" class="btn btn-danger col-12 mt-4" type="button">Delete Observation</button>
+                <button id="btnViewObservation" class="btn btn-primary col-12 mt-4" type="button">View Observation</button>
             </div>
         </div>
     </div>
@@ -130,6 +133,37 @@
                     }
                 })
             }
+            // Enviroment.php start
+            $('#btnCreateObservation').on("click",function(){
+                const sessionId = sessionStorage.getItem("SessionID");
+                const observationDateTime = new Date().toLocaleString();
+                let temperature = 25;
+                let humidity = 60;
+
+                $.post('environment.php', {SessionID:sessionId,observationDateTime:observationDateTime,temperature:temperature,humidity:humidity}, function(result){
+                    result = JSON.parse(result);
+                    if(result.Error){
+                        Swal.fire({
+                            title: "Oops!",
+                            text: result.Error,
+                            icon: "error"
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Observation created successfully.",
+                            icon: "success"
+                        });
+                    }
+                }).fail(function(xhr, status, error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "An error occurred while creating observation.",
+                        icon: "error"
+                    });
+                });
+            });
+
         })
 
         $('#btnLogout').on('click', function(){
