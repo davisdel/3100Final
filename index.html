@@ -97,12 +97,66 @@
                 </form>
             </div>
         </div>
-        <!-- divDashboard -->
-        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4" id="divDashboard" style="display:none;">
+<!-- divDashboard -->
+        <div class="card col-12 col-md-10 col-lg-8 mt-4 mb-4" id="divDashboard" style="display:none;">
             <div class="card-header">
-                <h3>Dashboard</h3>
+                <h2>Dashboard</h2>
             </div>
             <div class="card-body">
+                <div class="container px-4">
+                    <div class="row gx-5">
+                        <!-- Egg counter widget -->
+                        <div class="col">
+                            <div class="card p-3 h-100">
+                                <div class="card-header">
+                                    <h4>Egg Counter</h4>
+                                </div>
+                                <div class="card-body">
+                                    <!-- chart -->
+                                    <hr>
+                                    <div class="row align-items-center">
+                                        <label for="numEggCount">Eggs Harvested Today</label>
+                                        <div class="col">
+                                            <input id="numEggCount" type="number" placeholder="Egg count" min="0">
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Weather widget -->
+                        <div class="col">
+                            <div class="card p-3 h-100">
+                                <div class="card-header">
+                                    <h4>Environment</h4>
+                                </div>
+                                <div class="card-body">
+                                    <!-- chart -->
+                                    <hr>
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <label for="dateObservation">Observation Date</label>
+                                            <input id="dateObservation" type="date" placeholder="Observation Date">
+                                        </div>
+                                        <div class="col">
+                                            <label for="decimalHumidity">Humidity</label>
+                                            <input id="decimalHumidity" type="number" step="any" placeholder="Humidity" min="0" max="100">
+                                        </div>
+                                        <div class="col">
+                                            <label for="decimalTemp">Temperature</label>
+                                            <input id="decimalTemp" type="number" step="any" placeholder="Temperature">
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button id="btnLogout" class="btn btn-danger col-12 mt-4" type="button">Logout</button>
             </div>
         </div>
