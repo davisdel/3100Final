@@ -384,8 +384,8 @@
         $('#btnCreateObservation').on("click",function(){
                 const sessionId = sessionStorage.getItem("SessionID");
                 const observationDateTime = new Date().toLocaleString();
-                let temperature = 25;
-                let humidity = 60;
+                let temperature = $('#intTemperature').val().trim();
+                let humidity = $('#intHumidity').val().trim();
 
                 $.post('https://simplecoop.swollenhippo.com/environment.php',{SessionID:sessionId,observationDateTime:observationDateTime,temperature:temperature,humidity:humidity}, function(result){
                     result = JSON.parse(result);
