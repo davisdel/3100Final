@@ -203,7 +203,7 @@
             } else {
                 $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result){
                     result = JSON.parse(result)
-                    if(result.Outcome == 'false'){
+                    if(result.Outcome){
                         Swal.fire({
                             title: "Oops!",
                             text: result.Error,
