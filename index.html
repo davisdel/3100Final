@@ -381,35 +381,74 @@
         })
 
         // environment.php start
-        $('#btnCreateObservation').on("click",function(){
-                const sessionId = sessionStorage.getItem("SessionID");
-                const observationDateTime = new Date().toLocaleString();
-                let temperature = $('#intTemperature').val().trim();
-                let humidity = $('#intHumidity').val().trim();
+        $('#btnCreateObservation').on("click", function () {
+            const sessionId = sessionStorage.getItem("SessionID");
+            const observationDateTime = new Date().toLocaleString();
+            let temperature = $('#intTemperature').val().trim();
+            let humidity = $('#intHumidity').val().trim();
 
-                $.post('https://simplecoop.swollenhippo.com/environment.php',{SessionID:sessionId,observationDateTime:observationDateTime,temperature:temperature,humidity:humidity}, function(result){
-                    result = JSON.parse(result);
-                    if(result.Error){
-                        Swal.fire({
-                            title: "Oops!",
-                            text: result.Error,
-                            icon: "error"
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Observation created successfully.",
-                            icon: "success"
-                        });
-                    }
-                }).fail(function(xhr, status, error) {
+            $.post('https://simplecoop.swollenhippo.com/environment.php', {SessionID: sessionId,observationDateTime:observationDateTime,temperature:temperature,humidity:humidity},function(result){
+                result = JSON.parse(result);
+                if (result.Error) {
                     Swal.fire({
-                        title: "Error!",
-                        text: "An error occurred while creating observation.",
+                        title: "Oops!",
+                        text: result.Error,
                         icon: "error"
                     });
+                } else {
+                    // Assuming the server sends back the logID in the result
+                    const logId = result.logID;
+                    // Store the logID for later use (e.g., in sessionStorage)
+                    sessionStorage.setItem("ObservationLogID", logId);
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Observation created successfully. LogID: " + logId,
+                        icon: "success"
+                    });
+                }
+            }).fail(function (xhr, status, error) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "An error occurred while creating observation.",
+                    icon: "error"
                 });
             });
+        });
+
+        $('#btnDeleteObservation').on("click", function () {
+            const sessionId = sessionStorage.getItem("SessionID");
+            const logIdToDelete = 'log_id_to_delete'; // Replace 'log_id_to_delete' with the actual log ID you want to delete
+
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                type: 'DELETE',
+                data: {
+                    SessionID: sessionId,
+                    logID: logIdToDelete
+                }
+            }).then(function(result) {
+                result = JSON.parse(result);
+                if (result.Outcome === "Success") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Observation deleted successfully.",
+                        icon: "success"
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "An error occurred while deleting observation.",
+                        icon: "error"
+                    });
+                }
+            }).catch(function(xhr, status, error) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "An error occurred while deleting observation.",
+                    icon: "error"
+                });
+            });
+        });
     </script>
 </body>
 
