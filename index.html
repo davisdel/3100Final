@@ -203,12 +203,12 @@
             } else {
                 $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result){
                     result = JSON.parse(result)
-                    if(result.Error){
+                    if(result.Outcome == 'false'){
                         Swal.fire({
                             title: "Oops!",
                             text: result.Error,
                             icon: "error"
-                        });
+                        })
                     } else {
                         sessionStorage.setItem("SessionID",result.SessionID)
                         $("#divLogin").slideToggle(function(){
