@@ -371,14 +371,14 @@
             }
         })
 
-        // Enviroment.php start
+        // environment.php start
         $('#btnCreateObservation').on("click",function(){
                 const sessionId = sessionStorage.getItem("SessionID");
                 const observationDateTime = new Date().toLocaleString();
                 let temperature = 25;
                 let humidity = 60;
 
-                $.post('https://simplecoop.swollenhippo.com/enviroment.php',{SessionID:sessionId,observationDateTime:observationDateTime,temperature:temperature,humidity:humidity}, function(result){
+                $.post('https://simplecoop.swollenhippo.com/environment.php',{SessionID:sessionId,observationDateTime:observationDateTime,temperature:temperature,humidity:humidity}, function(result){
                     result = JSON.parse(result);
                     if(result.Error){
                         Swal.fire({
