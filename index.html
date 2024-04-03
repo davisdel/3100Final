@@ -10,6 +10,9 @@
     <link rel ="stylesheet" href="./css/index.css">
 <!-- Import Lux bootstrap theme -->
     <link rel="stylesheet" href="https://bootswatch.com/5/lux/bootstrap.min.css">
+<!-- Import bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <title>FowlDomain SmartCoop</title>
 </head>
 
@@ -30,7 +33,7 @@
                         <label for="txtLoginPassword" class="form-label">Password</label>
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                     </div>
-                    <button id="btnLogin" class="btn btn-success col-12 mt-4" type="button">Submit</button>
+                    <button id="btnLogin" class="btn btn-success col-12 mt-4" aria-label = "Submit Login" type="button">Submit</button>
                     <div class ="col-12 d-flex justify-content-center">
                         <a class="col-12 text-center btnToggle" data-card="Login">Need an account? Click Here</a>
                     </div>
@@ -89,8 +92,8 @@
                         <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control" aria-required="true">
                     </div>
                     
-                    <button class="col-12 btn btn-success mt-4" id="btnRegister" type="button">Register</button>
-                    <button id="btnReset" type="button" class="btn btn-tertiary col-12 mt-1">Reset Form</button>
+                    <button class="col-12 btn btn-success mt-4" id="btnRegister" aria-label="Register" type="button">Register</button>
+                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1">Reset Form</button>
                     <div class="col-12 d-flex justify-content-center">
                         <a class="col-12 text-center btnToggle" data-card="Register">Return To Login</a>
                     </div>
@@ -100,64 +103,80 @@
 <!-- divDashboard -->
         <div class="card col-12 col-md-10 col-lg-8 mt-4 mb-4" id="divDashboard" style="display:none;">
             <div class="card-header">
-                <h2>Dashboard</h2>
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-auto me-auto align"><h2>Farm Dashboard</h2></div>
+                        <div class="col-auto"><button type="button" class="btn" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></button></div>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="container px-4">
-                    <div class="row gx-5">
+                    <div class="row g-5">
                         <!-- Egg counter widget -->
-                        <div class="col">
+                        <div class="col-lg-6 col-md-12">
                             <div class="card p-3 h-100">
                                 <div class="card-header">
-                                    <h4>Egg Counter</h4>
+                                    <h3>Egg Counter</h3>
                                 </div>
                                 <div class="card-body">
                                     <!-- chart -->
                                     <hr>
-                                    <div class="row align-items-center">
+                                    <div class="row align-items-center mb-2">
                                         <label for="numEggCount">Eggs Harvested Today</label>
                                         <div class="col">
                                             <input id="numEggCount" type="number" placeholder="Egg count" min="0">
-                                        </div>
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary btn-sm">Submit</button>
+                                            <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Weather widget -->
-                        <div class="col">
+                        <div class="col-lg-6 col-md-12">
                             <div class="card p-3 h-100">
                                 <div class="card-header">
-                                    <h4>Environment</h4>
+                                    <h3>Environment</h3>
                                 </div>
                                 <div class="card-body">
                                     <!-- chart -->
                                     <hr>
-                                    <div class="row align-items-center">
-                                        <div class="col">
-                                            <label for="dateObservation">Observation Date</label>
-                                            <input id="dateObservation" type="date" placeholder="Observation Date">
+                                    <form>
+                                        <div class="row align-items-center">
+                                            <div class="row">
+                                                <label for="dateObservation">Observation Date</label>
+                                                <input id="dateObservation" type="date" placeholder="Observation Date">
+                                            </div>
+                                            <div class="row">
+                                                <label for="decimalHumidity">Humidity</label>
+                                                <input id="decimalHumidity" type="number" step="any" placeholder="Humidity" min="0" max="100">
+                                            </div>
+                                            <div class="row">
+                                                <label for="decimalTemp">Temperature</label>
+                                                <input id="decimalTemp" type="number" step="any" placeholder="Temperature">
+                                            </div>
                                         </div>
-                                        <div class="col">
-                                            <label for="decimalHumidity">Humidity</label>
-                                            <input id="decimalHumidity" type="number" step="any" placeholder="Humidity" min="0" max="100">
-                                        </div>
-                                        <div class="col">
-                                            <label for="decimalTemp">Temperature</label>
-                                            <input id="decimalTemp" type="number" step="any" placeholder="Temperature">
-                                        </div>
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary btn-sm">Submit</button>
-                                        </div>
-                                    </div>
+                                        <br>
+                                        <div class="row justify-content-center">
+                                                <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                            </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button id="btnLogout" class="btn btn-danger col-12 mt-4" type="button">Logout</button>
+                <button id="btnLogout" aria-label="Logout" class="btn btn-danger col-12 mt-4" type="button">Logout</button>
+            </div>
+        </div>
+<!-- Settings card -->
+        <div class="card col-12 col-md-5 col-lg-4" id="divSettings" style="display:none;">
+            <div class="card-header">
+                <h2>Settings</h2>
+            </div>
+            <div class="card-body">
+                <p>This is the settings page!</p>
+                <button type="button" class="btn btn-primary" id="btnReturnDashboard" aria-label="Return">Return</button>
             </div>
         </div>
     </div>
@@ -167,7 +186,9 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <!-- Import SweetAlerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+<!-- Import chart.js -->
+    <script src="https://cdnjs.com/libraries/Chart.js"></script>
+
 <!-- Custom Scripts -->
     <script>
 
@@ -421,6 +442,19 @@
                      
             }
         })
+
+        $('#btnSettings').on('click',function(){
+            $('#divDashboard').slideToggle(function(){
+                $('#divSettings').slideToggle();
+            })
+        })
+
+        $('#btnReturnDashboard').on('click',function(){
+            $('#divSettings').slideToggle(function(){
+                $('#divDashboard').slideToggle();
+            })
+        })
+
     </script>
 </body>
 
