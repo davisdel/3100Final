@@ -491,14 +491,18 @@
         $('#btnViewWeather').on('click',function(){
             // Assuming SessionID and days are variables holding the required values
             var SessionID = sessionStorage.getItem("SessionID");
-            var days = 1; // Example value, adjust as needed
+            var days = 5; // Example value, adjust as needed
 
             $.ajax({
             url: 'https://simplecoop.swollenhippo.com/environment.php',
             method: 'GET',
             data: { SessionID: SessionID, days: days },
             success: function(data) {
-                console.log(data);
+                //console.log(data);
+                data = JSON.parse(data)
+                data.forEach(obj => {
+                    console.log(obj);
+                });
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
@@ -519,26 +523,52 @@
         })
 
         // Environment chart
-        const ctx = document.getElementById('myChart');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-            labels: ['Temperature', 'Humidity'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-            }]
+        var SessionID = sessionStorage.getItem("SessionID");
+        var days = 5;
+        $.ajax({
+            url: 'https://simplecoop.swollenhippo.com/environment.php',
+            method: 'GET',
+            data: { SessionID: SessionID, days: days },
+            success: function(data) {
+                data = JSON.parse(data);
+                // Assuming data is an array of objects with Temperature and Humidity properties
+                var temperatures = data.map(obj => parseFloat(obj.Temperature));
+                var humidities = data.map(obj => parseFloat(obj.Humidity));
+                
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var environmentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: data.length }, (_, i) => i + 1),
+                        datasets: [
+                            {
+                                label: 'Temperature',
+                                data: temperatures,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            },
+                            {
+                                label: 'Humidity',
+                                data: humidities,
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            },
+                        ],
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                        },
+                    },
+                });
             },
-            options: {
-            scales: {
-                y: {
-                beginAtZero: true
-                }
-            }
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
             }
         });
+
 
     </script>
 </body>
