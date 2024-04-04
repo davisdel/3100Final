@@ -216,16 +216,16 @@
                     }
                 })
             }
+
             // set up and display environment chart
             var SessionID = sessionStorage.getItem("SessionID");
-            var days = 5;
+            var days = 5; // Can be changed if needed
             $.ajax({
                 url: 'https://simplecoop.swollenhippo.com/environment.php',
                 method: 'GET',
                 data: { SessionID: SessionID, days: days },
                 success: function(data) {
                     data = JSON.parse(data);
-                    // Assuming data is an array of objects with Temperature and Humidity properties
                     var temperatures = data.map(obj => parseFloat(obj.Temperature));
                     var humidities = data.map(obj => parseFloat(obj.Humidity));
                     
@@ -269,10 +269,7 @@
                 method: 'GET',
                 data: { SessionID: SessionID, days: days },
                 success: function(data) {
-                    // Assuming data is an array of objects
                     data = JSON.parse(data);
-
-                    // Select the dropdown element by its ID
                     var dropdown = $('#selWeather');
 
                     // Clear existing options
@@ -285,7 +282,7 @@
 
                         // Set the text and value of the option based on obj properties
                         option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
-                        option.val(obj.LogID); // Set the value to LogID or any other unique identifier
+                        option.val(obj.LogID); // Set the value to logID
 
                         // Append the option to the dropdown
                         dropdown.append(option);
@@ -541,9 +538,9 @@
             const humidity = $('#decimalHumidity').val();
 
             // Generate a random logID
-            const logID = Math.floor(Math.random() * 1000); // Example of generating a random logID
+            const logID = Math.floor(Math.random() * 1000);
 
-            // The SessionID, observationDateTime, temperature, humidity, and logID
+            // Set the SessionID, observationDateTime, temperature, humidity, and logID
             var requestData = {
                 SessionID: sessionId,
                 observationDateTime: observationDateTime,
@@ -566,29 +563,48 @@
             });
         });
 
-            
-        //GET request
-        $('#btnViewWeather').on('click',function(){
-            // Assuming SessionID and days are variables holding the required values
-            var SessionID = sessionStorage.getItem("SessionID");
-            var days = 5; // Example value, adjust as needed
+        $('#btnDeleteWeather').on('click', function() {
+            // Get the selected value from the dropdown
+            var selectedLogID = $('#selWeather').val();
 
-            $.ajax({
-            url: 'https://simplecoop.swollenhippo.com/environment.php',
-            method: 'GET',
-            data: { SessionID: SessionID, days: days },
-            success: function(data) {
-                //console.log(data);
-                data = JSON.parse(data)
-                data.forEach(obj => {
-                    console.log(obj);
+            // Check if a log is selected
+            if (selectedLogID) {
+                // Perform AJAX request to delete the selected log
+                $.ajax({
+                    url: 'https://simplecoop.swollenhippo.com/environment.php',
+                    method: 'DELETE', 
+                    data: { LogID: selectedLogID },
+                    success: function(response) {
+                        // Assuming the deletion was successful
+                        console.log('Log deleted successfully');
+                        // Remove the selected entry from the list
+                        $('#selWeather option[value="' + selectedLogID + '"]').remove();
+                        // Show SweetAlert for success
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Log deleted successfully!',
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error deleting log:', error);
+                        // Show SweetAlert for error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error deleting log: ' + error,
+                        });
+                    }
                 });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
+            } else {
+                // Display an error message if no log is selected
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please select a log to delete.',
+                });
             }
-            });
-        })
+        });
 
         $('#btnSettings').on('click',function(){
             $('#divDashboard').slideToggle(function(){
