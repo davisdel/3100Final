@@ -231,7 +231,7 @@
                     
                     var ctx = document.getElementById('myChart').getContext('2d');
                     var environmentChart = new Chart(ctx, {
-                        type: 'line',
+                        type: 'scatter',
                         data: {
                             labels: Array.from({ length: data.length }, (_, i) => i + 1),
                             datasets: [
