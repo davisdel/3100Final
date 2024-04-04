@@ -160,8 +160,7 @@
                                         <div class="row justify-content-center">
                                                 <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
                                                 <button id="btnViewWeather" aria-label="View Weather Data" type="button" class="btn btn-danger btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
-                                            </div>
-                                    </form>
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -477,25 +476,24 @@
             });
         });
 
-            
-            //GET request
-            $('#btnViewWeather').on('click',function(){
-                // Assuming SessionID and days are variables holding the required values
-                var SessionID = sessionStorage.getItem("SessionID");
-                var days = 1; // Example value, adjust as needed
+        //GET request
+        $('#btnViewWeather').on('click',function(){
+            // Assuming SessionID and days are variables holding the required values
+            var SessionID = sessionStorage.getItem("SessionID");
+            var days = 1; // Example value, adjust as needed
 
-                $.ajax({
-                url: 'https://simplecoop.swollenhippo.com/environment.php',
-                method: 'GET',
-                data: { SessionID: SessionID, days: days },
-                success: function(data) {
-                    console.log(data);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-                });
-            })
+            $.ajax({
+            url: 'https://simplecoop.swollenhippo.com/environment.php',
+            method: 'GET',
+            data: { SessionID: SessionID, days: days },
+            success: function(logs) {
+                console.log(logs);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+            });
+        })
 
         $('#btnSettings').on('click',function(){
             $('#divDashboard').slideToggle(function(){
