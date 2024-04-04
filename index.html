@@ -159,6 +159,7 @@
                                         <br>
                                         <div class="row justify-content-center">
                                                 <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                                <button id="btnViewWeather" aria-label="View Weather Data" type="button" class="btn btn-danger btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
                                             </div>
                                     </form>
                                 </div>
@@ -444,149 +445,58 @@
         })
 
         // environment.php start
-        $('#btnCreateObservation').on("click", function () {
+        $('#btnSubmitWeather').on("click", function () {
             const sessionId = sessionStorage.getItem("SessionID");
+            const observationDateTime = $('#dateObservation').val();
+            const temperature = $('#decimalTemp').val();
+            const humidity = $('#decimalHumidity').val();
 
-            function getRandomObservationDatetime() {
-                // Get the current date
-                var currentDate = new Date();
-                // Generate a random number of days between 0 and 100
-                var randomDays = Math.floor(Math.random() * 101);
-                // Calculate the random date within the specified range
-                var randomDate = new Date(currentDate);
-                randomDate.setDate(currentDate.getDate() - randomDays);
-                // Format the date in ISO string format
-                var observationDatetime = randomDate.toISOString();
-                return observationDatetime;
-            }
+            // Generate a random logID
+            const logID = Math.floor(Math.random() * 1000); // Example of generating a random logID
 
-            function getRandomTemperature() {
-                // Generate a random temperature between 42 and 90
-                return Math.random() * (90 - 42) + 42;
-            }
+            // The SessionID, observationDateTime, temperature, humidity, and logID
+            var requestData = {
+                SessionID: sessionId,
+                observationDateTime: observationDateTime,
+                temperature: temperature,
+                humidity: humidity,
+                logID: logID
+            };
 
-            function getRandomHumidity() {
-                // Generate a random humidity between 30 and 98
-                return Math.random() * (98 - 30) + 30;
-            }
-
-            for (var i = 0; i < 100; i++) {
-                // Generate a unique logID for each observation
-                var logID = "logID_" + i;
-
-                // The SessionID and additional data with random temperature, humidity, observationdatetime, and logID
-                var requestData = {
-                    SessionID: sessionId,
-                    temperature: getRandomTemperature(),
-                    observationDateTime: getRandomObservationDatetime(),
-                    humidity: getRandomHumidity(),
-                    logID: logID // Include the logID in the requestData
-                };
-
-                // Making the AJAX request using POST for each observation
-                $.post('https://simplecoop.swollenhippo.com/environment.php', requestData, function (result) {
+            // Making the AJAX request using POST for each observation
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                method: 'POST',
+                data: requestData,
+                success: function (result) {
                     console.log(result);
-                });
-            }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         });
 
+            
+            //GET request
+            $('#btnViewWeather').on('click',function(){
+                // Assuming SessionID and days are variables holding the required values
+                var SessionID = sessionStorage.getItem("SessionID");
+                var days = 1; // Example value, adjust as needed
 
-        //DELETE OBSERVATION
-        $(document).ready(function () {
-            const sessionId = sessionStorage.getItem("SessionID");
-
-            // Function to fetch environment records
-            function fetchEnvironmentRecords(days) {
                 $.ajax({
-                    url: 'https://simplecoop.swollenhippo.com/environment.php',
-                    type: 'GET',
-                    data: {
-                        SessionID: sessionId,
-                        days: days // Specify the number of days to fetch records for
-                    }
-                }).then(function (result) {
-                    const environmentRecords = JSON.parse(result);
-                    if (environmentRecords.length > 0) {
-                        // Process the fetched records here
-                        console.log(environmentRecords);
-                    } else {
-                        Swal.fire({
-                            title: "Error!",
-                            text: "No environment records found.",
-                            icon: "error"
-                        });
-                    }
-                }).catch(function (xhr, status, error) {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "An error occurred while fetching environment records.",
-                        icon: "error"
-                    });
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                method: 'GET',
+                data: { SessionID: SessionID, days: days },
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
                 });
-            }
+            })
 
-            // Example: Fetch environment records for the last 7 days
-            fetchEnvironmentRecords(7);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-        $('#btnFetchObservations').on("click", function () {
-                const sessionId = sessionStorage.getItem("SessionID");
-
-                // Function to fetch and display observations
-                function fetchObservations() {
-                    $.ajax({
-                        url: 'https://simplecoop.swollenhippo.com/environment.php',
-                        type: 'GET',
-                        data: {
-                            SessionID: sessionId,
-                            // Add any other parameters needed for fetching observations
-                        }
-                    }).then(function (result) {
-                        const observations = JSON.parse(result);
-                        if (observations.length > 0) {
-                            const observationSelect = $('#observationSelect');
-                            observationSelect.empty();
-                            observations.forEach(function (observation) {
-                                observationSelect.append($('<option>', {
-                                    value: observation.logID,
-                                    text: observation.logID + ' - ' + observation.observationDateTime
-                                }));
-                            });
-                            $('#observationsContainer').show(); // Show the container after fetching observations
-                        } else {
-                            Swal.fire({
-                                title: "Error!",
-                                text: "No observations found.",
-                                icon: "error"
-                            });
-                        }
-                    }).catch(function (xhr, status, error) {
-                        Swal.fire({
-                            title: "Error!",
-                            text: "An error occurred while fetching observations.",
-                            icon: "error"
-                        });
-                    });
-                }
-
-                // Call fetchObservations function when the button is clicked
-                fetchObservations();
-            });
-
-            // Handle delete observation button click
-            $('#btnDeleteObservation').on("click", function () {
-                const logIdToDelete = $('#observationSelect').val();
-                if (!logIdToDelete) {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "No LogID specified for deletion.",
-                        icon: "error"
-                    });
-                    return;
-                }
-                // Call your delete observation function here
-            });
-        });
         $('#btnSettings').on('click',function(){
             $('#divDashboard').slideToggle(function(){
                 $('#divSettings').slideToggle();
