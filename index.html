@@ -160,16 +160,17 @@
                                             </div>
                                         </div>
                                         <br>
+                                        <div class="row justify-content-center">
+                                            <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1">Submit New Log</button>
+                                        </div>
                                         <label for="selWeather">Select Log to Delete</label>
                                         <select class="form-control" id="selWeather" aria-label="Log Select">
                                             <!-- Options will be populated dynamically using JavaScript -->
+                                            <option></option>
                                         </select>
-                                        <button id="btnDeleteWeather">Delete Log</button>
-
                                         <div class="row justify-content-center">
-                                                <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
-                                                <button id="btnViewWeather" aria-label="View Weather Data" type="button" class="btn btn-danger btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
-                                            </div>
+                                            <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded-1 mt-1">Delete</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -215,6 +216,85 @@
                     }
                 })
             }
+            // set up and display environment chart
+            var SessionID = sessionStorage.getItem("SessionID");
+            var days = 5;
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                method: 'GET',
+                data: { SessionID: SessionID, days: days },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    // Assuming data is an array of objects with Temperature and Humidity properties
+                    var temperatures = data.map(obj => parseFloat(obj.Temperature));
+                    var humidities = data.map(obj => parseFloat(obj.Humidity));
+                    
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var environmentChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: Array.from({ length: data.length }, (_, i) => i + 1),
+                            datasets: [
+                                {
+                                    label: 'Temperature',
+                                    data: temperatures,
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                },
+                                {
+                                    label: 'Humidity',
+                                    data: humidities,
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                },
+                            ],
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                },
+                            },
+                        },
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+
+            // Populate delete weather dropbox
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                method: 'GET',
+                data: { SessionID: SessionID, days: days },
+                success: function(data) {
+                    // Assuming data is an array of objects
+                    data = JSON.parse(data);
+
+                    // Select the dropdown element by its ID
+                    var dropdown = $('#selWeather');
+
+                    // Clear existing options
+                    dropdown.empty();
+
+                    // Iterate through each object in the data array
+                    data.forEach(obj => {
+                        // Create a new option element
+                        var option = $('<option></option>');
+
+                        // Set the text and value of the option based on obj properties
+                        option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
+                        option.val(obj.LogID); // Set the value to LogID or any other unique identifier
+
+                        // Append the option to the dropdown
+                        dropdown.append(option);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         })
 
         $('#btnLogout').on('click', function(){
@@ -487,7 +567,7 @@
         });
 
             
-            //GET request
+        //GET request
         $('#btnViewWeather').on('click',function(){
             // Assuming SessionID and days are variables holding the required values
             var SessionID = sessionStorage.getItem("SessionID");
@@ -521,55 +601,6 @@
                 $('#divDashboard').slideToggle();
             })
         })
-
-        // Environment chart
-        var SessionID = sessionStorage.getItem("SessionID");
-        var days = 5;
-        $.ajax({
-            url: 'https://simplecoop.swollenhippo.com/environment.php',
-            method: 'GET',
-            data: { SessionID: SessionID, days: days },
-            success: function(data) {
-                data = JSON.parse(data);
-                // Assuming data is an array of objects with Temperature and Humidity properties
-                var temperatures = data.map(obj => parseFloat(obj.Temperature));
-                var humidities = data.map(obj => parseFloat(obj.Humidity));
-                
-                var ctx = document.getElementById('myChart').getContext('2d');
-                var environmentChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: Array.from({ length: data.length }, (_, i) => i + 1),
-                        datasets: [
-                            {
-                                label: 'Temperature',
-                                data: temperatures,
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            },
-                            {
-                                label: 'Humidity',
-                                data: humidities,
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            },
-                        ],
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                            },
-                        },
-                    },
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-
-
     </script>
 </body>
 
