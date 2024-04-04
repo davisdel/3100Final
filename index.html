@@ -157,6 +157,12 @@
                                             </div>
                                         </div>
                                         <br>
+                                        <label for="selWeather">Select Log to Delete</label>
+                                        <select class="form-control" id="selWeather" aria-label="Log Select">
+                                            <!-- Options will be populated dynamically using JavaScript -->
+                                        </select>
+                                        <button id="btnDeleteWeather">Delete Log</button>
+
                                         <div class="row justify-content-center">
                                                 <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
                                                 <button id="btnViewWeather" aria-label="View Weather Data" type="button" class="btn btn-danger btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
@@ -205,6 +211,7 @@
                     }
                 })
             }
+            populateLogs();
         })
 
         $('#btnLogout').on('click', function(){
@@ -477,23 +484,54 @@
         });
 
         //GET request
-        $('#btnViewWeather').on('click',function(){
-            // Assuming SessionID and days are variables holding the required values
+        // Function to populate the select dropdown with logs
+        // Function to populate the select dropdown with logs
+        function populateLogs() {
             var SessionID = sessionStorage.getItem("SessionID");
-            var days = 1; // Example value, adjust as needed
 
             $.ajax({
-            url: 'https://simplecoop.swollenhippo.com/environment.php',
-            method: 'GET',
-            data: { SessionID: SessionID, days: days },
-            success: function(logs) {
-                console.log(logs);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                method: 'GET',
+                data: { SessionID: SessionID },
+                success: function(logs) {
+                    try {
+                        logs = JSON.parse(logs);
+                        $('#selWeather').empty(); // Clear existing options
+                        logs.forEach(function(log) {
+                            $('#selWeather').append($('<option></option>').attr('value', log.logID).text(log.observationDateTime).data('logid', log.logID));
+                        });
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error);
+                        console.log('Response:', logs);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
             });
-        })
+        }
+        
+        // Event handler for clicking the "View Logs" button
+        $('#btnViewWeather').on('click', function() {
+            populateLogs();
+        });
+
+        // Event handler for clicking the "Delete Log" button
+        $('#btnDeleteWeather').on('click', function() {
+            var selectedLogID = $('#selWeather').val();
+            if (selectedLogID) {
+                // Assuming a function deleteLog is defined elsewhere to handle log deletion
+                deleteLog(selectedLogID);
+            } else {
+                console.log('No log selected to delete.');
+            }
+        });
+        // Function to delete a log
+        function deleteLog(logID) {
+            console.log('Deleting log with ID:', logID);
+            // Replace this with actual deletion logic
+        }
+
 
         $('#btnSettings').on('click',function(){
             $('#divDashboard').slideToggle(function(){
