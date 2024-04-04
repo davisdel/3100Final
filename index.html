@@ -139,7 +139,10 @@
                                     <h3>Environment</h3>
                                 </div>
                                 <div class="card-body">
-                                    <!-- chart -->
+                                    <!--Weather chart-->
+                                    <div>
+                                        <canvas id="myChart"></canvas>
+                                    </div>
                                     <hr>
                                     <form>
                                         <div class="row align-items-center">
@@ -194,7 +197,7 @@
 <!-- Import SweetAlerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Import chart.js -->
-    <script src="https://cdnjs.com/libraries/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 
 <!-- Custom Scripts -->
     <script>
@@ -514,6 +517,28 @@
                 $('#divDashboard').slideToggle();
             })
         })
+
+        // Environment chart
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels: ['Temperature', 'Humidity'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+            },
+            options: {
+            scales: {
+                y: {
+                beginAtZero: true
+                }
+            }
+            }
+        });
 
     </script>
 </body>
