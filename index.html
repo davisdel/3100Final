@@ -213,85 +213,85 @@
                         $('#divLogin').slideToggle(function(){
                             $('#divDashboard').slideToggle();
                         })
+
+                         // set up and display environment chart
+                    var SessionID = sessionStorage.getItem("SessionID");
+                    var days = 5; // Can be changed if needed
+                    $.ajax({
+                        url: 'https://simplecoop.swollenhippo.com/environment.php',
+                        method: 'GET',
+                        data: { SessionID: SessionID, days: days },
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            var temperatures = data.map(obj => parseFloat(obj.Temperature));
+                            var humidities = data.map(obj => parseFloat(obj.Humidity));
+                            
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var environmentChart = new Chart(ctx, {
+                                type: 'scatter',
+                                data: {
+                                    labels: Array.from({ length: data.length }, (_, i) => i + 1),
+                                    datasets: [
+                                        {
+                                            label: 'Temperature',
+                                            data: temperatures,
+                                            borderColor: 'rgba(255, 99, 132, 1)',
+                                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                        },
+                                        {
+                                            label: 'Humidity',
+                                            data: humidities,
+                                            borderColor: 'rgba(54, 162, 235, 1)',
+                                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                        },
+                                    ],
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                        },
+                                    },
+                                },
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
+
+                    // Populate delete weather dropbox
+                    $.ajax({
+                        url: 'https://simplecoop.swollenhippo.com/environment.php',
+                        method: 'GET',
+                        data: { SessionID: SessionID, days: days },
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            var dropdown = $('#selWeather');
+
+                            // Clear existing options
+                            dropdown.empty();
+
+                            // Iterate through each object in the data array
+                            data.forEach(obj => {
+                                // Create a new option element
+                                var option = $('<option></option>');
+
+                                // Set the text and value of the option based on obj properties
+                                option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
+                                option.val(obj.LogID); // Set the value to logID
+
+                                // Append the option to the dropdown
+                                dropdown.append(option);
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
                     }
                 })
             }
-
-            // set up and display environment chart
-            var SessionID = sessionStorage.getItem("SessionID");
-            var days = 5; // Can be changed if needed
-            $.ajax({
-                url: 'https://simplecoop.swollenhippo.com/environment.php',
-                method: 'GET',
-                data: { SessionID: SessionID, days: days },
-                success: function(data) {
-                    data = JSON.parse(data);
-                    var temperatures = data.map(obj => parseFloat(obj.Temperature));
-                    var humidities = data.map(obj => parseFloat(obj.Humidity));
-                    
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var environmentChart = new Chart(ctx, {
-                        type: 'scatter',
-                        data: {
-                            labels: Array.from({ length: data.length }, (_, i) => i + 1),
-                            datasets: [
-                                {
-                                    label: 'Temperature',
-                                    data: temperatures,
-                                    borderColor: 'rgba(255, 99, 132, 1)',
-                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                },
-                                {
-                                    label: 'Humidity',
-                                    data: humidities,
-                                    borderColor: 'rgba(54, 162, 235, 1)',
-                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                },
-                            ],
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                },
-                            },
-                        },
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-
-            // Populate delete weather dropbox
-            $.ajax({
-                url: 'https://simplecoop.swollenhippo.com/environment.php',
-                method: 'GET',
-                data: { SessionID: SessionID, days: days },
-                success: function(data) {
-                    data = JSON.parse(data);
-                    var dropdown = $('#selWeather');
-
-                    // Clear existing options
-                    dropdown.empty();
-
-                    // Iterate through each object in the data array
-                    data.forEach(obj => {
-                        // Create a new option element
-                        var option = $('<option></option>');
-
-                        // Set the text and value of the option based on obj properties
-                        option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
-                        option.val(obj.LogID); // Set the value to logID
-
-                        // Append the option to the dropdown
-                        dropdown.append(option);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
         })
 
         $('#btnLogout').on('click', function(){
