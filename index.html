@@ -139,27 +139,38 @@
                                     <h3>Environment</h3>
                                 </div>
                                 <div class="card-body">
-                                    <!-- chart -->
+                                    <!--Weather chart-->
+                                    <div>
+                                        <canvas id="myChart"></canvas>
+                                    </div>
                                     <hr>
                                     <form>
                                         <div class="row align-items-center">
                                             <div class="row">
                                                 <label for="dateObservation">Observation Date</label>
-                                                <input id="dateObservation" type="date" placeholder="Observation Date">
+                                                <input id="dateObservation" type="date">
                                             </div>
                                             <div class="row">
                                                 <label for="decimalHumidity">Humidity</label>
-                                                <input id="decimalHumidity" type="number" step="any" placeholder="Humidity" min="0" max="100">
+                                                <input id="decimalHumidity" type="number" step="any" placeholder="%" min="0" max="100">
                                             </div>
                                             <div class="row">
                                                 <label for="decimalTemp">Temperature</label>
-                                                <input id="decimalTemp" type="number" step="any" placeholder="Temperature">
+                                                <input id="decimalTemp" type="number" step="any" placeholder="*F">
                                             </div>
                                         </div>
                                         <br>
                                         <div class="row justify-content-center">
-                                                <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
-                                            </div>
+                                            <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1">Submit New Log</button>
+                                        </div>
+                                        <label for="selWeather">Select Log to Delete</label>
+                                        <select class="form-control" id="selWeather" aria-label="Log Select">
+                                            <!-- Options will be populated dynamically using JavaScript -->
+                                            <option></option>
+                                        </select>
+                                        <div class="row justify-content-center">
+                                            <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded-1 mt-1">Delete</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -187,7 +198,7 @@
 <!-- Import SweetAlerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Import chart.js -->
-    <script src="https://cdnjs.com/libraries/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 
 <!-- Custom Scripts -->
     <script>
@@ -202,6 +213,7 @@
                         $('#divLogin').slideToggle(function(){
                             $('#divDashboard').slideToggle();
                         })
+                        populateEnviromentChart();
                     }
                 })
             }
@@ -277,6 +289,7 @@
                         $("#divLogin").slideToggle(function(){
                             $("#divDashboard").slideToggle()
                         })
+                        populateEnviromentChart();
                     }
                 })
             }
@@ -443,6 +456,160 @@
             }
         })
 
+        // environment.php start
+        $('#btnSubmitWeather').on("click", function () {
+            const sessionId = sessionStorage.getItem("SessionID");
+            const observationDateTime = $('#dateObservation').val();
+            const temperature = $('#decimalTemp').val();
+            const humidity = $('#decimalHumidity').val();
+
+            // Generate a random logID
+            const logID = Math.floor(Math.random() * 1000);
+
+            // Set the SessionID, observationDateTime, temperature, humidity, and logID
+            var requestData = {
+                SessionID: sessionId,
+                observationDateTime: observationDateTime,
+                temperature: temperature,
+                humidity: humidity,
+                logID: logID
+            };
+
+            // Making the AJAX request using POST for each observation
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                method: 'POST',
+                data: requestData,
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        $('#btnDeleteWeather').on('click', function() {
+            // Get the selected value from the dropdown
+            var selectedLogID = $('#selWeather').val();
+
+            // Check if a log is selected
+            if (selectedLogID) {
+                // Perform AJAX request to delete the selected log
+                $.ajax({
+                    url: 'https://simplecoop.swollenhippo.com/environment.php',
+                    method: 'DELETE', 
+                    data: { LogID: selectedLogID },
+                    success: function(response) {
+                        // Assuming the deletion was successful
+                        console.log('Log deleted successfully');
+                        // Remove the selected entry from the list
+                        $('#selWeather option[value="' + selectedLogID + '"]').remove();
+                        // Show SweetAlert for success
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Log deleted successfully!',
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error deleting log:', error);
+                        // Show SweetAlert for error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error deleting log: ' + error,
+                        });
+                    }
+                });
+            } else {
+                // Display an error message if no log is selected
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please select a log to delete.',
+                });
+            }
+        });
+
+        function populateEnviromentChart(){
+            // set up and display environment chart
+            let SessionID = sessionStorage.getItem("SessionID");
+            let days = 5; // Can be changed if needed
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/environment.php',
+                method: 'GET',
+                data: { SessionID: SessionID, days: days },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    var temperatures = data.map(obj => parseFloat(obj.Temperature));
+                    var humidities = data.map(obj => parseFloat(obj.Humidity));
+                    
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var environmentChart = new Chart(ctx, {
+                        type: 'scatter',
+                        data: {
+                            labels: Array.from({ length: data.length }, (_, i) => i + 1),
+                            datasets: [
+                                {
+                                    label: 'Temperature',
+                                    data: temperatures,
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                },
+                                {
+                                    label: 'Humidity',
+                                    data: humidities,
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                },
+                            ],
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                },
+                            },
+                        },
+                    });
+
+                    // Populate delete weather dropbox
+                    $.ajax({
+                        url: 'https://simplecoop.swollenhippo.com/environment.php',
+                        method: 'GET',
+                        data: { SessionID: SessionID, days: days },
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            var dropdown = $('#selWeather');
+
+                            // Clear existing options
+                            dropdown.empty();
+
+                            // Iterate through each object in the data array
+                            data.forEach(obj => {
+                                // Create a new option element
+                                var option = $('<option></option>');
+
+                                // Set the text and value of the option based on obj properties
+                                option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
+                                option.val(obj.LogID); // Set the value to logID
+
+                                // Append the option to the dropdown
+                                dropdown.append(option);
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
         $('#btnSettings').on('click',function(){
             $('#divDashboard').slideToggle(function(){
                 $('#divSettings').slideToggle();
@@ -454,7 +621,6 @@
                 $('#divDashboard').slideToggle();
             })
         })
-
     </script>
 </body>
 
