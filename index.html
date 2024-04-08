@@ -504,6 +504,7 @@
                         $('#dateObservation').val('');
                         $('#decimalTemp').val('');
                         $('#decimalHumidity').val('');
+                        populateEnviromentChart();
                     });
                 },
                 error: function (xhr, status, error) {
@@ -540,7 +541,10 @@
                             icon: 'success',
                             title: 'Success',
                             text: 'Log deleted successfully!',
-                        });
+                        }).then(() => {
+                            populateEnvironmentDropbox();
+                            populateEnviromentChart();
+                    });
                     },
                     error: function(xhr, status, error) {
                         console.error('Error deleting log:', error);
