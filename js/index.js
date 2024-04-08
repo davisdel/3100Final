@@ -19,7 +19,7 @@ $(document).ready(function(){
 // Function to fetch and log the settings
 function fetchAndLogSettings() {
     var sessionID = sessionStorage.getItem("SessionID");
-
+    let blnError = false;
     $('#divSettings input, #divSettings select').each(function() {
 
         if ($(this).is(':checkbox') || $(this).is(':radio')) {
@@ -41,6 +41,7 @@ function fetchAndLogSettings() {
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching settings:', error);
+                    blnError = true;
                 }
             });
         }
@@ -94,7 +95,7 @@ $('#divSettings .btn-primary').first().on('click', function () {
                         setting: settingName
                     },
                     success: function(result) {
-                        
+                        result = JSON.parse(result);
                         if (result) {
                             $.ajax({
                                 type: 'PUT',
