@@ -11,7 +11,7 @@ $(document).ready(function(){
                 populateEnviromentChart();
                 populateEggChart();
                 
-                $(".draggable").sortable({containment: "parent"})
+                $(".draggable").sortable()
             }
         })
     }
