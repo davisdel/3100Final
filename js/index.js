@@ -317,6 +317,7 @@ $('#btnSubmitWeather').on("click", function () {
 $('#btnDeleteWeather').on('click', function() {
     // Get the selected value from the dropdown
     var selectedLogID = $('#selWeather').val();
+    var sessionId = sessionStorage.getItem("SessionID");
 
     // Check if a log is selected
     if (selectedLogID) {
@@ -324,10 +325,11 @@ $('#btnDeleteWeather').on('click', function() {
         $.ajax({
             url: 'https://simplecoop.swollenhippo.com/environment.php',
             method: 'DELETE', 
-            data: { LogID: selectedLogID },
+            data: { logID: selectedLogID, SessionID: sessionId },
             success: function(response) {
                 // Assuming the deletion was successful
                 console.log('Log deleted successfully');
+                console.log(response);
                 // Remove the selected entry from the list
                 $('#selWeather option[value="' + selectedLogID + '"]').remove();
                 // Show SweetAlert for success
@@ -336,6 +338,9 @@ $('#btnDeleteWeather').on('click', function() {
                     title: 'Success',
                     text: 'Log deleted successfully!',
                 });
+                populateEnvironmentDropbox();
+                populateEnviromentChart();
+            
             },
             error: function(xhr, status, error) {
                 console.error('Error deleting log:', error);
