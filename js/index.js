@@ -16,84 +16,143 @@ $(document).ready(function(){
     }
 })
 
-$(function () {
-    // Function to fetch and log the settings
-    function fetchAndLogSettings() {
-        var sessionID = sessionStorage.getItem("SessionID");
-        var settingName = 'TestSetting'; // Adjust as needed
+// Function to fetch and log the settings
+function fetchAndLogSettings() {
+    var sessionID = sessionStorage.getItem("SessionID");
 
-        $.ajax({
-            type: 'GET',
-            url: 'https://simplecoop.swollenhippo.com/settings.php',
-            data: {
-                SessionID: sessionID,
-                setting: settingName
-            },
-            success: function (response) {
-                // Assuming the response is a JSON array of setting objects
-                console.log("hell yeah dude")
-                console.log('Settings Data:', response);
-                console.log("hell yeah dude")
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching settings:', error);
-            }
-        });
+    $('#divSettings input, #divSettings select').each(function() {
+
+        if ($(this).is(':checkbox') || $(this).is(':radio')) {
+            // Print out if it's checked and its value
+            console.log('ID: ' + $(this).attr('id') + ', Checked: ' + $(this).is(':checked') + ', Value: ' + $(this).val());
+        } else {
+            var settingName = $(this).attr('id');
+            $.ajax({
+                type: 'GET',
+                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                data: {
+                    SessionID: sessionID,
+                    setting: settingName
+                },
+                success: function (response) {
+                    // Assuming the response is a JSON array of setting objects
+                    console.log('Settings Data:', response);
+                    $(this).value = response;
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching settings:', error);
+                }
+            });
+        }
+    })
+    if (blnError) {
+        return true;
     }
+}
 
-    // Function to save or update a setting
-    $('#divSettings .btn-primary').first().on('click', function () {
-        var settingName = 'TestSetting'; // This should match your setting's identifier
-        var value = $('#txtSetting1').val();
-        var sessionID = sessionStorage.getItem("SessionID");
+// Function to save or update a setting
+$('#divSettings .btn-primary').first().on('click', function () {
+    var sessionID = sessionStorage.getItem("SessionID");
+    let blnError = false;
+    $('#divSettings input, #divSettings select').each(function() {
 
-        console.log('Setting:', settingName, 'Value:', value, 'SessionID:', sessionID);
+        if ($(this).is(':checkbox') || $(this).is(':radio')) {
+            // Print out if it's checked and its value
+            console.log('ID: ' + $(this).attr('id') + ', Checked: ' + $(this).is(':checked') + ', Value: ' + $(this).val());
+        } else {
+            var settingName = $(this).attr('id');
+            var value = $(this).val();
 
-        // Use POST or PUT based on the condition
-        var method = 'POST'; // Change to 'PUT' as necessary
-
-        $.ajax({
-            type: 'POST',
-            url: 'https://simplecoop.swollenhippo.com/settings.php',
-            data: {
-                SessionID: sessionID,
-                setting: settingName,
-                value: value
-            },
-            success: function (response) {
-                // Parse the response if it's in string format
-                if (typeof response === 'string') {
-                    response = JSON.parse(response);
-                }
-                console.log('Response:', response);
-
-                // Check the outcome and log the updated settings
-                if (response.Outcome.includes('Created')) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Setting saved successfully!'
-                    });
-                    // Fetch and log the updated settings
-                    fetchAndLogSettings();
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to save the setting.'
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(Outcome);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error saving setting: ' + error
-                });
+            if (value.length < 1) {
+                blnError = true;
             }
-        });
-    });
+        }
+    })
+    if (blnError) {
+        Swal.fire({
+            title: "Error!",
+            text: "Fields cannot be blank!",
+            icon: "error"
+        })
+    }
+    $('#divSettings input, #divSettings select').each(function() {
+        let blnError = false;
+        if ($(this).is(':checkbox') || $(this).is(':radio')) {
+            // Print out if it's checked and its value
+            console.log('ID: ' + $(this).attr('id') + ', Checked: ' + $(this).is(':checked') + ', Value: ' + $(this).val());
+        } else {
+            // For other input/select types, just print out the value
+            var settingName = $(this).attr('id');
+            var value = $(this).val();
+
+            if (value.length > 1) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://simplecoop.swollenhippo.com/settings.php',
+                    data: {
+                        SessionID: sessionID,
+                        setting: settingName
+                    },
+                    success: function(result) {
+                        
+                        if (result) {
+                            $.ajax({
+                                type: 'PUT',
+                                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                                data: {
+                                    SessionID: sessionID,
+                                    setting: settingName,
+                                    value: value
+                                },
+                                success: function(result) {
+                                    console.log(result);
+                                },
+                                error: function() {
+                                    blnError = true;
+                                }
+                            })
+                        }
+                        else {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                                data: {
+                                    SessionID: sessionID,
+                                    setting: settingName,
+                                    value: value
+                                },
+                                success: function(result) {
+                                    console.log(result);
+                                },
+                                error: function() {
+                                    blnError = true;
+                                }
+                            })
+                        }
+                    },
+                    error: function() {
+                        blnError = true;
+                    }
+                })
+            } else {
+                return false;
+            }
+        }
+
+        if (!blnError) {
+            Swal.fire({
+                title: "Success!",
+                text: "Settings have been successfully updated!",
+                icon: "success"
+            })
+        } else {
+            Swal.fire({
+                title: "Oops!",
+                text: "There was an error updating the settings!",
+                icon: "error"
+            })
+        }
+    })
 });
 
 $('#btnLogout').on('click', function(){
@@ -534,6 +593,7 @@ function populateEnvironmentDropbox(){
 $('#btnSettings').on('click',function(){
     $('#divDashboard').slideToggle(function(){
         $('#divSettings').slideToggle();
+        fetchAndLogSettings();
     })
 })
 

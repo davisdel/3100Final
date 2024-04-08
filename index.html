@@ -186,10 +186,17 @@
         <h2>Settings</h2>
     </div>
     <div class="card-body">
-        <label for="txtSetting1" class="form-label">Test Setting</label>
-        <input id="txtSetting1" placeholder="Test" type="text" class="form-control" aria-required="true">
-        <button type="button" class="btn btn-primary mt-4" aria-label="Save">Save</button>
-        <button type="button" class="btn btn-primary" id="btnReturnDashboard" aria-label="Return">Return</button>
+        <label for="txtUsername" class="form-label">Display Name</label>
+        <input id="txtUsername" placeholder="Username" type="text" class="form-control" aria-required="true">
+        <label for="txtTheme" class="form-label">Theme</label>
+        <select id="txtTheme" class="form-select" aria-required="true">
+            <option val="light" selected>Light</option>
+            <option val="dark">Dark</option>
+        </select>
+        <div class="row">
+            <button type="button" class="btn btn-primary mt-4 mb-2 rounded" aria-label="Save">Save</button>
+            <button type="button" class="btn btn-primary rounded" id="btnReturnDashboard" aria-label="Return">Return</button>
+        </div>
     </div>
 </div>
     </div>
@@ -202,9 +209,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Import chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-
 <!-- Custom Scripts -->
     <script src="js/index.js"></script>
 </body>
-
 </html>
