@@ -463,8 +463,19 @@
             const temperature = $('#decimalTemp').val();
             const humidity = $('#decimalHumidity').val();
 
+            // Check if any field is empty
+            if (!sessionId || !observationDateTime || !temperature || !humidity) {
+                // Display error message using SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Please fill in all fields before submitting.'
+                });
+                return; // Stop further execution if fields are empty
+            }
+
             // Generate a random logID
-            //const logID = Math.floor(Math.random() * 1000);
+            const logID = Math.floor(Math.random() * 1000);
 
             // Set the SessionID, observationDateTime, temperature, humidity, and logID
             var requestData = {
@@ -472,7 +483,7 @@
                 observationDateTime: observationDateTime,
                 temperature: temperature,
                 humidity: humidity,
-                //logID: logID
+                logID: logID
             };
 
             // Making the AJAX request using POST for each observation
