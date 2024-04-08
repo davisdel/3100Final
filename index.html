@@ -19,7 +19,7 @@
 <body class="bg-dark">
     <div class="d-flex col-12 justify-content-center align-items-center min-vh-100">
 <!-- divLogin -->
-        <div class="card col-12 col-md-5 col-lg-4" id="divLogin">
+        <div class="card col-12 col-md-5 col-lg-4 rounded" id="divLogin">
             <div class="card-header">
                 <h3>FowlDomain Login</h3>
             </div>
@@ -33,7 +33,7 @@
                         <label for="txtLoginPassword" class="form-label">Password</label>
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                     </div>
-                    <button id="btnLogin" class="btn btn-success col-12 mt-4" aria-label = "Submit Login" type="button">Submit</button>
+                    <button id="btnLogin" class="btn btn-success col-12 mt-4 rounded" aria-label = "Submit Login" type="button">Submit</button>
                     <div class ="col-12 d-flex justify-content-center">
                         <a class="col-12 text-center btnToggle" data-card="Login">Need an account? Click Here</a>
                     </div>
@@ -41,7 +41,7 @@
             </div>
         </div>
 <!-- divRegister -->
-        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4" id="divRegister" style="display:none;">
+        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4 rounded" id="divRegister" style="display:none;">
             <div class="card-header">
                 <h3>Register for FowlDomain</h3>
             </div>
@@ -49,51 +49,51 @@
                 <form>
                     <div class="form-group mt-4">
                         <label for="txtEmail" class="form-label">Email</label>
-                        <input id="txtEmail" class="form-control" type="email" aria-required="true" placeholder="Johndoe@gmail.com">
+                        <input id="txtEmail" class="form-control rounded" type="email" aria-required="true" placeholder="Johndoe@gmail.com">
                     </div>
                     <div class="form-group">
                         <label for="txtPassword" class="form-label">Password</label>
-                        <input id="txtPassword" class="form-control" type="password" aria-required="true" placeholder="Password">
+                        <input id="txtPassword" class="form-control rounded" type="password" aria-required="true" placeholder="Password">
                     </div>
                     <div class="form-group">
                         <label for="txtFirstName" class="form-label">First Name</label>
-                        <input id="txtFirstName" class="form-control" type="text" aria-required="true" placeholder="John">
+                        <input id="txtFirstName" class="form-control rounded" type="text" aria-required="true" placeholder="John">
                     </div>
                     <div class="form-group">
                         <label for="txtLastName" class="form-label">Last Name</label>
-                        <input id="txtLastName" class="form-control" type="text" aria-required="true" placeholder="Doe">
+                        <input id="txtLastName" class="form-control rounded" type="text" aria-required="true" placeholder="Doe">
                     </div>
                     <div class="form-group">
                         <label for="txtStreetAddress1" class="form-label">Street Address 1</label>
-                        <input id="txtStreetAddress1" placeholder="Street Address 1" type="text" class="form-control" aria-required="true">
+                        <input id="txtStreetAddress1" placeholder="Street Address 1" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtStreetAddress2" class="form-label">Street Address 2</label>
-                        <input id="txtStreetAddress2" placeholder="Street Address 2" type="text" class="form-control" aria-required="true">
+                        <input id="txtStreetAddress2" placeholder="Street Address 2" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtCity" class="form-label">City</label>
-                        <input id="txtCity" placeholder="City" type="text" class="form-control" aria-required="true">
+                        <input id="txtCity" placeholder="City" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtState" class="form-label">State</label>
-                        <input id="txtState" placeholder="State" type="text" class="form-control" aria-required="true">
+                        <input id="txtState" placeholder="State" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtZip" class="form-label">Zip</label>
-                        <input id="txtZip" placeholder="Zip" type="text" class="form-control" aria-required="true">
+                        <input id="txtZip" placeholder="Zip" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="telPhoneNum" class="form-label">Phone Number</label>
-                        <input id="telPhoneNum" placeholder="E.g, 111-222-3333" type="tel" class="form-control" aria-required="true">
+                        <input id="telPhoneNum" placeholder="E.g, 111-222-3333" type="tel" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtCoopID" class="form-label">CoopID</label>
-                        <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control" aria-required="true">
+                        <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     
-                    <button class="col-12 btn btn-success mt-4" id="btnRegister" aria-label="Register" type="button">Register</button>
-                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1">Reset Form</button>
+                    <button class="col-12 btn btn-success mt-4 rounded" id="btnRegister" aria-label="Register" type="button">Register</button>
+                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1 rounded">Reset Form</button>
                     <div class="col-12 d-flex justify-content-center">
                         <a class="col-12 text-center btnToggle" data-card="Register">Return To Login</a>
                     </div>
@@ -101,77 +101,105 @@
             </div>
         </div>
 <!-- divDashboard -->
-        <div class="card col-12 col-md-10 col-lg-8 mt-4 mb-4" id="divDashboard" style="display:none;">
+        <div class="card col-12 col-md-10 col-lg-8 rounded" id="divDashboard" style="display:none;">
             <div class="card-header">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-auto me-auto align"><h2>Farm Dashboard</h2></div>
-                        <div class="col-auto"><button type="button" class="btn" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></button></div>
-                    </div>
+                <div class="row align-items-center">
+                    <div class="col-auto"><h2>Farm Dashboard</h2></div>
+                    <div class="col-auto ms-auto"><button type="button" class="btn" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></button></div>
                 </div>
             </div>
             <div class="card-body">
                 <div class="container px-4">
-                    <div class="row g-5">
+                    <div class="row g-5" id="sortable">
                         <!-- Egg counter widget -->
                         <div class="col-lg-6 col-md-12">
-                            <div class="card p-3 h-100">
+                            <div class="card h-100 rounded">
                                 <div class="card-header">
                                     <h3>Egg Counter</h3>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-4">
                                     <!-- chart -->
+                                    <canvas id="eggCountChart"></canvas>
                                     <hr>
-                                    <div class="row align-items-center mb-2">
-                                        <label for="numEggCount">Eggs Harvested Today</label>
-                                        <div class="col">
-                                            <input id="numEggCount" type="number" placeholder="Egg count" min="0">
-                                            <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header">
+                                            <label>Add Egg Observation</label>
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="dateObservationEggs">Observation Date</label>
+                                                    <input id="dateObservationEggs" type="date" placeholder="Observation Date" class="form-control">
+                                                </div>
+                                                <div class="form-group mt-3">
+                                                    <label class="form-label" for="numEggCount">Eggs Harvested</label>
+                                                    <input id="numEggCount" type="number" placeholder="Egg count" min="0" class="form-control">
+                                                </div>
+                                                <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header">
+                                            <label for="selEggs">Select Log to Delete</label>
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <select class="form-select mb-2" id="selEggs" aria-label="Log Select">
+                                                <!-- Options will be populated dynamically using JavaScript -->
+                                                <option></option>
+                                            </select>
+                                            <button id="btnDeleteEgg" aria-label="Delete Egg Data" type="button" class="btn btn-danger btn-sm rounded col-3">Delete</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Weather widget -->
+                        <!-- Weather Widget -->
                         <div class="col-lg-6 col-md-12">
-                            <div class="card p-3 h-100">
+                            <div class="card h-100 rounded">
                                 <div class="card-header">
                                     <h3>Environment</h3>
                                 </div>
-                                <div class="card-body">
-                                    <!--Weather chart-->
-                                    <div>
-                                        <canvas id="myChart"></canvas>
+                                <div class="card-body p-4">
+                                    <!-- chart -->
+                                    <canvas id="myChart"></canvas>
+                                    <hr>
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header">
+                                            <label>Add Weather Observation</label>
+                                        </div>
+                                        <div class="card-body p-4">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="dateObservation" class="form-label">Observation Date</label>
+                                                    <input id="dateObservation" class="form-control" type="date">
+                                                </div>
+                                                <div class="form-group mt-3">
+                                                    <label for="decimalHumidity" class="form-label">Humidity</label>
+                                                    <input id="decimalHumidity" class="form-control" type="number" step="any" placeholder="Humidity in Percent" min="0" max="100">
+                                                </div>
+                                                <div class="form-group mt-3">
+                                                    <label for="decimalTemp" class="form-label">Temperature</label>
+                                                    <input id="decimalTemp" class="form-control" type="number" step="any" placeholder="Degrees in Farenheit">
+                                                </div>
+                                                <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1 col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                            </form>
+                                        </div>
                                     </div>
                                     <hr>
-                                    <form>
-                                        <div class="row align-items-center">
-                                            <div class="row">
-                                                <label for="dateObservation">Observation Date</label>
-                                                <input id="dateObservation" type="date">
-                                            </div>
-                                            <div class="row">
-                                                <label for="decimalHumidity">Humidity</label>
-                                                <input id="decimalHumidity" type="number" step="any" placeholder="%" min="0" max="100">
-                                            </div>
-                                            <div class="row">
-                                                <label for="decimalTemp">Temperature</label>
-                                                <input id="decimalTemp" type="number" step="any" placeholder="*F">
-                                            </div>
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header">
+                                            <label for="selWeather">Select Log to Delete</label>
                                         </div>
-                                        <br>
-                                        <div class="row justify-content-center">
-                                            <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1">Submit New Log</button>
+                                        <div class="card-body p-4">
+                                            <select class="form-select mb-2" id="selWeather" aria-label="Log Select">
+                                                <!-- Options will be populated dynamically using JavaScript -->
+                                                <option></option>
+                                            </select>
+                                            <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded col-3">Delete</button>
                                         </div>
-                                        <label for="selWeather">Select Log to Delete</label>
-                                        <select class="form-control" id="selWeather" aria-label="Log Select">
-                                            <!-- Options will be populated dynamically using JavaScript -->
-                                            <option></option>
-                                        </select>
-                                        <div class="row justify-content-center">
-                                            <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded-1 mt-1">Delete</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -195,6 +223,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 <!-- Import JQuery v 3.7.1 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <!-- Import SweetAlerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Import chart.js -->
@@ -214,6 +243,9 @@
                             $('#divDashboard').slideToggle();
                         })
                         populateEnviromentChart();
+                        populateEggChart();
+
+                        $("#sortable").sortable();
                     }
                 })
             }
@@ -290,6 +322,7 @@
                             $("#divDashboard").slideToggle()
                         })
                         populateEnviromentChart();
+                        populateEggChart();
                     }
                 })
             }
@@ -499,7 +532,7 @@
                 $.ajax({
                     url: 'https://simplecoop.swollenhippo.com/environment.php',
                     method: 'DELETE', 
-                    data: { LogID: selectedLogID },
+                    data: { LogID: selectedLogID},
                     success: function(response) {
                         // Assuming the deletion was successful
                         console.log('Log deleted successfully');
@@ -616,6 +649,159 @@
                 }
             });
         }
+
+        function populateEggChart(){
+
+            // Check if the chart already exists and destroy it
+            let existingChart = Chart.getChart("eggCountChart");
+            if (existingChart) {
+                existingChart.destroy();
+            }
+
+            // set up and display environment chart
+            let SessionID = sessionStorage.getItem("SessionID");
+            let days = 5; // Can be changed if needed
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/eggs.php',
+                method: 'GET',
+                data: { SessionID: SessionID, days: days },
+                success: function(data) {
+                    data = JSON.parse(data);
+
+                    var eggs = data.map(obj => parseFloat(obj.Harvested));
+                    
+                    var ctx = document.getElementById('eggCountChart').getContext('2d');
+                    var eggChart = new Chart(ctx, {
+                        type: 'scatter',
+                        data: {
+                            labels: Array.from({ length: data.length }, (_, i) => i + 1),
+                            datasets: [
+                                {
+                                    label: 'Eggs',
+                                    data: eggs,
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                },
+                            ],
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                },
+                            },
+                        },
+                    });
+
+                    // Populate delete weather dropbox
+                    $.ajax({
+                        url: 'https://simplecoop.swollenhippo.com/eggs.php',
+                        method: 'GET',
+                        data: { SessionID: SessionID, days: days },
+                        success: function(data) {
+                            data = JSON.parse(data);
+                            var dropdown = $('#selEggs');
+
+                            // Clear existing options
+                            dropdown.empty();
+
+                            // Iterate through each object in the data array
+                            data.forEach(obj => {
+                                // Create a new option element
+                                var option = $('<option></option>');
+
+                                // Set the text and value of the option based on obj properties
+                                option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
+                                option.val(obj.LogID); // Set the value to logID
+
+                                // Append the option to the dropdown
+                                dropdown.append(option);
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // eggs.php post
+        $('#btnSubmitEggs').on("click", function () {
+            const sessionId = sessionStorage.getItem("SessionID");
+            const observationDateTime = $('#dateObservationEggs').val();
+            const eggNum = $('#numEggCount').val();
+
+            // Set the data
+            var requestData = {
+                SessionID: sessionId,
+                observationDateTime: observationDateTime,
+                eggs: eggNum
+            };
+
+            // Making the AJAX request using POST for each observation
+            $.ajax({
+                url: 'https://simplecoop.swollenhippo.com/eggs.php',
+                method: 'POST',
+                data: requestData,
+                success: function (result) {
+                    populateEggChart();
+                    $('#dateObservationEggs').val('');
+                    $('#numEggCount').val('');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        $('#btnDeleteEgg').on('click', function() {
+            // Get the selected value from the dropdown
+            var selectedLogID = $('#selEggs').val();
+            var sessionId = sessionStorage.getItem("SessionID");
+
+            // Check if a log is selected
+            if (selectedLogID) {
+                // Perform AJAX request to delete the selected log
+                $.ajax({
+                    url: 'https://simplecoop.swollenhippo.com/eggs.php',
+                    method: 'DELETE', 
+                    data: { logID: selectedLogID, SessionID: sessionId },
+                    success: function(response) {
+                        // Assuming the deletion was successful
+                        console.log('Log deleted successfully');
+                        // Remove the selected entry from the list
+                        $('#selEggs option[value="' + selectedLogID + '"]').remove();
+                        // Show SweetAlert for success
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Log deleted successfully!',
+                        });
+                        populateEggChart();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error deleting log:', error);
+                        // Show SweetAlert for error
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error deleting log: ' + error,
+                        });
+                    }
+                });
+            } else {
+                // Display an error message if no log is selected
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please select a log to delete.',
+                });
+            }
+        });
 
         $('#btnSettings').on('click',function(){
             $('#divDashboard').slideToggle(function(){
