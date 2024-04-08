@@ -181,15 +181,17 @@
             </div>
         </div>
 <!-- Settings card -->
-        <div class="card col-12 col-md-5 col-lg-4" id="divSettings" style="display:none;">
-            <div class="card-header">
-                <h2>Settings</h2>
-            </div>
-            <div class="card-body">
-                <p>This is the settings page!</p>
-                <button type="button" class="btn btn-primary" id="btnReturnDashboard" aria-label="Return">Return</button>
-            </div>
-        </div>
+<div class="card col-12 col-md-5 col-lg-4" id="divSettings" style="display:none;">
+    <div class="card-header">
+        <h2>Settings</h2>
+    </div>
+    <div class="card-body">
+        <label for="txtSetting1" class="form-label">Test Setting</label>
+        <input id="txtSetting1" placeholder="Test" type="text" class="form-control" aria-required="true">
+        <button type="button" class="btn btn-primary mt-4" aria-label="Save">Save</button>
+        <button type="button" class="btn btn-primary" id="btnReturnDashboard" aria-label="Return">Return</button>
+    </div>
+</div>
     </div>
 <!-- Import Bootstrap v 5.3.2 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
@@ -219,6 +221,86 @@
                 })
             }
         })
+
+        $(function () {
+            // Function to fetch and log the settings
+            function fetchAndLogSettings() {
+                var sessionID = sessionStorage.getItem("SessionID");
+                var settingName = 'TestSetting'; // Adjust as needed
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://simplecoop.swollenhippo.com/settings.php',
+                    data: {
+                        SessionID: sessionID,
+                        setting: settingName
+                    },
+                    success: function (response) {
+                        // Assuming the response is a JSON array of setting objects
+                        console.log("hell yeah dude")
+                        console.log('Settings Data:', response);
+                        console.log("hell yeah dude")
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching settings:', error);
+                    }
+                });
+            }
+
+            // Function to save or update a setting
+            $('#divSettings .btn-primary').first().on('click', function () {
+                var settingName = 'TestSetting'; // This should match your setting's identifier
+                var value = $('#txtSetting1').val();
+                var sessionID = sessionStorage.getItem("SessionID");
+
+                console.log('Setting:', settingName, 'Value:', value, 'SessionID:', sessionID);
+
+                // Use POST or PUT based on the condition
+                var method = 'POST'; // Change to 'PUT' as necessary
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://simplecoop.swollenhippo.com/settings.php',
+                    data: {
+                        SessionID: sessionID,
+                        setting: settingName,
+                        value: value
+                    },
+                    success: function (response) {
+                        // Parse the response if it's in string format
+                        if (typeof response === 'string') {
+                            response = JSON.parse(response);
+                        }
+                        console.log('Response:', response);
+
+                        // Check the outcome and log the updated settings
+                        if (response.Outcome.includes('Created')) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Setting saved successfully!'
+                            });
+                            // Fetch and log the updated settings
+                            fetchAndLogSettings();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to save the setting.'
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(Outcome);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error saving setting: ' + error
+                        });
+                    }
+                });
+            });
+        });
 
         $('#btnLogout').on('click', function(){
             sessionStorage.removeItem("SessionID")
