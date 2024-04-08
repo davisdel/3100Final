@@ -464,7 +464,7 @@
             const humidity = $('#decimalHumidity').val();
 
             // Generate a random logID
-            const logID = Math.floor(Math.random() * 1000);
+            //const logID = Math.floor(Math.random() * 1000);
 
             // Set the SessionID, observationDateTime, temperature, humidity, and logID
             var requestData = {
@@ -472,7 +472,7 @@
                 observationDateTime: observationDateTime,
                 temperature: temperature,
                 humidity: humidity,
-                logID: logID
+                //logID: logID
             };
 
             // Making the AJAX request using POST for each observation
@@ -481,13 +481,30 @@
                 method: 'POST',
                 data: requestData,
                 success: function (result) {
-                    console.log(result);
+                    // Show success message using SweetAlert2
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Observation submitted successfully.'
+                    }).then(() => {
+                        // Clear the form after successful submission
+                        $('#dateObservation').val('');
+                        $('#decimalTemp').val('');
+                        $('#decimalHumidity').val('');
+                    });
                 },
                 error: function (xhr, status, error) {
+                    // Show error message using SweetAlert2
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to submit observation. Please try again.'
+                    });
                     console.error('Error:', error);
                 }
             });
         });
+
 
         $('#btnDeleteWeather').on('click', function() {
             // Get the selected value from the dropdown
