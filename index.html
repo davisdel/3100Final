@@ -530,7 +530,7 @@
                 $.ajax({
                     url: 'https://simplecoop.swollenhippo.com/environment.php',
                     method: 'DELETE', 
-                    data: { LogID: selectedLogID.LogID },
+                    data: { LogID: selectedLogID },
                     success: function(response) {
                         // Assuming the deletion was successful
                         console.log('Log deleted successfully');
