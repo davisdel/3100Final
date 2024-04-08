@@ -533,6 +533,13 @@
         });
 
         function populateEnviromentChart(){
+
+            // Check if the chart already exists and destroy it
+            let existingChart = Chart.getChart("myChart");
+            if (existingChart) {
+                existingChart.destroy();
+            }
+
             // set up and display environment chart
             let SessionID = sessionStorage.getItem("SessionID");
             let days = 5; // Can be changed if needed
