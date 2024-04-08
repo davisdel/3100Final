@@ -409,33 +409,22 @@ function populateEnviromentChart(){
             });
 
             // Populate delete weather dropbox
-            $.ajax({
-                url: 'https://simplecoop.swollenhippo.com/environment.php',
-                method: 'GET',
-                data: { SessionID: SessionID, days: days },
-                success: function(data) {
-                    data = JSON.parse(data);
-                    var dropdown = $('#selWeather');
+            var dropdown = $('#selWeather');
 
-                    // Clear existing options
-                    dropdown.empty();
+            // Clear existing options
+            dropdown.empty();
 
-                    // Iterate through each object in the data array
-                    data.forEach(obj => {
-                        // Create a new option element
-                        var option = $('<option></option>');
+            // Iterate through each object in the data array
+            data.forEach(obj => {
+                // Create a new option element
+                var option = $('<option></option>');
 
-                        // Set the text and value of the option based on obj properties
-                        option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
-                        option.val(obj.LogID); // Set the value to logID
+                // Set the text and value of the option based on obj properties
+                option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
+                option.val(obj.LogID); // Set the value to logID
 
-                        // Append the option to the dropdown
-                        dropdown.append(option);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
+                // Append the option to the dropdown
+                dropdown.append(option);
             });
         },
         error: function(xhr, status, error) {
@@ -488,33 +477,22 @@ function populateEggChart(){
             });
 
             // Populate delete weather dropbox
-            $.ajax({
-                url: 'https://simplecoop.swollenhippo.com/eggs.php',
-                method: 'GET',
-                data: { SessionID: SessionID, days: days },
-                success: function(data) {
-                    data = JSON.parse(data);
-                    var dropdown = $('#selEggs');
+            var dropdown = $('#selEggs');
 
-                    // Clear existing options
-                    dropdown.empty();
+            // Clear existing options
+            dropdown.empty();
 
-                    // Iterate through each object in the data array
-                    data.forEach(obj => {
-                        // Create a new option element
-                        var option = $('<option></option>');
+            // Iterate through each object in the data array
+            data.forEach(obj => {
+                // Create a new option element
+                var option = $('<option></option>');
 
-                        // Set the text and value of the option based on obj properties
-                        option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
-                        option.val(obj.LogID); // Set the value to logID
+                // Set the text and value of the option based on obj properties
+                option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
+                option.val(obj.LogID); // Set the value to logID
 
-                        // Append the option to the dropdown
-                        dropdown.append(option);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
+                // Append the option to the dropdown
+                dropdown.append(option);
             });
         },
         error: function(xhr, status, error) {
