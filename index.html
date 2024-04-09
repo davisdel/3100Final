@@ -19,7 +19,7 @@
 <body class="bg-dark">
     <div class="d-flex col-12 justify-content-center align-items-center min-vh-100">
 <!-- divLogin -->
-        <div class="card col-12 col-md-5 col-lg-4 rounded" id="divLogin">
+        <div class="card col-12 col-md-5 col-lg-4 rounded shadow" id="divLogin">
             <div class="card-header">
                 <h3>FowlDomain Login</h3>
             </div>
@@ -41,7 +41,7 @@
             </div>
         </div>
 <!-- divRegister -->
-        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4 rounded" id="divRegister" style="display:none;">
+        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4 rounded shadow" id="divRegister" style="display:none;">
             <div class="card-header">
                 <h3>Register for FowlDomain</h3>
             </div>
@@ -101,7 +101,7 @@
             </div>
         </div>
 <!-- divDashboard -->
-        <div class="card col-12 col-md-10 col-lg-8 rounded" id="divDashboard" style="display:none;">
+        <div class="card col-12 col-md-10 col-lg-8 rounded shadow" id="divDashboard" style="display:none;">
             <div class="card-header">
                 <div class="row align-items-center">
                     <div class="col-auto"><h2>Farm Dashboard</h2></div>
@@ -111,7 +111,7 @@
             <div class="card-body">
                 <div class="container px-4">
                     <div class="row g-5" id="sortable">
-                        <!-- Egg counter widget -->
+<!-- Egg counter widget -->
                         <div class="col-lg-6 col-md-12 draggable">
                             <div class="card h-100 rounded">
                                 <div class="card-header">
@@ -122,40 +122,44 @@
                                     <canvas id="eggCountChart"></canvas>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header">
-                                            <label>Add Egg Observation</label>
+                                        <div class="card-header" data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">
+                                            <label data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">Add Egg Observation</label>
                                         </div>
-                                        <div class="card-body p-4">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label class="form-label" for="dateObservationEggs">Observation Date</label>
-                                                    <input id="dateObservationEggs" type="date" placeholder="Observation Date" class="form-control">
-                                                </div>
-                                                <div class="form-group mt-3">
-                                                    <label class="form-label" for="numEggCount">Eggs Harvested</label>
-                                                    <input id="numEggCount" type="number" placeholder="Egg count" min="0" class="form-control">
-                                                </div>
-                                                <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
-                                            </form>
+                                        <div class="collapse" id="eggAdd">
+                                            <div class="card-body p-4">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="dateObservationEggs">Observation Date</label>
+                                                        <input id="dateObservationEggs" type="date" placeholder="Observation Date" class="form-control">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label class="form-label" for="numEggCount">Eggs Harvested</label>
+                                                        <input id="numEggCount" type="number" placeholder="Egg count" min="0" class="form-control">
+                                                    </div>
+                                                    <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header">
-                                            <label for="selEggs">Select Log to Delete</label>
+                                        <div class="card-header" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">
+                                            <label for="selEggs" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">Select Log to Delete</label>
                                         </div>
-                                        <div class="card-body p-4">
-                                            <select class="form-select mb-2" id="selEggs" aria-label="Log Select">
-                                                <!-- Options will be populated dynamically using JavaScript -->
-                                                <option></option>
-                                            </select>
-                                            <button id="btnDeleteEgg" aria-label="Delete Egg Data" type="button" class="btn btn-danger btn-sm rounded col-3">Delete</button>
+                                        <div class="collapse" id="eggRemove">
+                                            <div class="card-body p-4">
+                                                <select class="form-select mb-2" id="selEggs" aria-label="Log Select">
+                                                    <!-- Options will be populated dynamically using JavaScript -->
+                                                    <option></option>
+                                                </select>
+                                                <button id="btnDeleteEgg" aria-label="Delete Egg Data" type="button" class="btn btn-danger btn-sm rounded col-3">Delete</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Weather Widget -->
+<!-- Weather Widget -->
                         <div class="col-lg-6 col-md-12 draggable">
                             <div class="card h-100 rounded">
                                 <div class="card-header">
@@ -166,38 +170,42 @@
                                     <canvas id="myChart"></canvas>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header">
-                                            <label>Add Weather Observation</label>
+                                        <div class="card-header" data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">
+                                            <label data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">Add Weather Observation</label>
                                         </div>
-                                        <div class="card-body p-4">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="dateObservation" class="form-label">Observation Date</label>
-                                                    <input id="dateObservation" class="form-control" type="date">
-                                                </div>
-                                                <div class="form-group mt-3">
-                                                    <label for="decimalHumidity" class="form-label">Humidity</label>
-                                                    <input id="decimalHumidity" class="form-control" type="number" step="any" placeholder="Humidity in Percent" min="0" max="100">
-                                                </div>
-                                                <div class="form-group mt-3">
-                                                    <label for="decimalTemp" class="form-label">Temperature</label>
-                                                    <input id="decimalTemp" class="form-control" type="number" step="any" placeholder="Degrees in Farenheit">
-                                                </div>
-                                                <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1 col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
-                                            </form>
+                                        <div class="collapse" id="weatherAdd">
+                                            <div class="card-body p-4">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="dateObservation" class="form-label">Observation Date</label>
+                                                        <input id="dateObservation" class="form-control" type="date">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="decimalHumidity" class="form-label">Humidity</label>
+                                                        <input id="decimalHumidity" class="form-control" type="number" step="any" placeholder="Humidity in Percent" min="0" max="100">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="decimalTemp" class="form-label">Temperature</label>
+                                                        <input id="decimalTemp" class="form-control" type="number" step="any" placeholder="Degrees in Farenheit">
+                                                    </div>
+                                                    <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1 col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header">
-                                            <label for="selWeather">Select Log to Delete</label>
+                                        <div class="card-header" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">
+                                            <label for="selWeather" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">Select Log to Delete</label>
                                         </div>
-                                        <div class="card-body p-4">
-                                            <select class="form-select mb-2" id="selWeather" aria-label="Log Select">
-                                                <!-- Options will be populated dynamically using JavaScript -->
-                                                <option></option>
-                                            </select>
-                                            <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded col-3">Delete</button>
+                                        <div class="collapse" id="weatherRemove">
+                                            <div class="card-body p-4">
+                                                <select class="form-select mb-2" id="selWeather" aria-label="Log Select">
+                                                    <!-- Options will be populated dynamically using JavaScript -->
+                                                    <option></option>
+                                                </select>
+                                                <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded col-3">Delete</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -228,9 +236,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Import chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-
 <!-- Custom Scripts -->
     <script src="js/index.js"></script>
 </body>
-
 </html>

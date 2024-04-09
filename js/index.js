@@ -376,26 +376,31 @@ function populateEnviromentChart(){
         data: { SessionID: SessionID, days: days },
         success: function(data) {
             data = JSON.parse(data);
-            var temperatures = data.map(obj => parseFloat(obj.Temperature));
-            var humidities = data.map(obj => parseFloat(obj.Humidity));
+            data.sort(function(a, b) {
+                // Use localeCompare for string comparison
+                return a.ObservationDateTime.localeCompare(b.ObservationDateTime);
+            });
+            var temperatures = data.map(obj => ({y:parseFloat(obj.Temperature),x:obj.ObservationDateTime.split(' ')[0]}));
+            var humidities = data.map(obj => ({y:parseFloat(obj.Humidity),x:obj.ObservationDateTime.split(' ')[0]}));
             
             var ctx = document.getElementById('myChart').getContext('2d');
             var environmentChart = new Chart(ctx, {
-                type: 'scatter',
+                type: 'line',
                 data: {
-                    labels: Array.from({ length: data.length }, (_, i) => i + 1),
                     datasets: [
                         {
-                            label: 'Temperature',
+                            label: 'Temperature (F)',
                             data: temperatures,
                             borderColor: 'rgba(255, 99, 132, 1)',
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            pointRadius: 6
                         },
                         {
-                            label: 'Humidity',
+                            label: 'Humidity (%)',
                             data: humidities,
                             borderColor: 'rgba(54, 162, 235, 1)',
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            pointRadius: 6
                         },
                     ],
                 },
@@ -450,20 +455,25 @@ function populateEggChart(){
         data: { SessionID: SessionID, days: days },
         success: function(data) {
             data = JSON.parse(data);
-
-            var eggs = data.map(obj => parseFloat(obj.Harvested));
+            data.sort(function(a, b) {
+                // Use localeCompare for string comparison
+                return a.LogDateTime.localeCompare(b.LogDateTime);
+            });
+            console.log(data)
+            var eggs = data.map(obj => ({y:parseFloat(obj.Harvested),x:obj.LogDateTime.split(' ')[0]}));
+            
             
             var ctx = document.getElementById('eggCountChart').getContext('2d');
             var eggChart = new Chart(ctx, {
-                type: 'scatter',
+                type: 'line',
                 data: {
-                    labels: Array.from({ length: data.length }, (_, i) => i + 1),
                     datasets: [
                         {
-                            label: 'Eggs',
+                            label: 'Egg Count',
                             data: eggs,
                             borderColor: 'rgba(255, 99, 132, 1)',
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            pointRadius: 6,
                         },
                     ],
                 },
