@@ -459,9 +459,7 @@ function populateEggChart(){
                 // Use localeCompare for string comparison
                 return a.LogDateTime.localeCompare(b.LogDateTime);
             });
-            console.log(data)
-            var eggs = data.map(obj => ({y:parseFloat(obj.Harvested),x:obj.LogDateTime.split(' ')[0]}));
-            
+            var eggs = data.map(obj => ({y:parseFloat(obj.Harvested),x:obj.LogDateTime.split(' ')[0]}));   
             
             var ctx = document.getElementById('eggCountChart').getContext('2d');
             var eggChart = new Chart(ctx, {
