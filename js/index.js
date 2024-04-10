@@ -11,7 +11,9 @@ $(document).ready(function(){
                 populateEnviromentChart();
                 populateEggChart();
                 
-                $(".draggable").sortable()
+                $("#sortable").sortable({
+                    distance: 30
+                })
             }
         })
     }
