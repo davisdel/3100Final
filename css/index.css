@@ -1,5 +1,12 @@
-body {
+.lightmode {
     background-image: url('../images/farm.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.darkmode {
+    background-image: url('../images/darkfarm.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
