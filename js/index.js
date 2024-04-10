@@ -6,13 +6,15 @@ $(document).ready(function(){
     if(sessionStorage.getItem("SessionID")){
         $.getJSON("https://simplecoop.swollenhippo.com/sessions.php", {SessionID:sessionStorage.getItem("SessionID")}, function(result){
             if(result != null){
-                $('#divLogin').slideToggle(function(){
-                    $('#divDashboard').slideToggle();
-                })
+                
                 populateEnviromentChart();
                 populateEggChart();
                 fetchAndLogSettings();
-                
+
+                $('#divLogin').slideToggle(function(){
+                    $('#divDashboard').slideToggle();
+                })
+
                 $("#sortable").sortable({
                     distance: 30
                 })
@@ -96,7 +98,7 @@ async function fetchAndLogSettings() {
 
 async function setSetting(setting, value) {
     if(setting == 'settingUsername'){
-        $('#dashboardHeader').text('Farm - ' + value);
+        $('#dashboardHeader').text(value + "\'s Farm");
     } else if(setting == 'settingDarkMode'){
         if(value == 'true'){
             $('body').removeClass('lightmode');
@@ -155,6 +157,7 @@ $('#saveSettings').on('click', function () {
             text: "Fields cannot be blank!",
             icon: "error"
         })
+        return
     }
     $('#divSettings input, #divSettings select').each(function() {
         let blnError = false;
@@ -601,6 +604,7 @@ $('#btnSubmitWeather').on("click", function () {
 
 $('#btnDeleteWeather').on('click', function() {
     // Get the selected value from the dropdown
+    var sessionId = sessionStorage.getItem("SessionID");
     var selectedLogID = $('#selWeather').val();
 
     // Check if a log is selected
@@ -609,7 +613,7 @@ $('#btnDeleteWeather').on('click', function() {
         $.ajax({
             url: 'https://simplecoop.swollenhippo.com/environment.php',
             method: 'DELETE', 
-            data: { LogID: selectedLogID.LogID },
+            data: { logID: selectedLogID, SessionID:sessionId },
             success: function(response) {
                 // Assuming the deletion was successful
                 console.log('Log deleted successfully');
@@ -621,7 +625,6 @@ $('#btnDeleteWeather').on('click', function() {
                     title: 'Success',
                     text: 'Log deleted successfully!',
                 }).then(() => {
-                    populateEnvironmentDropbox();
                     populateEnviromentChart();
             });
             },
@@ -698,12 +701,7 @@ function populateEnviromentChart(){
                     },
                 },
             });
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-        }
-    });
-}
+
             // Populate delete weather dropbox
             var dropdown = $('#selWeather');
 
@@ -788,7 +786,6 @@ function populateEggChart(){
 
                 // Set the text and value of the option based on obj properties
                 option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
-
                 option.val(obj.LogID); // Set the value to logID
 
                 // Append the option to the dropdown
