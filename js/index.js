@@ -91,23 +91,28 @@ async function fetchAndLogSettings() {
 }
 
 async function setSetting(setting, value) {
-    console.log(setting);
     if(setting == 'settingUsername'){
         $('#dashboardHeader').text('Farm - ' + value);
     } else if(setting == 'settingDarkMode'){
         if(value == 'true'){
             $('body').removeClass('lightmode');
             $('body').addClass('darkmode'); 
-            
-            $('.btn').addClass('btn-dark');
-            $('.btn').css('border-color', 'grey');
+            $('.btn').each(function() {
+                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
+                    $(this).addClass('btn-dark');
+                }
+            })
             $('p, h1, h2, h3, h4, h5, h6, span, a, label').addClass('text-white');
             $('.card').addClass('bg-dark');
             $('.card').css('border-color', 'grey');
         } else {
             $('body').removeClass('darkmode');
             $('body').addClass('lightmode');
-            $('.btn').removeClass('btn-dark');
+            $('.btn').each(function() {
+                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
+                    $(this).removeClass('btn-dark');
+                }
+            })
             $('p, h1, h2, h3, h4, h5, h6, span, a, label').removeClass('text-white');
             $('.card').removeClass('bg-dark');
             $('.card').css('border-color', '');
