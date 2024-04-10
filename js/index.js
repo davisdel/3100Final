@@ -10,8 +10,12 @@ $(document).ready(function(){
                     $('#divDashboard').slideToggle();
                 })
                 populateEnviromentChart();
-                populateEnvironmentDropbox();
+                populateEggChart();
                 fetchAndLogSettings();
+                
+                $("#sortable").sortable({
+                    distance: 30
+                })
             }
         })
     }
@@ -365,7 +369,7 @@ $('#btnLogin').on("click", function () {
                     $("#divDashboard").slideToggle()
                 })
                 populateEnviromentChart();
-                populateEnvironmentDropbox();
+                populateEggChart();
                 fetchAndLogSettings();
             }
         })
@@ -658,26 +662,31 @@ function populateEnviromentChart(){
         data: { SessionID: SessionID, days: days },
         success: function(data) {
             data = JSON.parse(data);
-            var temperatures = data.map(obj => parseFloat(obj.Temperature));
-            var humidities = data.map(obj => parseFloat(obj.Humidity));
+            data.sort(function(a, b) {
+                // Use localeCompare for string comparison
+                return a.ObservationDateTime.localeCompare(b.ObservationDateTime);
+            });
+            var temperatures = data.map(obj => ({y:parseFloat(obj.Temperature),x:obj.ObservationDateTime.split(' ')[0]}));
+            var humidities = data.map(obj => ({y:parseFloat(obj.Humidity),x:obj.ObservationDateTime.split(' ')[0]}));
             
             var ctx = document.getElementById('myChart').getContext('2d');
             var environmentChart = new Chart(ctx, {
-                type: 'scatter',
+                type: 'line',
                 data: {
-                    labels: Array.from({ length: data.length }, (_, i) => i + 1),
                     datasets: [
                         {
-                            label: 'Temperature',
+                            label: 'Temperature (F)',
                             data: temperatures,
                             borderColor: 'rgba(255, 99, 132, 1)',
                             backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            pointRadius: 6
                         },
                         {
-                            label: 'Humidity',
+                            label: 'Humidity (%)',
                             data: humidities,
                             borderColor: 'rgba(54, 162, 235, 1)',
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            pointRadius: 6
                         },
                     ],
                 },
@@ -695,17 +704,7 @@ function populateEnviromentChart(){
         }
     });
 }
-
-function populateEnvironmentDropbox(){
-     // Populate delete weather dropbox
-     SessionID = sessionStorage.getItem('SessionID')
-     days = 5; //Can be changed if needed
-    $.ajax({
-        url: 'https://simplecoop.swollenhippo.com/environment.php',
-        method: 'GET',
-        data: { SessionID: SessionID, days: days },
-        success: function(data) {
-            data = JSON.parse(data);
+            // Populate delete weather dropbox
             var dropdown = $('#selWeather');
 
             // Clear existing options
@@ -729,6 +728,152 @@ function populateEnvironmentDropbox(){
         }
     });
 }
+
+function populateEggChart(){
+
+    // Check if the chart already exists and destroy it
+    let existingChart = Chart.getChart("eggCountChart");
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+    // set up and display environment chart
+    let SessionID = sessionStorage.getItem("SessionID");
+    let days = 5; // Can be changed if needed
+    $.ajax({
+        url: 'https://simplecoop.swollenhippo.com/eggs.php',
+        method: 'GET',
+        data: { SessionID: SessionID, days: days },
+        success: function(data) {
+            data = JSON.parse(data);
+            data.sort(function(a, b) {
+                // Use localeCompare for string comparison
+                return a.LogDateTime.localeCompare(b.LogDateTime);
+            });
+            var eggs = data.map(obj => ({y:parseFloat(obj.Harvested),x:obj.LogDateTime.split(' ')[0]}));   
+            
+            var ctx = document.getElementById('eggCountChart').getContext('2d');
+            var eggChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Egg Count',
+                            data: eggs,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            pointRadius: 6,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+
+            // Populate delete weather dropbox
+            var dropdown = $('#selEggs');
+
+            // Clear existing options
+            dropdown.empty();
+
+            // Iterate through each object in the data array
+            data.forEach(obj => {
+                // Create a new option element
+                var option = $('<option></option>');
+
+                // Set the text and value of the option based on obj properties
+                option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
+
+                option.val(obj.LogID); // Set the value to logID
+
+                // Append the option to the dropdown
+                dropdown.append(option);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+// eggs.php post
+$('#btnSubmitEggs').on("click", function () {
+    const sessionId = sessionStorage.getItem("SessionID");
+    const observationDateTime = $('#dateObservationEggs').val();
+    const eggNum = $('#numEggCount').val();
+
+    // Set the data
+    var requestData = {
+        SessionID: sessionId,
+        observationDateTime: observationDateTime,
+        eggs: eggNum
+    };
+
+    // Making the AJAX request using POST for each observation
+    $.ajax({
+        url: 'https://simplecoop.swollenhippo.com/eggs.php',
+        method: 'POST',
+        data: requestData,
+        success: function (result) {
+            populateEggChart();
+            $('#dateObservationEggs').val('');
+            $('#numEggCount').val('');
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
+$('#btnDeleteEgg').on('click', function() {
+    // Get the selected value from the dropdown
+    var selectedLogID = $('#selEggs').val();
+    var sessionId = sessionStorage.getItem("SessionID");
+
+    // Check if a log is selected
+    if (selectedLogID) {
+        // Perform AJAX request to delete the selected log
+        $.ajax({
+            url: 'https://simplecoop.swollenhippo.com/eggs.php',
+            method: 'DELETE', 
+            data: { logID: selectedLogID, SessionID: sessionId },
+            success: function(response) {
+                // Assuming the deletion was successful
+                console.log('Log deleted successfully');
+                // Remove the selected entry from the list
+                $('#selEggs option[value="' + selectedLogID + '"]').remove();
+                // Show SweetAlert for success
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Log deleted successfully!',
+                });
+                populateEggChart();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error deleting log:', error);
+                // Show SweetAlert for error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error deleting log: ' + error,
+                });
+            }
+        });
+    } else {
+        // Display an error message if no log is selected
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Please select a log to delete.',
+        });
+    }
+});
 
 $('#btnSettings').on('click',function(){
     $('#divDashboard').slideToggle(function(){

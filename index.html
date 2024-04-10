@@ -18,8 +18,8 @@
 
 <body class="lightmode">
     <div class="d-flex col-12 justify-content-center align-items-center min-vh-100">
-    <!-- divLogin -->
-        <div class="card col-12 col-md-5 col-lg-4" id="divLogin">
+<!-- divLogin -->
+        <div class="card col-12 col-md-5 col-lg-4 rounded shadow" id="divLogin">
             <div class="card-header">
                 <h3>FowlDomain Login</h3>
             </div>
@@ -33,7 +33,7 @@
                         <label for="txtLoginPassword" class="form-label">Password</label>
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                     </div>
-                    <button id="btnLogin" class="btn btn-success col-12 mt-4" aria-label = "Submit Login" type="button">Submit</button>
+                    <button id="btnLogin" class="btn btn-success col-12 mt-4 rounded" aria-label = "Submit Login" type="button">Submit</button>
                     <div class ="col-12 d-flex justify-content-center">
                         <a class="col-12 text-center btnToggle" data-card="Login">Need an account? Click Here</a>
                     </div>
@@ -41,7 +41,7 @@
             </div>
         </div>
 <!-- divRegister -->
-        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4" id="divRegister" style="display:none;">
+        <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4 rounded shadow" id="divRegister" style="display:none;">
             <div class="card-header">
                 <h3>Register for FowlDomain</h3>
             </div>
@@ -49,51 +49,51 @@
                 <form>
                     <div class="form-group mt-4">
                         <label for="txtEmail" class="form-label">Email</label>
-                        <input id="txtEmail" class="form-control" type="email" aria-required="true" placeholder="Johndoe@gmail.com">
+                        <input id="txtEmail" class="form-control rounded" type="email" aria-required="true" placeholder="Johndoe@gmail.com">
                     </div>
                     <div class="form-group">
                         <label for="txtPassword" class="form-label">Password</label>
-                        <input id="txtPassword" class="form-control" type="password" aria-required="true" placeholder="Password">
+                        <input id="txtPassword" class="form-control rounded" type="password" aria-required="true" placeholder="Password">
                     </div>
                     <div class="form-group">
                         <label for="txtFirstName" class="form-label">First Name</label>
-                        <input id="txtFirstName" class="form-control" type="text" aria-required="true" placeholder="John">
+                        <input id="txtFirstName" class="form-control rounded" type="text" aria-required="true" placeholder="John">
                     </div>
                     <div class="form-group">
                         <label for="txtLastName" class="form-label">Last Name</label>
-                        <input id="txtLastName" class="form-control" type="text" aria-required="true" placeholder="Doe">
+                        <input id="txtLastName" class="form-control rounded" type="text" aria-required="true" placeholder="Doe">
                     </div>
                     <div class="form-group">
                         <label for="txtStreetAddress1" class="form-label">Street Address 1</label>
-                        <input id="txtStreetAddress1" placeholder="Street Address 1" type="text" class="form-control" aria-required="true">
+                        <input id="txtStreetAddress1" placeholder="Street Address 1" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtStreetAddress2" class="form-label">Street Address 2</label>
-                        <input id="txtStreetAddress2" placeholder="Street Address 2" type="text" class="form-control" aria-required="true">
+                        <input id="txtStreetAddress2" placeholder="Street Address 2" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtCity" class="form-label">City</label>
-                        <input id="txtCity" placeholder="City" type="text" class="form-control" aria-required="true">
+                        <input id="txtCity" placeholder="City" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtState" class="form-label">State</label>
-                        <input id="txtState" placeholder="State" type="text" class="form-control" aria-required="true">
+                        <input id="txtState" placeholder="State" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtZip" class="form-label">Zip</label>
-                        <input id="txtZip" placeholder="Zip" type="text" class="form-control" aria-required="true">
+                        <input id="txtZip" placeholder="Zip" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="telPhoneNum" class="form-label">Phone Number</label>
-                        <input id="telPhoneNum" placeholder="E.g, 111-222-3333" type="tel" class="form-control" aria-required="true">
+                        <input id="telPhoneNum" placeholder="E.g, 111-222-3333" type="tel" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="txtCoopID" class="form-label">CoopID</label>
-                        <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control" aria-required="true">
+                        <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     
-                    <button class="col-12 btn btn-success mt-4" id="btnRegister" aria-label="Register" type="button">Register</button>
-                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1">Reset Form</button>
+                    <button class="col-12 btn btn-success mt-4 rounded" id="btnRegister" aria-label="Register" type="button">Register</button>
+                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1 rounded">Reset Form</button>
                     <div class="col-12 d-flex justify-content-center">
                         <a class="col-12 text-center btnToggle" data-card="Register">Return To Login</a>
                     </div>
@@ -101,77 +101,113 @@
             </div>
         </div>
 <!-- divDashboard -->
-        <div class="card col-12 col-md-10 col-lg-8 mt-4 mb-4" id="divDashboard" style="display:none;">
+        <div class="card col-12 col-md-10 col-lg-8 rounded shadow" id="divDashboard" style="display:none;">
             <div class="card-header">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-10 me-auto align"><h2 id="dashboardHeader">Farm - User</h2></div>
-                        <div class="col-auto"><button type="button" class="btn btn-icon" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></button></div>
-                    </div>
+                <div class="row align-items-center">
+                    <div class="col-10 me-auto align"><h2 id="dashboardHeader">Farm - User</h2></div>
+                    <div class="col-auto"><button type="button" class="btn btn-icon" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></button></div>
                 </div>
             </div>
             <div class="card-body">
                 <div class="container px-4">
-                    <div class="row g-5">
-                        <!-- Egg counter widget -->
-                        <div class="col-lg-6 col-md-12">
-                            <div id="eggWidget" class="card p-3 h-100">
+                    <div class="row g-5" id="sortable">
+<!-- Egg counter widget -->
+                        <div class="col-lg-6 col-md-12 draggable">
+                            <div id="eggWidget" class="card rounded">
                                 <div class="card-header">
                                     <h3>Egg Counter</h3>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-4">
                                     <!-- chart -->
+                                    <canvas id="eggCountChart"></canvas>
                                     <hr>
-                                    <div class="row align-items-center mb-2">
-                                        <label for="numEggCount">Eggs Harvested Today</label>
-                                        <div class="col">
-                                            <input id="numEggCount" type="number" placeholder="Egg count" min="0">
-                                            <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded-1"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header" data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">
+                                            <label data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">Add Egg Observation</label>
+                                        </div>
+                                        <div class="collapse" id="eggAdd">
+                                            <div class="card-body p-4">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="dateObservationEggs">Observation Date</label>
+                                                        <input id="dateObservationEggs" type="date" placeholder="Observation Date" class="form-control">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label class="form-label" for="numEggCount">Eggs Harvested</label>
+                                                        <input id="numEggCount" type="number" placeholder="Egg count" min="0" class="form-control">
+                                                    </div>
+                                                    <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">
+                                            <label for="selEggs" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">Select Log to Delete</label>
+                                        </div>
+                                        <div class="collapse" id="eggRemove">
+                                            <div class="card-body p-4">
+                                                <select class="form-select mb-2" id="selEggs" aria-label="Log Select">
+                                                    <!-- Options will be populated dynamically using JavaScript -->
+                                                    <option></option>
+                                                </select>
+                                                <button id="btnDeleteEgg" aria-label="Delete Egg Data" type="button" class="btn btn-danger btn-sm rounded col-6">Delete</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Weather widget -->
-                        <div class="col-lg-6 col-md-12">
-                            <div id="weatherWidget" class="card p-3 h-100">
+<!-- Weather Widget -->
+                        <div class="col-lg-6 col-md-12 draggable">
+                            <div id="weatherWidget" class="card rounded">
                                 <div class="card-header">
                                     <h3>Environment</h3>
                                 </div>
-                                <div class="card-body">
-                                    <!--Weather chart-->
-                                    <div>
-                                        <canvas id="myChart"></canvas>
+                                <div class="card-body p-4">
+                                    <!-- chart -->
+                                    <canvas id="myChart"></canvas>
+                                    <hr>
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header" data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">
+                                            <label data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">Add Weather Observation</label>
+                                        </div>
+                                        <div class="collapse" id="weatherAdd">
+                                            <div class="card-body p-4">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="dateObservation" class="form-label">Observation Date</label>
+                                                        <input id="dateObservation" class="form-control" type="date">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="decimalHumidity" class="form-label">Humidity</label>
+                                                        <input id="decimalHumidity" class="form-control" type="number" step="any" placeholder="Humidity in Percent" min="0" max="100">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="decimalTemp" class="form-label">Temperature</label>
+                                                        <input id="decimalTemp" class="form-control" type="number" step="any" placeholder="Degrees in Farenheit">
+                                                    </div>
+                                                    <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1 col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                     <hr>
-                                    <form>
-                                        <div class="row align-items-center">
-                                            <div class="row">
-                                                <label for="dateObservation">Observation Date</label>
-                                                <input id="dateObservation" type="date">
-                                            </div>
-                                            <div class="row">
-                                                <label for="decimalHumidity">Humidity</label>
-                                                <input id="decimalHumidity" type="number" step="any" placeholder="%" min="0" max="100">
-                                            </div>
-                                            <div class="row">
-                                                <label for="decimalTemp">Temperature</label>
-                                                <input id="decimalTemp" type="number" step="any" placeholder="*F">
+                                    <div class="card rounded mt-2">
+                                        <div class="card-header" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">
+                                            <label for="selWeather" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">Select Log to Delete</label>
+                                        </div>
+                                        <div class="collapse" id="weatherRemove">
+                                            <div class="card-body p-4">
+                                                <select class="form-select mb-2" id="selWeather" aria-label="Log Select">
+                                                    <!-- Options will be populated dynamically using JavaScript -->
+                                                    <option></option>
+                                                </select>
+                                                <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded col-6">Delete</button>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="row justify-content-center">
-                                            <button id="btnSubmitWeather" aria-label="Submit Weather Data" type="button" class="btn btn-primary btn-sm rounded-1">Submit New Log</button>
-                                        </div>
-                                        <label for="selWeather">Select Log to Delete</label>
-                                        <select class="form-control" id="selWeather" aria-label="Log Select">
-                                            <!-- Options will be populated dynamically using JavaScript -->
-                                            <option></option>
-                                        </select>
-                                        <div class="row justify-content-center">
-                                            <button id="btnDeleteWeather" aria-label="Delete Weather Data" type="button" class="btn btn-danger btn-sm rounded-1 mt-1">Delete</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
