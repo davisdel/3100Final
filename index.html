@@ -25,16 +25,17 @@
             </div>
             <div class="card-body">
                 <form>
-                    <div class="form-group mt-4">
-                        <label for="txtLoginEmail" class="form-label">Email</label>
+                    <div class="form-floating mt-4">
                         <input type="email" id="txtLoginEmail" class="form-control" placeholder="Johndoe@gmail.com">
+                        <label for="txtLoginEmail" class="form-label">Email</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtLoginPassword" class="form-label">Password</label>
+                    <br>
+                    <div class="form-floating">
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
+                        <label for="txtLoginPassword" class="form-label">Password</label>
                     </div>
                     <button id="btnLogin" class="btn btn-success col-12 mt-4 rounded" aria-label = "Submit Login" type="button">Submit</button>
-                    <div class ="col-12 d-flex justify-content-center">
+                        <div class ="col-12 d-flex justify-content-center">
                         <a class="col-12 text-center btnToggle" data-card="Login">Need an account? Click Here</a>
                     </div>
                 </form>
@@ -47,51 +48,62 @@
             </div>
             <div class="card-body">
                 <form>
-                    <div class="form-group mt-4">
-                        <label for="txtEmail" class="form-label">Email</label>
+                    <div class="form-floating mt-4">
                         <input id="txtEmail" class="form-control rounded" type="email" aria-required="true" placeholder="Johndoe@gmail.com">
+                        <label for="txtEmail" class="form-label">Email</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtPassword" class="form-label">Password</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtPassword" class="form-control rounded" type="password" aria-required="true" placeholder="Password">
+                        <label for="txtPassword" class="form-label">Password</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtFirstName" class="form-label">First Name</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtFirstName" class="form-control rounded" type="text" aria-required="true" placeholder="John">
+                        <label for="txtFirstName" class="form-label">First Name</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtLastName" class="form-label">Last Name</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtLastName" class="form-control rounded" type="text" aria-required="true" placeholder="Doe">
+                        <label for="txtLastName" class="form-label">Last Name</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtStreetAddress1" class="form-label">Street Address 1</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtStreetAddress1" placeholder="Street Address 1" type="text" class="form-control rounded" aria-required="true">
+                        <label for="txtStreetAddress1" class="form-label">Street Address 1</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtStreetAddress2" class="form-label">Street Address 2</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtStreetAddress2" placeholder="Street Address 2" type="text" class="form-control rounded" aria-required="true">
+                        <label for="txtStreetAddress2" class="form-label">Street Address 2</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtCity" class="form-label">City</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtCity" placeholder="City" type="text" class="form-control rounded" aria-required="true">
+                        <label for="txtCity" class="form-label">City</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtState" class="form-label">State</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtState" placeholder="State" type="text" class="form-control rounded" aria-required="true">
+                        <label for="txtState" class="form-label">State</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtZip" class="form-label">Zip</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtZip" placeholder="Zip" type="text" class="form-control rounded" aria-required="true">
+                        <label for="txtZip" class="form-label">Zip</label>
                     </div>
-                    <div class="form-group">
-                        <label for="telPhoneNum" class="form-label">Phone Number</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="telPhoneNum" placeholder="E.g, 111-222-3333" type="tel" class="form-control rounded" aria-required="true">
+                        <label for="telPhoneNum" class="form-label">Phone Number</label>
                     </div>
-                    <div class="form-group">
-                        <label for="txtCoopID" class="form-label">CoopID</label>
+                    <br>
+                    <div class="form-floating">
                         <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control rounded" aria-required="true">
+                        <label for="txtCoopID" class="form-label">CoopID</label>
                     </div>
-                    
+                    <br>
+
                     <button class="col-12 btn btn-success mt-4 rounded" id="btnRegister" aria-label="Register" type="button">Register</button>
                     <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1 rounded">Reset Form</button>
                     <div class="col-12 d-flex justify-content-center">
@@ -133,9 +145,9 @@
                                                         <label class="form-label" for="dateObservationEggs">Observation Date</label>
                                                         <input id="dateObservationEggs" type="date" placeholder="Observation Date" class="form-control">
                                                     </div>
-                                                    <div class="form-group mt-3">
-                                                        <label class="form-label" for="numEggCount">Eggs Harvested</label>
+                                                    <div class="form-floating mt-3">
                                                         <input id="numEggCount" type="number" placeholder="Egg count" min="0" class="form-control">
+                                                        <label class="form-label" for="numEggCount">Eggs Harvested</label>
                                                     </div>
                                                     <button id="btnSubmitEggs" aria-label="Submit Eggs Data"  type="button" class="btn btn-primary btn-sm rounded col-3 mt-2"><i style="font-size: 1rem" class="bi bi-send"></i></button>
                                                 </form>
