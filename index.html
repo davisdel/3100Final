@@ -1,4 +1,4 @@
-<!-- CoopID - TP4I2TR3 -->
+<!-- CoopID - TN6VAC9J -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -104,8 +104,9 @@
         <div class="card col-12 col-md-10 col-lg-8 rounded shadow" id="divDashboard" style="display:none;">
             <div class="card-header">
                 <div class="row align-items-center">
-                    <div class="col-10 me-auto align"><h2 id="dashboardHeader">Set display name in settings!</h2></div>
+                    <div class="col-10 me-auto align"><h2 id="dashboardHeader">Set coop name in settings!</h2></div>
                     <div class="col-auto"><button type="button" class="btn btn-icon" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></button></div>
+                    <div class="col-auto"><button id="btnLogout" aria-label="Logout" class="btn btn-icon" type="button"><i style="font-size: 1.5rem" class="bi bi-box-arrow-right"></i></button></div>
                 </div>
             </div>
             <div class="card-body">
@@ -213,7 +214,6 @@
                         </div>
                     </div>
                 </div>
-                <button id="btnLogout" aria-label="Logout" class="btn btn-danger col-12 mt-4" type="button">Logout</button>
             </div>
         </div>
 <!-- Settings card -->
@@ -222,7 +222,7 @@
         <h2>Settings</h2>
     </div>
     <div class="card-body">
-        <label for="settingUsername" class="form-label">Display Name (Max:15)</label>
+        <label for="settingUsername" class="form-label">Coop Name (Max:15)</label>
         <input id="settingUsername" placeholder="Username" type="text" class="form-control" maxlength="15">
         <br>
         <fieldset>

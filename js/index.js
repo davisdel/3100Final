@@ -1,4 +1,3 @@
-
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
@@ -98,7 +97,7 @@ async function fetchAndLogSettings() {
 
 async function setSetting(setting, value) {
     if(setting == 'settingUsername'){
-        $('#dashboardHeader').text(value + "\'s Farm");
+        $('#dashboardHeader').text("Coop: " + value);
     } else if(setting == 'settingDarkMode'){
         if(value == 'true'){
             $('body').removeClass('lightmode');
@@ -305,6 +304,7 @@ $('#btnLogout').on('click', function(){
     sessionStorage.removeItem("SessionID")
     $('#txtLoginEmail').val('');
     $('#txtLoginPassword').val('');
+
     $('#divDashboard').slideToggle(function(){
         $('#divLogin').slideToggle();
     })
@@ -360,10 +360,10 @@ $('#btnLogin').on("click", function () {
     } else {
         $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result){
             result = JSON.parse(result)
+            console.log(result)
             if(result.Outcome == 'false'){
                 Swal.fire({
                     title: "Oops!",
-                    text: result.Error,
                     icon: "error"
                 })
             } else {
@@ -527,6 +527,7 @@ $('#btnRegister').on('click',function(){
                                 });
                             } else {
                                 sessionStorage.setItem("SessionID",result.SessionID)
+                                fetchAndLogSettings()
                                 $("#divRegister").slideToggle(function(){
                                     $("#divDashboard").slideToggle()
                                 })
@@ -707,11 +708,13 @@ function populateEnviromentChart(){
 
             // Clear existing options
             dropdown.empty();
+            var option = $('<option selected disabled>Please select an observation</option>');
+            dropdown.append(option);
 
             // Iterate through each object in the data array
             data.forEach(obj => {
                 // Create a new option element
-                var option = $('<option></option>');
+                option = $('<option></option>');
 
                 // Set the text and value of the option based on obj properties
                 option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
@@ -778,11 +781,13 @@ function populateEggChart(){
 
             // Clear existing options
             dropdown.empty();
+            var option = $('<option selected disabled>Please select an observation</option>');
+            dropdown.append(option);
 
             // Iterate through each object in the data array
             data.forEach(obj => {
                 // Create a new option element
-                var option = $('<option></option>');
+                option = $('<option></option>');
 
                 // Set the text and value of the option based on obj properties
                 option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
@@ -817,11 +822,24 @@ $('#btnSubmitEggs').on("click", function () {
         method: 'POST',
         data: requestData,
         success: function (result) {
-            populateEggChart();
-            $('#dateObservationEggs').val('');
-            $('#numEggCount').val('');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Observation submitted successfully.'
+            }).then(() => {
+                // Clear the form after successful submission
+                $('#dateObservationEggs').val('');
+                $('#numEggCount').val('');
+                populateEggChart();
+            });
+            
         },
         error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to submit observation. Please try again.'
+            });
             console.error('Error:', error);
         }
     });
