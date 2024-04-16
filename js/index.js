@@ -1,3 +1,4 @@
+
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
@@ -5,20 +6,300 @@ $(document).ready(function(){
     if(sessionStorage.getItem("SessionID")){
         $.getJSON("https://simplecoop.swollenhippo.com/sessions.php", {SessionID:sessionStorage.getItem("SessionID")}, function(result){
             if(result != null){
+                
+                populateEnviromentChart();
+                populateEggChart();
+                fetchAndLogSettings();
+
                 $('#divLogin').slideToggle(function(){
                     $('#divDashboard').slideToggle();
                 })
-                populateEnviromentChart();
-                populateEnvironmentDropbox();
-                populateEggChart();
-                
+
                 $("#sortable").sortable({
                     distance: 30
                 })
             }
         })
     }
+
+    $('#settingCoopTempInt').on('input', function() {
+        $('#settingCoopTemp').val($(this).val());
+    });
+
+    $('#settingCoopTemp').on('input', function() {
+        $('#settingCoopTempInt').val($(this).val());
+    });
 })
+
+async function getSettings() {
+    var sessionID = sessionStorage.getItem("SessionID");
+    var maxNum = $('#divSettings input, #divSettings select').length;
+    $('#divSettings input, #divSettings select').each(function(index) {
+        var settingName = $(this).attr('id');
+        if (!$(this).attr('data-ignore')) {
+            $.ajax({
+                type: 'GET',
+                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                data: {
+                    SessionID: sessionID,
+                    setting: settingName
+                },
+                success: function (response) {
+                    // Assuming the response is a JSON array of setting objects
+                    response = JSON.parse(response)
+                    if (response){
+                            if ($('#' + settingName).attr('type') == 'checkbox' || $('#' + settingName).attr('type') == 'radio') {
+                                if(response.Value == 'true'){                                
+                                    $('#'+settingName).prop('checked', true);
+                                } else {
+
+                                }
+                            } else if ($('#' + settingName).attr('type') == 'range'){
+                                $('#'+settingName).val(response.Value);
+
+                                targetId = $('#' + settingName).attr('data-target');
+                                if (targetId) {
+                                    $(targetId).val(response.Value);
+                                } else {
+                                    console.log("Could not find target box");
+                                }
+                            } else {
+                                $('#'+settingName).val(response.Value);
+                            }
+                            setSetting(response.Setting, response.Value);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching settings:', error);
+                    blnError = true;
+                }
+            })
+        }
+
+    }) // for each ends
+}
+
+// Function to fetch and log the settings
+async function fetchAndLogSettings() {
+    var sessionID = sessionStorage.getItem("SessionID");
+    let blnError = false;
+
+    if (!sessionID) {
+        return;
+    }
+    
+    var result = await getSettings();
+
+    if (blnError) {
+        return false;
+    }
+
+}
+
+async function setSetting(setting, value) {
+    if(setting == 'settingUsername'){
+        $('#dashboardHeader').text(value + "\'s Farm");
+    } else if(setting == 'settingDarkMode'){
+        if(value == 'true'){
+            $('body').removeClass('lightmode');
+            $('body').addClass('darkmode'); 
+            $('.btn').each(function() {
+                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
+                    $(this).addClass('btn-dark');
+                }
+            })
+            $('p, h1, h2, h3, h4, h5, h6, span, a, label').addClass('text-white');
+            $('.card').addClass('bg-dark');
+            $('.card').css('border-color', 'grey');
+        } else {
+            $('body').removeClass('darkmode');
+            $('body').addClass('lightmode');
+            $('.btn').each(function() {
+                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
+                    $(this).removeClass('btn-dark');
+                }
+            })
+            $('p, h1, h2, h3, h4, h5, h6, span, a, label').removeClass('text-white');
+            $('.card').removeClass('bg-dark');
+            $('.card').css('border-color', '');
+        }  
+    } else if (setting == 'settingCoopTemp'){
+        
+    } else if (setting == 'settingDoorOpen'){
+
+    } else if(setting == 'settingColorBlind'){
+        
+    }
+}
+
+// Function to save or update a setting
+$('#saveSettings').on('click', function () {
+    var sessionID = sessionStorage.getItem("SessionID");
+    let blnError = false;
+    $('#divSettings input, #divSettings select').each(function() {
+
+        var settingName = $(this).attr('id');
+
+        if ($('#' + settingName).attr('type') == 'checkbox' || $('#' + settingName).attr('type') == 'radio') {
+            // Skip this one
+        } else {
+            var settingName = $(this).attr('id');
+            var value = $(this).val();
+
+            if (value.length < 1) {
+                blnError = true;
+            }
+        }
+    })
+    if (blnError) {
+        Swal.fire({
+            title: "Error!",
+            text: "Fields cannot be blank!",
+            icon: "error"
+        })
+        return
+    }
+    $('#divSettings input, #divSettings select').each(function() {
+        let blnError = false;
+        var settingName = $(this).attr('id');
+        if ($('#' + settingName).attr('type') == 'checkbox' || $('#' + settingName).attr('type') == 'radio') {
+            // Print out if it's checked
+            if($(this).prop('checked')){
+                var value = true;
+            } else {
+                var value = false;
+            }
+            console.log(value);
+            
+            $.ajax({
+                type: 'GET',
+                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                data: {
+                    SessionID: sessionID,
+                    setting: settingName
+                },
+                success: function(result) {
+                    result = JSON.parse(result);
+                    if (result) {
+                        $.ajax({
+                            type: 'PUT',
+                            url: 'https://simplecoop.swollenhippo.com/settings.php',
+                            data: {
+                                SessionID: sessionID,
+                                setting: settingName,
+                                value: value
+                            },
+                            success: function(result) {
+                                console.log(result);
+                                setSetting(settingName, value);
+                            },
+                            error: function() {
+                                blnError = true;
+                            }
+                        })
+                    }
+                    else {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'https://simplecoop.swollenhippo.com/settings.php',
+                            data: {
+                                SessionID: sessionID,
+                                setting: settingName,
+                                value: value
+                            },
+                            success: function(result) {
+                                console.log(result);
+                                setSetting(settingName, value);
+                            },
+                            error: function() {
+                                blnError = true;
+                            }
+                        })
+                    }
+                },
+                error: function() {
+                    blnError = true;
+                }
+            })
+        } else {
+            // For other input/select types, just print out the value
+            var value = $(this).val();
+
+            if (value.length > 1) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://simplecoop.swollenhippo.com/settings.php',
+                    data: {
+                        SessionID: sessionID,
+                        setting: settingName
+                    },
+                    success: function(result) {
+                        result = JSON.parse(result);
+                        if (result) {
+                            $.ajax({
+                                type: 'PUT',
+                                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                                data: {
+                                    SessionID: sessionID,
+                                    setting: settingName,
+                                    value: value
+                                },
+                                success: function(result) {
+                                    console.log(result);
+                                    setSetting(settingName, value);
+                                },
+                                error: function() {
+                                    blnError = true;
+                                }
+                            })
+                        }
+                        else {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                                data: {
+                                    SessionID: sessionID,
+                                    setting: settingName,
+                                    value: value
+                                },
+                                success: function(result) {
+                                    console.log(result);
+                                    setSetting(settingName, value);
+                                },
+                                error: function() {
+                                    blnError = true;
+                                }
+                            })
+                        }
+                    },
+                    error: function() {
+                        blnError = true;
+                    }
+                })
+            } else {
+                return false;
+            }
+        }
+
+        if (!blnError) {
+            Swal.fire({
+                title: "Success!",
+                text: "Settings have been successfully updated!",
+                icon: "success"
+            })
+        } else {
+            Swal.fire({
+                title: "Oops!",
+                text: "There was an error updating the settings!",
+                icon: "error"
+            })
+        }
+    })
+    $('#divSettings').slideToggle(function(){
+        $('#divDashboard').slideToggle();
+        fetchAndLogSettings();
+    })
+});
 
 $('#btnLogout').on('click', function(){
     sessionStorage.removeItem("SessionID")
@@ -93,6 +374,7 @@ $('#btnLogin').on("click", function () {
                 populateEnviromentChart();
                 populateEnvironmentDropbox();
                 populateEggChart();
+                fetchAndLogSettings();
             }
         })
     }
@@ -305,6 +587,7 @@ $('#btnSubmitWeather').on("click", function () {
                 $('#dateObservation').val('');
                 $('#decimalTemp').val('');
                 $('#decimalHumidity').val('');
+                populateEnviromentChart();
             });
         },
         error: function (xhr, status, error) {
@@ -322,6 +605,7 @@ $('#btnSubmitWeather').on("click", function () {
 
 $('#btnDeleteWeather').on('click', function() {
     // Get the selected value from the dropdown
+    var sessionId = sessionStorage.getItem("SessionID");
     var selectedLogID = $('#selWeather').val();
     var sessionId = sessionStorage.getItem("SessionID");
 
@@ -331,7 +615,7 @@ $('#btnDeleteWeather').on('click', function() {
         $.ajax({
             url: 'https://simplecoop.swollenhippo.com/environment.php',
             method: 'DELETE', 
-            data: { logID: selectedLogID, SessionID: sessionId },
+            data: { logID: selectedLogID, SessionID:sessionId },
             success: function(response) {
                 // Assuming the deletion was successful
                 console.log('Log deleted successfully');
@@ -343,10 +627,9 @@ $('#btnDeleteWeather').on('click', function() {
                     icon: 'success',
                     title: 'Success',
                     text: 'Log deleted successfully!',
-                });
-                populateEnvironmentDropbox();
-                populateEnviromentChart();
-            
+                }).then(() => {
+                    populateEnviromentChart();
+            });
             },
             error: function(xhr, status, error) {
                 console.error('Error deleting log:', error);
@@ -611,6 +894,7 @@ $('#btnDeleteEgg').on('click', function() {
 $('#btnSettings').on('click',function(){
     $('#divDashboard').slideToggle(function(){
         $('#divSettings').slideToggle();
+        fetchAndLogSettings();
     })
 })
 
