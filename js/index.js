@@ -538,6 +538,17 @@ $('#btnRegister').on('click',function(){
         })
              
     }
+    $('#txtFirstName').val('');
+    $('#txtLastName').val('');
+    $('#txtEmail').val('');
+    $('#txtPassword').val('');
+    $('#txtStreetAddress1').val('');
+    $('#txtStreetAddress2').val('');
+    $('#txtCity').val('');
+    $('#txtState').val('');
+    $('#txtZip').val('');
+    $('#telPhoneNum').val('');
+    $('#txtCoopID').val('');
 })
 
 // environment.php start
@@ -884,3 +895,21 @@ $('#btnReturnDashboard').on('click',function(){
         $('#divDashboard').slideToggle();
     })
 })
+
+function showPassword() {
+    var x = document.getElementById('txtPassword');
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+}
+
+function showLoginPassword() {
+    var x = document.getElementById('txtLoginPassword');
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+}

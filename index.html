@@ -30,12 +30,13 @@
                         <input type="email" id="txtLoginEmail" class="form-control" placeholder="Johndoe@gmail.com">
                     </div>
                     <div class="form-group">
-                        <label for="txtLoginPassword" class="form-label">Password</label>
+                        <label for="txtLoginPassword" class="form-label mt-2">Password&nbsp;&nbsp;</label>
+                        <span><input type="checkbox" onclick="showLoginPassword()">&nbsp;Show Password</span>
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                     </div>
                     <button id="btnLogin" class="btn btn-success col-12 mt-4 rounded" aria-label = "Submit Login" type="button">Submit</button>
                     <div class ="col-12 d-flex justify-content-center">
-                        <a class="col-12 text-center btnToggle" data-card="Login">Need an account? Click Here</a>
+                        <a class="col-12 text-center btnToggle mt-1" data-card="Login">Need an account? Click Here</a>
                     </div>
                 </form>
             </div>
@@ -52,50 +53,51 @@
                         <input id="txtEmail" class="form-control rounded" type="email" aria-required="true" placeholder="Johndoe@gmail.com">
                     </div>
                     <div class="form-group">
-                        <label for="txtPassword" class="form-label">Password</label>
+                        <label for="txtPassword" class="form-label mt-2">Password&nbsp;&nbsp;</label>
+                        <span><input type="checkbox" onclick="showPassword()">&nbsp;Show Password</span>
                         <input id="txtPassword" class="form-control rounded" type="password" aria-required="true" placeholder="Password">
                     </div>
                     <div class="form-group">
-                        <label for="txtFirstName" class="form-label">First Name</label>
+                        <label for="txtFirstName" class="form-label mt-2">First Name</label>
                         <input id="txtFirstName" class="form-control rounded" type="text" aria-required="true" placeholder="John">
                     </div>
                     <div class="form-group">
-                        <label for="txtLastName" class="form-label">Last Name</label>
+                        <label for="txtLastName" class="form-label mt-2">Last Name</label>
                         <input id="txtLastName" class="form-control rounded" type="text" aria-required="true" placeholder="Doe">
                     </div>
                     <div class="form-group">
-                        <label for="txtStreetAddress1" class="form-label">Street Address 1</label>
+                        <label for="txtStreetAddress1" class="form-label mt-2">Street Address 1</label>
                         <input id="txtStreetAddress1" placeholder="Street Address 1" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="txtStreetAddress2" class="form-label">Street Address 2</label>
+                        <label for="txtStreetAddress2" class="form-label mt-2">Street Address 2</label>
                         <input id="txtStreetAddress2" placeholder="Street Address 2" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="txtCity" class="form-label">City</label>
+                        <label for="txtCity" class="form-label mt-2">City</label>
                         <input id="txtCity" placeholder="City" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="txtState" class="form-label">State</label>
+                        <label for="txtState" class="form-label mt-2">State</label>
                         <input id="txtState" placeholder="State" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="txtZip" class="form-label">Zip</label>
+                        <label for="txtZip" class="form-label mt-2">Zip</label>
                         <input id="txtZip" placeholder="Zip" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="telPhoneNum" class="form-label">Phone Number</label>
+                        <label for="telPhoneNum" class="form-label mt-2">Phone Number</label>
                         <input id="telPhoneNum" placeholder="E.g, 111-222-3333" type="tel" class="form-control rounded" aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="txtCoopID" class="form-label">CoopID</label>
+                        <label for="txtCoopID" class="form-label mt-2">CoopID</label>
                         <input id="txtCoopID" placeholder="Coop ID" type="text" class="form-control rounded" aria-required="true">
                     </div>
                     
                     <button class="col-12 btn btn-success mt-4 rounded" id="btnRegister" aria-label="Register" type="button">Register</button>
-                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1 rounded">Reset Form</button>
+                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-outline-secondary col-12 mt-1 rounded">Reset Form</button>
                     <div class="col-12 d-flex justify-content-center">
-                        <a class="col-12 text-center btnToggle" data-card="Register">Return To Login</a>
+                        <a class="col-12 text-center btnToggle mt-1" data-card="Register">Return To Login</a>
                     </div>
                 </form>
             </div>
