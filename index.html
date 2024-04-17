@@ -220,7 +220,15 @@
                                 <h3>Coop Settings</h3>
                             </div>
                             <div class="card-body p-4">
-
+                                <label id="tempLabel">Error!</label>
+                                <div class="progress">
+                                    <div id="progressTemp" class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                                </div>
+                                <br>
+                                <label id="humidityLabel">Error!</label>
+                                <div class="progress">
+                                    <div id="progressHumidity" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                                </div>  
                             </div>
                         </div>
                     </div>
@@ -246,7 +254,18 @@
                     <input type="number" data-ignore="yes" id="settingCoopTempInt" value="78" min="0" max="100">
                 </div>
             </div>
-          </fieldset>
+        </fieldset>
+        <fieldset>
+            <label for="settingCoopHumidity" class="form-label">Coop Humidity</label>
+            <div class="row">
+                <div class="col-10">
+                    <input type="range" class="form-range" value="78" min="0" max="100" id="settingCoopHumidity" data-target="#settingCoopHumidityInt">
+                </div>
+                <div class="col-2">
+                    <input type="number" data-ignore="yes" id="settingCoopHumidityInt" value="78" min="0" max="100">
+                </div>
+            </div>
+        </fieldset>
         <hr>
         <fieldset>
             <div class="form-check form-switch">

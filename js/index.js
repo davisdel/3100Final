@@ -28,6 +28,14 @@ $(document).ready(function(){
     $('#settingCoopTemp').on('input', function() {
         $('#settingCoopTempInt').val($(this).val());
     });
+
+    $('#settingCoopHumidityInt').on('input', function() {
+        $('#settingCoopHumidity').val($(this).val());
+    });
+
+    $('#settingCoopHumidity').on('input', function() {
+        $('#settingCoopHumidityInt').val($(this).val());
+    });
 })
 
 async function getSettings() {
@@ -55,7 +63,6 @@ async function getSettings() {
                                 }
                             } else if ($('#' + settingName).attr('type') == 'range'){
                                 $('#'+settingName).val(response.Value);
-
                                 targetId = $('#' + settingName).attr('data-target');
                                 if (targetId) {
                                     $(targetId).val(response.Value);
@@ -123,12 +130,14 @@ async function setSetting(setting, value) {
             $('.card').css('border-color', '');
         }  
     } else if (setting == 'settingCoopTemp'){
-        
+        $('#progressTemp').attr('style', 'width: ' + value + '%;');
+        $('#tempLabel').text(`Coop Temperature: ${value} °F`);
     } else if (setting == 'settingDoorOpen'){
 
-    } else if(setting == 'settingColorBlind'){
-        
-    }
+    } else if (setting == 'settingCoopHumidity'){
+        $('#progressHumidity').attr('style', 'width: ' + value + '%;');
+        $('#humidityLabel').text(`Coop Humidity: ${value}%`);
+    } 
 }
 
 // Function to save or update a setting
@@ -168,7 +177,6 @@ $('#saveSettings').on('click', function () {
             } else {
                 var value = false;
             }
-            console.log(value);
             
             $.ajax({
                 type: 'GET',
@@ -189,7 +197,6 @@ $('#saveSettings').on('click', function () {
                                 value: value
                             },
                             success: function(result) {
-                                console.log(result);
                                 setSetting(settingName, value);
                             },
                             error: function() {
@@ -207,7 +214,6 @@ $('#saveSettings').on('click', function () {
                                 value: value
                             },
                             success: function(result) {
-                                console.log(result);
                                 setSetting(settingName, value);
                             },
                             error: function() {
@@ -224,7 +230,7 @@ $('#saveSettings').on('click', function () {
             // For other input/select types, just print out the value
             var value = $(this).val();
 
-            if (value.length > 1) {
+            if (value.length >= 1) {
                 $.ajax({
                     type: 'GET',
                     url: 'https://simplecoop.swollenhippo.com/settings.php',
@@ -244,7 +250,6 @@ $('#saveSettings').on('click', function () {
                                     value: value
                                 },
                                 success: function(result) {
-                                    console.log(result);
                                     setSetting(settingName, value);
                                 },
                                 error: function() {
@@ -262,7 +267,6 @@ $('#saveSettings').on('click', function () {
                                     value: value
                                 },
                                 success: function(result) {
-                                    console.log(result);
                                     setSetting(settingName, value);
                                 },
                                 error: function() {
@@ -360,7 +364,6 @@ $('#btnLogin').on("click", function () {
     } else {
         $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result){
             result = JSON.parse(result)
-            console.log(result)
             if(result.Outcome == 'false'){
                 Swal.fire({
                     title: "Oops!",
