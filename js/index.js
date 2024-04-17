@@ -561,6 +561,14 @@ $('#btnSubmitWeather').on("click", function () {
             text: 'Please fill in all fields before submitting.'
         });
         return; // Stop further execution if fields are empty
+    } else if (temperature < 0 || temperature > 100 || humidity < 0 || humidity > 100) {
+        // Display error message using SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Temperature and Humidity must be between 0 and 100.'
+        });
+        return; // Stop further execution if fields are empty
     }
 
     // Generate a random logID
