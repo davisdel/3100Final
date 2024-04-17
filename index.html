@@ -17,7 +17,7 @@
 </head>
 
 <body class="lightmode">
-    <div class="d-flex col-12 justify-content-center align-items-center min-vh-100">
+    <div class="mt-2 d-flex justify-content-center align-items-center min-vh-100">
 <!-- divLogin -->
         <div class="card col-12 col-md-5 col-lg-4 rounded shadow" id="divLogin">
             <div class="card-header">
@@ -113,20 +113,24 @@
             </div>
         </div>
 <!-- divDashboard -->
-        <div class="card col-12 col-md-10 col-lg-8 rounded shadow" id="divDashboard" style="display:none;">
+        <div class="card col-12 col-md-8 col-lg-6 rounded shadow" id="divDashboard" style="display:none;">
             <div class="card-header">
                 <div class="row align-items-center">
-                    <div class="col-5 col-lg-10 me-auto align"><h2 id="dashboardHeader">Set coop name in settings!</h2></div>
-                    <div class="col-1 col-md-auto me-auto"><button type="button" class="btn btn-icon" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></button></div>
-                    <div class="col-1 col-md-auto me-auto"><button id="btnLogout" aria-label="Logout" class="btn btn-icon" type="button"><i style="font-size: 1.5rem; text-shadow: 0.5px 0 #ff6666, 0 0.5px #ff6666, -0.5px 0 #ff6666, 0 -0.5px #ff6666;; color: #e93636" class="bi bi-box-arrow-right"></i></button></div>
+                    <div class="col-auto me-auto">
+                        <h2 class="mb-0" id="dashboardHeader">Set coop name in settings!</h2>
+                    </div>
+                    <div class="d-flex col-2 ms-auto justify-content-between">
+                        <a id="btnLogout" aria-label="Logout" role="button"><i style="font-size: 1.5rem" class="bi bi-box-arrow-right text-danger"></i></a>
+                        <a role="button" id="btnSettings" aria-label="Settings Button"><i style="font-size: 1.5rem" class="bi bi-gear-wide-connected"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
                 <div class="container px-4">
-                    <div class="row g-5" id="sortable">
+                    <div class="row g-3" id="sortable">
 <!-- Egg counter widget -->
-                        <div class="col-lg-6 col-md-12 draggable">
-                            <div id="eggWidget" class="card rounded">
+                        <div class="col-12 col-md-12 col-lg-6 draggable">
+                            <div id="eggWidget" class="card rounded shadow">
                                 <div class="card-header">
                                     <h3>Egg Counter</h3>
                                 </div>
@@ -135,15 +139,16 @@
                                     <canvas id="eggCountChart"></canvas>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header" data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">
-                                            <label data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">Add Egg Observation</label>
+                                        <div class="d-flex card-header justify-content-between" data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">
+                                            <h4 class="mb-0" data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">Add Log</h4>
+                                            <i class="bi bi-plus-circle text-success"></i>
                                         </div>
                                         <div class="collapse" id="eggAdd">
                                             <div class="card-body p-4">
                                                 <form>
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="dateObservationEggs">Observation Date</label>
+                                                    <div class="form-floating">
                                                         <input id="dateObservationEggs" type="date" placeholder="Observation Date" class="form-control">
+                                                        <label class="form-label" for="dateObservationEggs">Observation Date</label>
                                                     </div>
                                                     <div class="form-floating mt-3">
                                                         <input id="numEggCount" type="number" placeholder="Egg count" min="0" class="form-control">
@@ -156,8 +161,9 @@
                                     </div>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">
-                                            <label for="selEggs" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">Select Log to Delete</label>
+                                        <div class="d-flex card-header justify-content-between" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">
+                                            <h4 class="mb-0" for="selEggs" data-bs-toggle="collapse" href="#eggRemove" role="button" aria-label="Toggle remove egg card">Delete Log</h4>
+                                            <i class="bi bi-x-circle text-danger"></i>
                                         </div>
                                         <div class="collapse" id="eggRemove">
                                             <div class="card-body p-4">
@@ -173,8 +179,8 @@
                             </div>
                         </div>
 <!-- Weather Widget -->
-                        <div class="col-lg-6 col-md-12 draggable">
-                            <div id="weatherWidget" class="card rounded">
+                        <div class="col-12 col-md-12 col-lg-6 draggable">
+                            <div id="weatherWidget" class="card rounded shadow">
                                 <div class="card-header">
                                     <h3>Environment</h3>
                                 </div>
@@ -183,15 +189,16 @@
                                     <canvas id="myChart"></canvas>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header" data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">
-                                            <label data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">Add Weather Observation</label>
+                                        <div class="d-flex card-header justify-content-between" data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">
+                                            <h4 class="mb-0" data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">Add Log</h4>
+                                            <i class="bi bi-plus-circle text-success"></i>
                                         </div>
                                         <div class="collapse" id="weatherAdd">
                                             <div class="card-body p-4">
                                                 <form>
-                                                    <div class="form-group">
-                                                        <label for="dateObservation" class="form-label">Observation Date</label>
+                                                    <div class="form-floating">
                                                         <input id="dateObservation" class="form-control" type="date">
+                                                        <label for="dateObservation" class="form-label">Observation Date</label>
                                                     </div>
                                                     <div class="form-floating mt-3">
                                                         <input id="decimalHumidity" class="form-control" type="number" step="any" placeholder="Humidity in Percent" min="0" max="100">
@@ -208,8 +215,9 @@
                                     </div>
                                     <hr>
                                     <div class="card rounded mt-2">
-                                        <div class="card-header" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">
-                                            <label for="selWeather" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">Select Log to Delete</label>
+                                        <div class="d-flex card-header justify-content-between" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">
+                                            <h4 class="mb-0" for="selWeather" data-bs-toggle="collapse" href="#weatherRemove" role="button" aria-label="Toggle create weather card">Delete Log</h4>
+                                            <i class="bi bi-x-circle text-danger"></i>
                                         </div>
                                         <div class="collapse" id="weatherRemove">
                                             <div class="card-body p-4">
@@ -226,20 +234,20 @@
                         </div>
                     </div>
 <!-- Coop Settings Widget -->
-                    <div class="col-12 mt-5">
-                        <div id="coopSettings" class="card rounded">
+                    <div class="col-12 mt-4">
+                        <div id="coopSettings" class="card rounded shadow">
                             <div class="card-header">
                                 <h3>Coop Settings</h3>
                             </div>
                             <div class="card-body p-4">
-                                <label id="tempLabel">Error!</label>
-                                <div class="progress">
-                                    <div id="progressTemp" class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                                <h5 id="tempLabel">Error!</h5>
+                                <div class="progress progress-bg-grey">
+                                    <div id="progressTemp" class="progress-bar tempProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
                                 </div>
                                 <br>
-                                <label id="humidityLabel">Error!</label>
-                                <div class="progress">
-                                    <div id="progressHumidity" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                                <h5 id="humidityLabel">Error!</h5>
+                                <div class="progress progress-bg-grey">
+                                    <div id="progressHumidity" class="progress-bar humidityProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
                                 </div>  
                             </div>
                         </div>
@@ -248,49 +256,53 @@
             </div>
         </div>
 <!-- Settings card -->
-<div class="card col-12 col-md-5 col-lg-4" id="divSettings" style="display:none;">
+<div class="card col-12 col-md-5 col-lg-4 rounded shadow" id="divSettings" style="display:none;">
     <div class="card-header">
         <h2>Settings</h2>
     </div>
-    <div class="card-body">
-        <label for="settingUsername" class="form-label">Coop Name (Max:15)</label>
-        <input id="settingUsername" placeholder="Username" type="text" class="form-control" maxlength="15">
-        <br>
-        <fieldset>
-            <label for="settingCoopTemp" class="form-label">Coop Temperature</label>
-            <div class="row">
-                <div class="col-10">
-                    <input type="range" class="form-range" value="78" min="0" max="100" id="settingCoopTemp" data-target="#settingCoopTempInt">
-                </div>
-                <div class="col-2">
-                    <input type="number" data-ignore="yes" id="settingCoopTempInt" value="78" min="0" max="100">
-                </div>
+    <div class="card-body px-4">
+        <div class="card rounded">
+            <div class="card-body px-4">
+                <label for="settingUsername" class="form-label">Coop Name (Max:15)</label>
+                <input id="settingUsername" placeholder="Username" type="text" class="form-control" maxlength="15">
+                <br>
+                <fieldset>
+                    <label for="settingCoopTemp" class="form-label">Coop Temperature</label>
+                    <div class="row">
+                        <div class="col-9">
+                            <input type="range" class="form-range" value="78" min="0" max="100" id="settingCoopTemp" data-target="#settingCoopTempInt">
+                        </div>
+                        <div class="col-2">
+                            <input type="number" data-ignore="yes" id="settingCoopTempInt" value="78" min="0" max="100">
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="settingCoopHumidity" class="form-label">Coop Humidity</label>
+                    <div class="row">
+                        <div class="col-9">
+                            <input type="range" class="form-range" value="78" min="0" max="100" id="settingCoopHumidity" data-target="#settingCoopHumidityInt">
+                        </div>
+                        <div class="col-2">
+                            <input type="number" data-ignore="yes" id="settingCoopHumidityInt" value="78" min="0" max="100">
+                        </div>
+                    </div>
+                </fieldset>
+                <hr>
+                <fieldset>
+                    <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="settingDarkMode">
+                    <label class="form-check-label" for="settingDarkMode">Dark Mode</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="settingDoorOpen">
+                    <label class="form-check-label" for="settingDoorOpen">Door Open</label>
+                    </div>
+                </fieldset>
             </div>
-        </fieldset>
-        <fieldset>
-            <label for="settingCoopHumidity" class="form-label">Coop Humidity</label>
-            <div class="row">
-                <div class="col-10">
-                    <input type="range" class="form-range" value="78" min="0" max="100" id="settingCoopHumidity" data-target="#settingCoopHumidityInt">
-                </div>
-                <div class="col-2">
-                    <input type="number" data-ignore="yes" id="settingCoopHumidityInt" value="78" min="0" max="100">
-                </div>
-            </div>
-        </fieldset>
-        <hr>
-        <fieldset>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="settingDarkMode">
-              <label class="form-check-label" for="settingDarkMode">Dark Mode</label>
-            </div>
-        </fieldset>
-        <fieldset>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="settingDoorOpen">
-              <label class="form-check-label" for="settingDoorOpen">Door Open</label>
-            </div>
-        </fieldset>
+        </div>
         <div class="row">
             <button type="button" class="btn btn-success mt-4 mb-2 rounded" aria-label="Save" id="saveSettings">Save</button>
             <button type="button" class="btn btn-primary rounded" id="btnReturnDashboard" aria-label="Return">Return</button>

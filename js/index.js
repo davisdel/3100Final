@@ -110,33 +110,34 @@ async function setSetting(setting, value) {
             $('body').removeClass('lightmode');
             $('body').addClass('darkmode'); 
             $('.btn').each(function() {
-                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
+                if ($(this).hasClass('btn-primary')) {
                     $(this).addClass('btn-dark');
                 }
             })
-            $('p, h1, h2, h3, h4, h5, h6, span, a, label').addClass('text-white');
+            $('p, h1, h2, h3, h4, h5, h6, span, a').addClass('text-light');
             $('.card').addClass('bg-dark');
             $('.card').css('border-color', 'grey');
         } else {
             $('body').removeClass('darkmode');
             $('body').addClass('lightmode');
             $('.btn').each(function() {
-                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
+                if ($(this).hasClass('btn-primary')) {
                     $(this).removeClass('btn-dark');
                 }
             })
-            $('p, h1, h2, h3, h4, h5, h6, span, a, label').removeClass('text-white');
+            $('p, h1, h2, h3, h4, h5, h6, span, a').removeClass('text-light');
             $('.card').removeClass('bg-dark');
+            $('.card').addClass('bg-custom');
             $('.card').css('border-color', '');
         }  
     } else if (setting == 'settingCoopTemp'){
         $('#progressTemp').attr('style', 'width: ' + value + '%;');
-        $('#tempLabel').text(`Coop Temperature: ${value} °F`);
+        $('#tempLabel').html(`Coop Temperature: <b>${value} °F</b>`);
     } else if (setting == 'settingDoorOpen'){
 
     } else if (setting == 'settingCoopHumidity'){
         $('#progressHumidity').attr('style', 'width: ' + value + '%;');
-        $('#humidityLabel').text(`Coop Humidity: ${value}%`);
+        $('#humidityLabel').html(`Coop Humidity: <b>${value}%</b>`);
     } 
 }
 

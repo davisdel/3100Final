@@ -11,3 +11,21 @@
     background-attachment: fixed;
     background-size: cover;
 }
+
+.humidityProgress {
+    --bs-bg-opacity: 1;
+    background-color: #36a2eb !important;
+}
+
+.tempProgress {
+    --bs-bg-opacity: 1;
+    background-color: #ff6384 !important;
+}
+
+.progress-bg-grey {
+    background-color: #ececec !important;
+}
+
+.bg-custom {
+    background-color:#eeeef4;
+}
