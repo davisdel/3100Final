@@ -1,7 +1,23 @@
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
+function getCSSVariableFromClass(className, variableName) {
+    // Create a temporary element with the given class
+    var tempElement = document.createElement('div');
+    tempElement.className = className;
+    document.body.appendChild(tempElement);
+
+    // Get the computed style to access the CSS variable
+    var value = getComputedStyle(tempElement).getPropertyValue(variableName);
+
+    // Clean up by removing the temporary element
+    document.body.removeChild(tempElement);
+
+    return value.trim();  // Trim to remove any extra whitespace
+}
+
 $(document).ready(function(){
+
     if(sessionStorage.getItem("SessionID")){
         $.getJSON("https://simplecoop.swollenhippo.com/sessions.php", {SessionID:sessionStorage.getItem("SessionID")}, function(result){
             if(result != null){
@@ -12,10 +28,8 @@ $(document).ready(function(){
 
                 $('#divLogin').slideToggle(function(){
                     $('#divDashboard').slideToggle();
-                })
-
-                $("#sortable").sortable({
-                    distance: 30
+                    $('.sidebar').attr("style", "");
+                    $('.navbar').attr("style", "");
                 })
             }
         })
@@ -104,41 +118,68 @@ async function fetchAndLogSettings() {
 
 async function setSetting(setting, value) {
     if(setting == 'settingUsername'){
-        $('#dashboardHeader').text("Coop: " + value);
+        $('#dashboardHeader').text(value);
     } else if(setting == 'settingDarkMode'){
         if(value == 'true'){
-            $('body').removeClass('lightmode');
-            $('body').addClass('darkmode'); 
-            $('.btn').each(function() {
-                if ($(this).hasClass('btn-primary')) {
-                    $(this).addClass('btn-dark');
-                }
-            })
-            $('p, h1, h2, h3, h4, h5, h6, span, a').addClass('text-light');
-            $('.card').addClass('bg-dark');
-            $('.card').css('border-color', 'grey');
+            $('body').removeClass('lightmode light');
+            $('body').addClass('darkmode dark'); 
         } else {
-            $('body').removeClass('darkmode');
-            $('body').addClass('lightmode');
-            $('.btn').each(function() {
-                if ($(this).hasClass('btn-primary')) {
-                    $(this).removeClass('btn-dark');
-                }
-            })
-            $('p, h1, h2, h3, h4, h5, h6, span, a').removeClass('text-light');
-            $('.card').removeClass('bg-dark');
-            $('.card').addClass('bg-custom');
-            $('.card').css('border-color', '');
+            $('body').removeClass('darkmode dark');
+            $('body').addClass('lightmode light');
         }  
     } else if (setting == 'settingCoopTemp'){
         $('#progressTemp').attr('style', 'width: ' + value + '%;');
         $('#tempLabel').html(`Coop Temperature: <b>${value} °F</b>`);
     } else if (setting == 'settingDoorOpen'){
-
+        if(value == 'true'){
+            $('#doorStatus').html('Open');
+        } else {
+            $('#doorStatus').html('Closed');
+        }
+    } else if (setting == 'settingLight'){
+        if(value == 'true'){
+            $('#lightStatus').html('On');
+        } else {
+            $('#lightStatus').html('Off');
+        }
     } else if (setting == 'settingCoopHumidity'){
         $('#progressHumidity').attr('style', 'width: ' + value + '%;');
         $('#humidityLabel').html(`Coop Humidity: <b>${value}%</b>`);
-    } 
+    } else if (setting = 'settingTheme') {
+        var element = $('body');
+
+        // Function to check if the element has any class matching "theme-color-*"
+        function findThemeColorClass(element) {
+            var classList = element.attr('class').split(/\s+/);
+            var pattern = /^theme-color-(.+)$/; // Updated to capture the color part
+    
+            for (var i = 0; i < classList.length; i++) {
+                var match = pattern.exec(classList[i]);
+                if (match) {
+                    return match[1];  // Return the color part of the class
+                }
+            }
+            return null; // Return null if no matching class found
+        }
+    
+        // Example usage
+        var color = findThemeColorClass(element);
+        if (color) {
+            element.removeClass('theme-color-'+color);
+            element.addClass('theme-color-'+value);
+        } else {
+            element.addClass('theme-color-'+value);
+        }
+
+        var primaryColor = getCSSVariableFromClass('theme-color-'+value, '--bs-primary');
+        var infoColor = getCSSVariableFromClass('theme-color-'+value, '--bs-info');
+
+    }
+}
+
+// Function to capitalize the first letter of a string
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // Function to save or update a setting
@@ -300,6 +341,7 @@ $('#saveSettings').on('click', function () {
         }
     })
     $('#divSettings').slideToggle(function(){
+        activeId = 'divDashboard';
         $('#divDashboard').slideToggle();
         fetchAndLogSettings();
     })
@@ -312,6 +354,8 @@ $('#btnLogout').on('click', function(){
 
     $('#divDashboard').slideToggle(function(){
         $('#divLogin').slideToggle();
+        $('.sidebar').attr("style", "display: none;");
+        $('.navbar').attr("style", "display: none;");
     })
 })
          
@@ -372,12 +416,14 @@ $('#btnLogin').on("click", function () {
                 })
             } else {
                 sessionStorage.setItem("SessionID",result.SessionID)
+                fetchAndLogSettings();
                 $("#divLogin").slideToggle(function(){
                     $("#divDashboard").slideToggle()
+                    $('.sidebar').attr("style", "");
+                    $('.navbar').attr("style", "");
                 })
                 populateEnviromentChart();
                 populateEggChart();
-                fetchAndLogSettings();
             }
         })
     }
@@ -532,9 +578,10 @@ $('#btnRegister').on('click',function(){
                             } else {
                                 sessionStorage.setItem("SessionID",result.SessionID)
                                 fetchAndLogSettings()
-                                $("#divRegister").slideToggle(function(){
-                                    $("#divDashboard").slideToggle()
-                                })
+                                $('#divRegister').slideToggle(function(){
+                                    activeId = 'divDashboard';
+                                    $('#divDashboard').slideToggle();
+                                });
                             }
                         })
                     }
@@ -561,12 +608,12 @@ $('#btnSubmitWeather').on("click", function () {
             text: 'Please fill in all fields before submitting.'
         });
         return; // Stop further execution if fields are empty
-    } else if (temperature < 0 || temperature > 100 || humidity < 0 || humidity > 100) {
+    } else if (temperature < 0 || temperature > 250 || humidity < 0 || humidity > 100) {
         // Display error message using SweetAlert2
         Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: 'Temperature and Humidity must be between 0 and 100.'
+            text: 'Temperature must be between 0 and 250 and Humidity must be between 0 and 100.'
         });
         return; // Stop further execution if fields are empty
     }
@@ -821,6 +868,17 @@ $('#btnSubmitEggs').on("click", function () {
     const observationDateTime = $('#dateObservationEggs').val();
     const eggNum = $('#numEggCount').val();
 
+    // Check if any field is empty
+    if (!sessionId || !observationDateTime || !eggNum) {
+        // Display error message using SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Please fill in all fields before submitting.'
+        });
+        return; // Stop further execution if fields are empty
+    }
+
     // Set the data
     var requestData = {
         SessionID: sessionId,
@@ -902,15 +960,59 @@ $('#btnDeleteEgg').on('click', function() {
     }
 });
 
-$('#btnSettings').on('click',function(){
-    $('#divDashboard').slideToggle(function(){
-        $('#divSettings').slideToggle();
-        fetchAndLogSettings();
-    })
-})
+// $('#btnSettings').on('click',function(){
+//     $('#divDashboard').slideToggle(function(){
+//         $('#divSettings').slideToggle();
+//         fetchAndLogSettings();
+//     })
+// })
+
+function hexToRGB(hex) {
+    // Remove the hash at the beginning of the hex string if it's there
+    hex = hex.replace(/^#/, '');
+
+    // Parse the hex string into integers using parseInt
+    let r = parseInt(hex.substring(0, 2), 16); // Extract the first two characters and convert to decimal
+    let g = parseInt(hex.substring(2, 4), 16); // Extract the next two characters and convert to decimal
+    let b = parseInt(hex.substring(4, 6), 16); // Extract the last two characters and convert to decimal
+
+    // Return the RGB values as an object
+    return { r, g, b };
+}
+
 
 $('#btnReturnDashboard').on('click',function(){
-    $('#divSettings').slideToggle(function(){
-        $('#divDashboard').slideToggle();
-    })
+    switchActive('divDashboard');
 })
+
+var activeId = 'divDashboard';
+
+$('.nav-link').on('click', function(){
+    targetId = $(this).data('id');
+    if (targetId == activeId) {
+        return;
+    }
+
+    // if (targetId == "divSettings" || activeId == "divSettings") {
+    //     fetchAndLogSettings();
+    // }
+    
+    if (activeId != '') {
+        var toggleType = $(this).data('type');
+        if (toggleType) {
+            $('#'+targetId).slideToggle();
+        } else {
+            $('#'+activeId).slideToggle(function(){
+                activeId = targetId;
+                $('#'+targetId).slideToggle();
+            });
+        }
+    }
+})
+
+function switchActive(targetId) {
+    $('#'+activeId).slideToggle(function(){
+        activeId = targetId;
+        $('#'+targetId).slideToggle();
+    });
+}
