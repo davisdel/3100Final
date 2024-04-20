@@ -4,6 +4,7 @@ var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 var primaryColor = '';
 var infoColor = '';
 
+var toggling = false;
 
 function getCSSVariableFromClass(className, variableName) {
     // Create a temporary element with the given class
@@ -55,6 +56,8 @@ $(document).ready(function(){
     $('#settingCoopHumidity').on('input', function() {
         $('#settingCoopHumidityInt').val($(this).val());
     });
+
+    toggling = true;
 })
 
 async function getSettings() {
@@ -993,7 +996,6 @@ $('#btnReturnDashboard').on('click',function(){
 })
 
 var activeId = 'divDashboard';
-var toggling = false;
 $('.nav-link').on('click', function(){
     if (!toggling) {
         toggling = true;
