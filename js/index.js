@@ -32,6 +32,7 @@ $(document).ready(function(){
                 fetchAndLogSettings();
 
                 $('#divLogin').slideToggle(function(){
+                    toggling = false;
                     $('#divDashboard').slideToggle();
                     $('.sidebar').attr("style", "");
                     $('.navbar').attr("style", "");
