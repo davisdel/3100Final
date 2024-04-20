@@ -299,6 +299,18 @@
                 <h3>Egg Counter</h3>
             </div>
             <div class="card-body p-4">
+                <table class="table" id="eggTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Eggs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table will be populated dynamically using JavaScript -->
+                    </tbody>
+                </table>
+                <br>
                 <div class="card rounded mt-2">
                     <div class="d-flex card-header justify-content-between" data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">
                         <h4 class="mb-0" data-bs-toggle="collapse" href="#eggAdd" role="button" aria-label="Toggle create egg card">Add Log</h4>
@@ -344,6 +356,18 @@
                 <h3>Environment</h3>
             </div>
             <div class="card-body p-4">
+                <table class="table" id="weatherTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table will be populated dynamically using JavaScript -->
+                    </tbody>
+                </table>
                 <div class="card rounded mt-2">
                     <div class="d-flex card-header justify-content-between" data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">
                         <h4 class="mb-0" data-bs-toggle="collapse" href="#weatherAdd" role="button" aria-label="Toggle create weather card">Add Log</h4>
@@ -418,20 +442,22 @@
                         </div>
                     </div>
 <!-- Coop Settings Widget -->
-                    <div class="col-12 mt-4">
+                    <div class="col-12 mt-3">
                         <div id="coopSettings" class="card rounded-shadow">
                             <div class="card-header">
                                 <h3>Coop Settings</h3>
                             </div>
                             <div class="card-body p-4">
                                 <h5 id="tempLabel">Error!</h5>
+                                <hr>
                                 <div class="progress">
-                                    <div id="progressTemp" class="progress-bar tempProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                                    <div id="progressTemp" class="progress-bar tempProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Temperature Progress" style="width: 75%;"></div>
                                 </div>
                                 <br>
                                 <h5 id="humidityLabel">Error!</h5>
+                                <hr>
                                 <div class="progress progressHumidity">
-                                    <div id="progressHumidity" class="progress-bar humidityProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                                    <div id="progressHumidity" class="progress-bar humidityProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Humidity Progress" style="width: 75%;"></div>
                                 </div>
                                 <hr>
                                 <hr>
@@ -565,33 +591,27 @@
             </div>
         </div>
     </div>
->
+</div>
+</main>
 
 <!-- HOPE-UI Scripts -->
     <script src="js/libs.min.js"></script>
     <script src="js/external.min.js"></script>
     
 <!-- fslightbox Script -->
-    <script src="js/fslightbox.js"></script>
+    <script src="js/fslightbox.js" defer></script>
     
 <!-- Settings Script -->
     <script src="js/setting.js"></script>
     
 <!-- Slider-tab Script -->
-    <script src="js/slider-tabs.js"></script>
-    
-<!-- Form Wizard Script -->
-    <script src="js/form-wizard.js"></script>
-    
-<!-- AOS Animation Plugin-->
-    <script src="js/aos.js"></script>
+    <script src="js/slider-tabs.js" defer></script>
+
     <script src="js/hope-ui.js"></script>
 <!-- Import chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-<!-- Import JQuery v 3.7.1 -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" defer></script>
 <!-- Import SweetAlerts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 <!-- Custom Scripts -->
     <script src="js/index.js"></script>
 </body>

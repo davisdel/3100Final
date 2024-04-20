@@ -723,8 +723,13 @@ function populateEnviromentChart(){
 
     // Check if the chart already exists and destroy it
     let existingChart = Chart.getChart("myChart");
+    let existingTable = $('#weatherTable').DataTable();
     if (existingChart) {
         existingChart.destroy();
+    }
+    if (existingTable) {
+        existingTable.destroy();
+        $('#weatherTable tbody').empty();
     }
 
     // set up and display environment chart
@@ -773,6 +778,7 @@ function populateEnviromentChart(){
                 },
             });
 
+            let strRow = '';
             // Populate delete weather dropbox
             var dropdown = $('#selWeather');
 
@@ -783,6 +789,9 @@ function populateEnviromentChart(){
 
             // Iterate through each object in the data array
             data.forEach(obj => {
+                // create a new row for the table
+                strRow = `<tr><td>${obj.ObservationDateTime}</td><td>${obj.Temperature}</td><td>${obj.Humidity}</td></tr>`
+                $('#weatherTable tbody').append(strRow)
                 // Create a new option element
                 option = $('<option></option>');
 
@@ -793,6 +802,12 @@ function populateEnviromentChart(){
                 // Append the option to the dropdown
                 dropdown.append(option);
             });
+
+            $('#weatherTable').DataTable({
+                buttons: [
+                    'copy', 'excel', 'pdf', 'csv', 'print'
+                ]
+            })
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -804,8 +819,13 @@ function populateEggChart(){
 
     // Check if the chart already exists and destroy it
     let existingChart = Chart.getChart("eggCountChart");
+    let existingTable = $('#eggTable').DataTable();
     if (existingChart) {
         existingChart.destroy();
+    }
+    if (existingTable) {
+        existingTable.destroy();
+        $('#eggTable tbody').empty();
     }
 
     // set up and display environment chart
@@ -846,6 +866,8 @@ function populateEggChart(){
                 },
             });
 
+            let strRow = '';
+
             // Populate delete weather dropbox
             var dropdown = $('#selEggs');
 
@@ -856,6 +878,9 @@ function populateEggChart(){
 
             // Iterate through each object in the data array
             data.forEach(obj => {
+                // create a new row for the table
+                strRow = `<tr><td>${obj.LogDateTime}</td><td>${obj.Harvested}</td></tr>`
+                $('#eggTable tbody').append(strRow)
                 // Create a new option element
                 option = $('<option></option>');
 
@@ -866,6 +891,17 @@ function populateEggChart(){
                 // Append the option to the dropdown
                 dropdown.append(option);
             });
+            
+            $('#eggTable').DataTable({
+                layout:{
+                    topStart:{
+                        buttons: [
+                            'copy', 'excel', 'pdf', 'csv', 'print'
+                        ]
+                    }
+                }
+            })
+
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
