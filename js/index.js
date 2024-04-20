@@ -1,6 +1,10 @@
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
+var primaryColor = '';
+var infoColor = '';
+
+
 function getCSSVariableFromClass(className, variableName) {
     // Create a temporary element with the given class
     var tempElement = document.createElement('div');
@@ -30,6 +34,7 @@ $(document).ready(function(){
                     $('#divDashboard').slideToggle();
                     $('.sidebar').attr("style", "");
                     $('.navbar').attr("style", "");
+                    $('.solid-line').attr("style", "");
                 })
             }
         })
@@ -174,12 +179,9 @@ async function setSetting(setting, value) {
         var primaryColor = getCSSVariableFromClass('theme-color-'+value, '--bs-primary');
         var infoColor = getCSSVariableFromClass('theme-color-'+value, '--bs-info');
 
-    }
-}
+        $('#themeStatus').html(value.charAt(0).toUpperCase() + value.slice(1));
 
-// Function to capitalize the first letter of a string
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 }
 
 // Function to save or update a setting
@@ -352,10 +354,13 @@ $('#btnLogout').on('click', function(){
     $('#txtLoginEmail').val('');
     $('#txtLoginPassword').val('');
 
-    $('#divDashboard').slideToggle(function(){
-        $('#divLogin').slideToggle();
-        $('.sidebar').attr("style", "display: none;");
-        $('.navbar').attr("style", "display: none;");
+    $('#'+activeId).slideToggle(function(){
+        $('#divLogin').slideToggle(function() {
+            $('.sidebar').attr("style", "display: none;");
+            $('.navbar').attr("style", "display: none;");
+            $('.solid-line').attr("style", "display: none;");
+        });
+
     })
 })
          
@@ -418,9 +423,11 @@ $('#btnLogin').on("click", function () {
                 sessionStorage.setItem("SessionID",result.SessionID)
                 fetchAndLogSettings();
                 $("#divLogin").slideToggle(function(){
+                    activeId='divDashboard';
                     $("#divDashboard").slideToggle()
                     $('.sidebar').attr("style", "");
                     $('.navbar').attr("style", "");
+                    $('.solid-line').attr("style", "");
                 })
                 populateEnviromentChart();
                 populateEggChart();
@@ -986,33 +993,49 @@ $('#btnReturnDashboard').on('click',function(){
 })
 
 var activeId = 'divDashboard';
-
+var toggling = false;
 $('.nav-link').on('click', function(){
-    targetId = $(this).data('id');
-    if (targetId == activeId) {
-        return;
-    }
-
-    // if (targetId == "divSettings" || activeId == "divSettings") {
-    //     fetchAndLogSettings();
-    // }
-    
-    if (activeId != '') {
-        var toggleType = $(this).data('type');
-        if (toggleType) {
-            $('#'+targetId).slideToggle();
-        } else {
+    if (!toggling) {
+        toggling = true;
+        targetId = $(this).data('id');
+        if (targetId == activeId) {
             $('#'+activeId).slideToggle(function(){
-                activeId = targetId;
-                $('#'+targetId).slideToggle();
+                activeId = 'divDashboard';
+                $('#divDashboard').slideToggle();
+                toggling = false;
             });
+            return;
+        }
+
+        // if (targetId == "divSettings" || activeId == "divSettings") {
+        //     fetchAndLogSettings();
+        // }
+        
+        if (activeId != '') {
+            var toggleType = $(this).data('type');
+            if (toggleType == "toggle") {
+                $('#'+targetId).slideToggle();
+                toggling = false;
+            } else if (!toggleType) {
+                $('#'+activeId).slideToggle(function(){
+                    activeId = targetId;
+                    $('#'+targetId).slideToggle();
+                    toggling = false;      
+   
+                });
+            }
         }
     }
+
 })
 
 function switchActive(targetId) {
-    $('#'+activeId).slideToggle(function(){
-        activeId = targetId;
-        $('#'+targetId).slideToggle();
-    });
+    if (!toggling) {
+        toggling = true;
+        $('#'+activeId).slideToggle(function(){
+            activeId = targetId;
+            $('#'+targetId).slideToggle();
+            toggling=false;
+        });
+    }
 }

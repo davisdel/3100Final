@@ -24,7 +24,7 @@
     <title>FowlDomain SmartCoop</title>
 </head>
 
-<body class="lightmode light theme-color-blue">
+<body class="lightmode light">
 
     <!-- loader Start -->
     <div id="loading">
@@ -127,7 +127,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="btnLogout" aria-label="Logout">
+                        <a class="nav-link" id="btnLogout" data-type="logout" aria-label="Logout">
                             <i class="icon bi bi-box-arrow-right text-danger"></i>
                             <span class="item-name">Logout</span>
                         </a>
@@ -196,6 +196,7 @@
                 <p class="mb-0 caption-sub-title" id="dashboardHeader">Set coop name in settings!</p>
             </div>
         </nav>
+        <div class="solid-line bg-primary" style="display: none;"></div>
 
     <div class="mt-2 d-flex justify-content-center align-items-center min-vh-100">
 <!-- divLogin -->
@@ -293,7 +294,6 @@
             </div>
         </div>
 <!-- Egg counter Page -->
-    <!-- <div class="row"> -->
         <div class="card col-12 col-md-5 col-lg-4 mt-4 mb-4 rounded-shadow" id="divEggPage" style="display:none;">
             <div class="card-header">
                 <h3>Egg Counter</h3>
@@ -496,8 +496,10 @@
             <div class="card-body px-4">
                 <div class="card rounded">
                     <div class="card-body px-4">
-                        <label for="settingUsername" class="form-label">Coop Name (Max:15)</label>
-                        <input id="settingUsername" placeholder="Username" type="text" class="form-control" maxlength="15">
+                        <fieldset class="col-6">
+                            <label for="settingUsername" class="form-label">Coop Name (Max:15)</label>
+                            <input id="settingUsername" placeholder="Username" type="text" class="form-control" maxlength="15">
+                        </fieldset>
                         <br>
                         <fieldset>
                             <label for="settingCoopTemp" class="form-label">Coop Temperature</label>
@@ -510,6 +512,7 @@
                                 </div>
                             </div>
                         </fieldset>
+                        <br>
                         <fieldset>
                             <label for="settingCoopHumidity" class="form-label">Coop Humidity</label>
                             <div class="row">
@@ -521,19 +524,21 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <hr>
+                        <br>
                         <fieldset>
                             <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="settingDarkMode">
                             <label class="form-check-label" for="settingDarkMode">Dark Mode</label>
                             </div>
                         </fieldset>
+                        <br>
                         <fieldset>
                             <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="settingDoorOpen">
                             <label class="form-check-label" for="settingDoorOpen">Door Status</label>
                             </div>
                         </fieldset>
+                        <br>
                         <fieldset>
                             <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="settingLight">
@@ -541,24 +546,21 @@
                             </div>
                         </fieldset>
                         <br>
-                        <fieldset>
-                            <div>
+                        <fieldset class="col-6">
                             <label class="form-check-label" for="settingTheme">Theme</label>
-                            <select id="settingTheme" class="custom-select custom-select-lg mb-3">
+                            <select class="form-select mb-2 custom-select custom-select-lg" id="settingTheme" aria-label="Log Select">
                                 <option value="default">Default</option>
                                 <option value="blue">Blue</option>
                                 <option value="gray">Gray</option>
                                 <option value="red">Red</option>
                                 <option value="yellow">Yellow</option>
                                 <option value="pink">Pink</option>
-                              </select>
-                            </div>
+                            </select>
                         </fieldset>
                     </div>
                 </div>
                 <div class="row">
                     <button type="button" class="btn btn-success mt-4 mb-2 rounded" aria-label="Save" id="saveSettings">Save</button>
-                    <button type="button" class="btn btn-primary rounded" id="btnReturnDashboard" aria-label="Return">Return</button>
                 </div>
             </div>
         </div>
