@@ -32,7 +32,6 @@ $(document).ready(function(){
                 fetchAndLogSettings();
 
                 $('#divLogin').slideToggle(function(){
-                    toggling = false;
                     $('#divDashboard').slideToggle();
                     $('.sidebar').attr("style", "");
                     $('.navbar').attr("style", "");
@@ -57,8 +56,6 @@ $(document).ready(function(){
     $('#settingCoopHumidity').on('input', function() {
         $('#settingCoopHumidityInt').val($(this).val());
     });
-
-    toggling = true;
 })
 
 async function getSettings() {
@@ -1036,6 +1033,7 @@ var activeId = 'divDashboard';
 $('.nav-link').on('click', function(){
     if (!toggling) {
         toggling = true;
+        console.log('Toggle click!');
         targetId = $(this).data('id');
         if (targetId == activeId) {
             $('#'+activeId).slideToggle(function(){
@@ -1062,6 +1060,8 @@ $('.nav-link').on('click', function(){
                     toggling = false;      
    
                 });
+            } else {
+                toggling = false;
             }
         }
     }
@@ -1071,10 +1071,14 @@ $('.nav-link').on('click', function(){
 function switchActive(targetId) {
     if (!toggling) {
         toggling = true;
-        $('#'+activeId).slideToggle(function(){
-            activeId = targetId;
-            $('#'+targetId).slideToggle();
-            toggling=false;
-        });
+        if (activeId != '') {
+            $('#'+activeId).slideToggle(function(){
+                activeId = targetId;
+                $('#'+targetId).slideToggle(function() {
+                    toggling=false;
+                });
+
+            });
+        }
     }
 }
