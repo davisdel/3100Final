@@ -1030,16 +1030,16 @@ $('#btnReturnDashboard').on('click',function(){
 })
 
 var activeId = 'divDashboard';
-$('.nav-link').on('click', function(){
+$('.toggleCard').on('click', function(){
     if (!toggling) {
-        toggling = true;
-        console.log('Toggle click!');
+        toggling = true; // Stop other functions from toggling a card
+
         targetId = $(this).data('id');
         if (targetId == activeId) {
-            $('#'+activeId).slideToggle(function(){
-                activeId = 'divDashboard';
-                $('#divDashboard').slideToggle();
-                toggling = false;
+            $('#'+activeId).slideToggle(function(){ // Toggles the current page card
+                activeId = 'divDashboard'; // Sets the active card to the new one
+                $('#divDashboard').slideToggle(); // Toggles the dashboard
+                toggling = false; // Stop the toggle check, allows a new card to be switched to
             });
             return;
         }
@@ -1048,21 +1048,12 @@ $('.nav-link').on('click', function(){
         //     fetchAndLogSettings();
         // }
         
-        if (activeId != '') {
-            var toggleType = $(this).data('type');
-            if (toggleType == "toggle") {
-                $('#'+targetId).slideToggle();
-                toggling = false;
-            } else if (!toggleType) {
-                $('#'+activeId).slideToggle(function(){
-                    activeId = targetId;
-                    $('#'+targetId).slideToggle();
-                    toggling = false;      
-   
-                });
-            } else {
-                toggling = false;
-            }
+        if (activeId != '') { // If the current card is not invalid, should be default divDashboard so this is just a catch
+            $('#'+activeId).slideToggle(function(){ // Toggles the current page card
+                activeId = targetId; // Sets the active card to the new one
+                $('#'+targetId).slideToggle(); // Toggles the targetted page card
+                toggling = false; // Stop the toggle check, allows a new card to be switched to
+            });
         }
     }
 
@@ -1071,13 +1062,12 @@ $('.nav-link').on('click', function(){
 function switchActive(targetId) {
     if (!toggling) {
         toggling = true;
-        if (activeId != '') {
-            $('#'+activeId).slideToggle(function(){
-                activeId = targetId;
-                $('#'+targetId).slideToggle(function() {
-                    toggling=false;
+        if (activeId != '') { // If the current card is not invalid, should be default divDashboard so this is just a catch
+            $('#'+activeId).slideToggle(function(){ // Toggles the current page card
+                activeId = targetId; // Sets the active card to the new one
+                $('#'+targetId).slideToggle(function() { // Toggles the targetted page card
+                    toggling=false; // Stop the toggle check, allows a new card to be switched to
                 });
-
             });
         }
     }
