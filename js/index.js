@@ -805,7 +805,8 @@ function populateEnviromentChart(){
             $('#weatherTable').DataTable({
                 buttons: [
                     'copy', 'excel', 'pdf', 'csv', 'print'
-                ]
+                ],
+                responsive: true,
             })
         },
         error: function(xhr, status, error) {
@@ -902,6 +903,8 @@ function populateEggChart(){
                         ]
                     }
                 },
+                responsive: true,
+                autoWidth: false,
             })
 
         },
