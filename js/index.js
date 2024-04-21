@@ -772,6 +772,8 @@ function populateEnviromentChart(){
                             beginAtZero: true,
                         },
                     },
+                    responsive: true,
+                    maintainAspectRatio: false,
                 },
             });
 
@@ -860,7 +862,10 @@ function populateEggChart(){
                             beginAtZero: true,
                         },
                     },
+                    responsive: true,
+                    maintainAspectRatio: false
                 },
+
             });
 
             let strRow = '';
@@ -896,7 +901,7 @@ function populateEggChart(){
                             'copy', 'excel', 'pdf', 'csv', 'print'
                         ]
                     }
-                }
+                },
             })
 
         },
