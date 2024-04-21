@@ -1,8 +1,28 @@
-
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
+var primaryColor = '';
+var infoColor = '';
+
+var toggling = false;
+
+function getCSSVariableFromClass(className, variableName) {
+    // Create a temporary element with the given class
+    var tempElement = document.createElement('div');
+    tempElement.className = className;
+    document.body.appendChild(tempElement);
+
+    // Get the computed style to access the CSS variable
+    var value = getComputedStyle(tempElement).getPropertyValue(variableName);
+
+    // Clean up by removing the temporary element
+    document.body.removeChild(tempElement);
+
+    return value.trim();  // Trim to remove any extra whitespace
+}
+
 $(document).ready(function(){
+
     if(sessionStorage.getItem("SessionID")){
         $.getJSON("https://simplecoop.swollenhippo.com/sessions.php", {SessionID:sessionStorage.getItem("SessionID")}, function(result){
             if(result != null){
@@ -13,10 +33,9 @@ $(document).ready(function(){
 
                 $('#divLogin').slideToggle(function(){
                     $('#divDashboard').slideToggle();
-                })
-
-                $("#sortable").sortable({
-                    distance: 30
+                    $('.sidebar').attr("style", "");
+                    $('.navbar').attr("style", "");
+                    $('.solid-line').attr("style", "");
                 })
             }
         })
@@ -28,6 +47,14 @@ $(document).ready(function(){
 
     $('#settingCoopTemp').on('input', function() {
         $('#settingCoopTempInt').val($(this).val());
+    });
+
+    $('#settingCoopHumidityInt').on('input', function() {
+        $('#settingCoopHumidity').val($(this).val());
+    });
+
+    $('#settingCoopHumidity').on('input', function() {
+        $('#settingCoopHumidityInt').val($(this).val());
     });
 })
 
@@ -56,7 +83,6 @@ async function getSettings() {
                                 }
                             } else if ($('#' + settingName).attr('type') == 'range'){
                                 $('#'+settingName).val(response.Value);
-
                                 targetId = $('#' + settingName).attr('data-target');
                                 if (targetId) {
                                     $(targetId).val(response.Value);
@@ -98,37 +124,64 @@ async function fetchAndLogSettings() {
 
 async function setSetting(setting, value) {
     if(setting == 'settingUsername'){
-        $('#dashboardHeader').text(value + "\'s Farm");
+        $('#dashboardHeader').text(value);
     } else if(setting == 'settingDarkMode'){
         if(value == 'true'){
-            $('body').removeClass('lightmode');
-            $('body').addClass('darkmode'); 
-            $('.btn').each(function() {
-                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
-                    $(this).addClass('btn-dark');
-                }
-            })
-            $('p, h1, h2, h3, h4, h5, h6, span, a, label').addClass('text-white');
-            $('.card').addClass('bg-dark');
-            $('.card').css('border-color', 'grey');
+            $('body').removeClass('lightmode light');
+            $('body').addClass('darkmode dark'); 
         } else {
-            $('body').removeClass('darkmode');
-            $('body').addClass('lightmode');
-            $('.btn').each(function() {
-                if ($(this).hasClass('btn-primary') || $(this).hasClass('btn-icon')) {
-                    $(this).removeClass('btn-dark');
-                }
-            })
-            $('p, h1, h2, h3, h4, h5, h6, span, a, label').removeClass('text-white');
-            $('.card').removeClass('bg-dark');
-            $('.card').css('border-color', '');
+            $('body').removeClass('darkmode dark');
+            $('body').addClass('lightmode light');
         }  
     } else if (setting == 'settingCoopTemp'){
-        
+        $('#progressTemp').attr('style', 'width: ' + value + '%;');
+        $('#tempLabel').html(`Coop Temperature: <b>${value} °F</b>`);
     } else if (setting == 'settingDoorOpen'){
+        if(value == 'true'){
+            $('#doorStatus').html('Open');
+        } else {
+            $('#doorStatus').html('Closed');
+        }
+    } else if (setting == 'settingLight'){
+        if(value == 'true'){
+            $('#lightStatus').html('On');
+        } else {
+            $('#lightStatus').html('Off');
+        }
+    } else if (setting == 'settingCoopHumidity'){
+        $('#progressHumidity').attr('style', 'width: ' + value + '%;');
+        $('#humidityLabel').html(`Coop Humidity: <b>${value}%</b>`);
+    } else if (setting = 'settingTheme') {
+        var element = $('body');
 
-    } else if(setting == 'settingColorBlind'){
-        
+        // Function to check if the element has any class matching "theme-color-*"
+        function findThemeColorClass(element) {
+            var classList = element.attr('class').split(/\s+/);
+            var pattern = /^theme-color-(.+)$/; // Updated to capture the color part
+    
+            for (var i = 0; i < classList.length; i++) {
+                var match = pattern.exec(classList[i]);
+                if (match) {
+                    return match[1];  // Return the color part of the class
+                }
+            }
+            return null; // Return null if no matching class found
+        }
+    
+        // Example usage
+        var color = findThemeColorClass(element);
+        if (color) {
+            element.removeClass('theme-color-'+color);
+            element.addClass('theme-color-'+value);
+        } else {
+            element.addClass('theme-color-'+value);
+        }
+
+        var primaryColor = getCSSVariableFromClass('theme-color-'+value, '--bs-primary');
+        var infoColor = getCSSVariableFromClass('theme-color-'+value, '--bs-info');
+
+        $('#themeStatus').html(value.charAt(0).toUpperCase() + value.slice(1));
+
     }
 }
 
@@ -169,7 +222,6 @@ $('#saveSettings').on('click', function () {
             } else {
                 var value = false;
             }
-            console.log(value);
             
             $.ajax({
                 type: 'GET',
@@ -190,7 +242,6 @@ $('#saveSettings').on('click', function () {
                                 value: value
                             },
                             success: function(result) {
-                                console.log(result);
                                 setSetting(settingName, value);
                             },
                             error: function() {
@@ -208,7 +259,6 @@ $('#saveSettings').on('click', function () {
                                 value: value
                             },
                             success: function(result) {
-                                console.log(result);
                                 setSetting(settingName, value);
                             },
                             error: function() {
@@ -225,7 +275,7 @@ $('#saveSettings').on('click', function () {
             // For other input/select types, just print out the value
             var value = $(this).val();
 
-            if (value.length > 1) {
+            if (value.length >= 1) {
                 $.ajax({
                     type: 'GET',
                     url: 'https://simplecoop.swollenhippo.com/settings.php',
@@ -245,7 +295,6 @@ $('#saveSettings').on('click', function () {
                                     value: value
                                 },
                                 success: function(result) {
-                                    console.log(result);
                                     setSetting(settingName, value);
                                 },
                                 error: function() {
@@ -263,7 +312,6 @@ $('#saveSettings').on('click', function () {
                                     value: value
                                 },
                                 success: function(result) {
-                                    console.log(result);
                                     setSetting(settingName, value);
                                 },
                                 error: function() {
@@ -296,6 +344,7 @@ $('#saveSettings').on('click', function () {
         }
     })
     $('#divSettings').slideToggle(function(){
+        activeId = 'divDashboard';
         $('#divDashboard').slideToggle();
         fetchAndLogSettings();
     })
@@ -305,8 +354,14 @@ $('#btnLogout').on('click', function(){
     sessionStorage.removeItem("SessionID")
     $('#txtLoginEmail').val('');
     $('#txtLoginPassword').val('');
-    $('#divDashboard').slideToggle(function(){
-        $('#divLogin').slideToggle();
+
+    $('#'+activeId).slideToggle(function(){
+        $('#divLogin').slideToggle(function() {
+            $('.sidebar').attr("style", "display: none;");
+            $('.navbar').attr("style", "display: none;");
+            $('.solid-line').attr("style", "display: none;");
+        });
+
     })
 })
          
@@ -363,17 +418,20 @@ $('#btnLogin').on("click", function () {
             if(result.Outcome == 'false'){
                 Swal.fire({
                     title: "Oops!",
-                    text: result.Error,
                     icon: "error"
                 })
             } else {
                 sessionStorage.setItem("SessionID",result.SessionID)
+                fetchAndLogSettings();
                 $("#divLogin").slideToggle(function(){
+                    activeId='divDashboard';
                     $("#divDashboard").slideToggle()
+                    $('.sidebar').attr("style", "");
+                    $('.navbar').attr("style", "");
+                    $('.solid-line').attr("style", "");
                 })
                 populateEnviromentChart();
                 populateEggChart();
-                fetchAndLogSettings();
             }
         })
     }
@@ -527,9 +585,11 @@ $('#btnRegister').on('click',function(){
                                 });
                             } else {
                                 sessionStorage.setItem("SessionID",result.SessionID)
-                                $("#divRegister").slideToggle(function(){
-                                    $("#divDashboard").slideToggle()
-                                })
+                                fetchAndLogSettings()
+                                $('#divRegister').slideToggle(function(){
+                                    activeId = 'divDashboard';
+                                    $('#divDashboard').slideToggle();
+                                });
                             }
                         })
                     }
@@ -565,6 +625,14 @@ $('#btnSubmitWeather').on("click", function () {
             icon: 'error',
             title: 'Error!',
             text: 'Please fill in all fields before submitting.'
+        });
+        return; // Stop further execution if fields are empty
+    } else if (temperature < 0 || temperature > 250 || humidity < 0 || humidity > 100) {
+        // Display error message using SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Temperature must be between 0 and 250 and Humidity must be between 0 and 100.'
         });
         return; // Stop further execution if fields are empty
     }
@@ -663,8 +731,13 @@ function populateEnviromentChart(){
 
     // Check if the chart already exists and destroy it
     let existingChart = Chart.getChart("myChart");
+    let existingTable = $('#weatherTable').DataTable();
     if (existingChart) {
         existingChart.destroy();
+    }
+    if (existingTable) {
+        existingTable.destroy();
+        $('#weatherTable tbody').empty();
     }
 
     // set up and display environment chart
@@ -710,19 +783,27 @@ function populateEnviromentChart(){
                             beginAtZero: true,
                         },
                     },
+                    responsive: true,
+                    maintainAspectRatio: false,
                 },
             });
 
+            let strRow = '';
             // Populate delete weather dropbox
             var dropdown = $('#selWeather');
 
             // Clear existing options
             dropdown.empty();
+            var option = $('<option selected disabled>Please select an observation</option>');
+            dropdown.append(option);
 
             // Iterate through each object in the data array
             data.forEach(obj => {
+                // create a new row for the table
+                strRow = `<tr><td>${obj.ObservationDateTime}</td><td>${obj.Temperature}</td><td>${obj.Humidity}</td></tr>`
+                $('#weatherTable tbody').append(strRow)
                 // Create a new option element
-                var option = $('<option></option>');
+                option = $('<option></option>');
 
                 // Set the text and value of the option based on obj properties
                 option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
@@ -731,6 +812,13 @@ function populateEnviromentChart(){
                 // Append the option to the dropdown
                 dropdown.append(option);
             });
+
+            $('#weatherTable').DataTable({
+                buttons: [
+                    'copy', 'excel', 'pdf', 'csv', 'print'
+                ],
+                responsive: true,
+            })
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -742,8 +830,13 @@ function populateEggChart(){
 
     // Check if the chart already exists and destroy it
     let existingChart = Chart.getChart("eggCountChart");
+    let existingTable = $('#eggTable').DataTable();
     if (existingChart) {
         existingChart.destroy();
+    }
+    if (existingTable) {
+        existingTable.destroy();
+        $('#eggTable tbody').empty();
     }
 
     // set up and display environment chart
@@ -781,19 +874,29 @@ function populateEggChart(){
                             beginAtZero: true,
                         },
                     },
+                    responsive: true,
+                    maintainAspectRatio: false
                 },
+
             });
+
+            let strRow = '';
 
             // Populate delete weather dropbox
             var dropdown = $('#selEggs');
 
             // Clear existing options
             dropdown.empty();
+            var option = $('<option selected disabled>Please select an observation</option>');
+            dropdown.append(option);
 
             // Iterate through each object in the data array
             data.forEach(obj => {
+                // create a new row for the table
+                strRow = `<tr><td>${obj.LogDateTime}</td><td>${obj.Harvested}</td></tr>`
+                $('#eggTable tbody').append(strRow)
                 // Create a new option element
-                var option = $('<option></option>');
+                option = $('<option></option>');
 
                 // Set the text and value of the option based on obj properties
                 option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
@@ -802,6 +905,19 @@ function populateEggChart(){
                 // Append the option to the dropdown
                 dropdown.append(option);
             });
+            
+            $('#eggTable').DataTable({
+                layout:{
+                    topStart:{
+                        buttons: [
+                            'copy', 'excel', 'pdf', 'csv', 'print'
+                        ]
+                    }
+                },
+                responsive: true,
+                autoWidth: false,
+            })
+
         },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -814,6 +930,17 @@ $('#btnSubmitEggs').on("click", function () {
     const sessionId = sessionStorage.getItem("SessionID");
     const observationDateTime = $('#dateObservationEggs').val();
     const eggNum = $('#numEggCount').val();
+
+    // Check if any field is empty
+    if (!sessionId || !observationDateTime || !eggNum) {
+        // Display error message using SweetAlert2
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Please fill in all fields before submitting.'
+        });
+        return; // Stop further execution if fields are empty
+    }
 
     // Set the data
     var requestData = {
@@ -828,11 +955,24 @@ $('#btnSubmitEggs').on("click", function () {
         method: 'POST',
         data: requestData,
         success: function (result) {
-            populateEggChart();
-            $('#dateObservationEggs').val('');
-            $('#numEggCount').val('');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Observation submitted successfully.'
+            }).then(() => {
+                // Clear the form after successful submission
+                $('#dateObservationEggs').val('');
+                $('#numEggCount').val('');
+                populateEggChart();
+            });
+            
         },
         error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to submit observation. Please try again.'
+            });
             console.error('Error:', error);
         }
     });
@@ -883,18 +1023,61 @@ $('#btnDeleteEgg').on('click', function() {
     }
 });
 
-$('#btnSettings').on('click',function(){
-    $('#divDashboard').slideToggle(function(){
-        $('#divSettings').slideToggle();
-        fetchAndLogSettings();
-    })
-})
+// $('#btnSettings').on('click',function(){
+//     $('#divDashboard').slideToggle(function(){
+//         $('#divSettings').slideToggle();
+//         fetchAndLogSettings();
+//     })
+// })
+
+function hexToRGB(hex) {
+    // Remove the hash at the beginning of the hex string if it's there
+    hex = hex.replace(/^#/, '');
+
+    // Parse the hex string into integers using parseInt
+    let r = parseInt(hex.substring(0, 2), 16); // Extract the first two characters and convert to decimal
+    let g = parseInt(hex.substring(2, 4), 16); // Extract the next two characters and convert to decimal
+    let b = parseInt(hex.substring(4, 6), 16); // Extract the last two characters and convert to decimal
+
+    // Return the RGB values as an object
+    return { r, g, b };
+}
+
 
 $('#btnReturnDashboard').on('click',function(){
-    $('#divSettings').slideToggle(function(){
-        $('#divDashboard').slideToggle();
-    })
+    switchActive('divDashboard');
 })
+
+var activeId = 'divDashboard';
+$('.toggleCard').on('click', function(){
+    if (!toggling) {
+        toggling = true; // Stop other functions from toggling a card
+
+        targetId = $(this).data('id');
+        if (targetId == activeId) {
+            $('#'+activeId).slideToggle(function(){ // Toggles the current page card
+                activeId = 'divDashboard'; // Sets the active card to the new one
+                $('#divDashboard').slideToggle(); // Toggles the dashboard
+                toggling = false; // Stop the toggle check, allows a new card to be switched to
+            });
+            return;
+        }
+
+        // if (targetId == "divSettings" || activeId == "divSettings") {
+        //     fetchAndLogSettings();
+        // }
+        
+        if (activeId != '') { // If the current card is not invalid, should be default divDashboard so this is just a catch
+            $('#'+activeId).slideToggle(function(){ // Toggles the current page card
+                activeId = targetId; // Sets the active card to the new one
+                $('#'+targetId).slideToggle(); // Toggles the targetted page card
+                toggling = false; // Stop the toggle check, allows a new card to be switched to
+            });
+        }
+    }
+
+})
+
 
 function showPassword() {
     var x = document.getElementById('txtPassword');
@@ -913,3 +1096,18 @@ function showLoginPassword() {
       x.type = "password";
     }
 }
+
+function switchActive(targetId) {
+    if (!toggling) {
+        toggling = true;
+        if (activeId != '') { // If the current card is not invalid, should be default divDashboard so this is just a catch
+            $('#'+activeId).slideToggle(function(){ // Toggles the current page card
+                activeId = targetId; // Sets the active card to the new one
+                $('#'+targetId).slideToggle(function() { // Toggles the targetted page card
+                    toggling=false; // Stop the toggle check, allows a new card to be switched to
+                });
+            });
+        }
+    }
+}
+
