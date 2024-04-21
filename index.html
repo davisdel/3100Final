@@ -211,13 +211,14 @@
                         <label for="txtLoginEmail" class="form-label">Email</label>
                     </div>
                     <br>
+                    <input type="checkbox" onclick="showLoginPassword()"><span>&nbsp;Show Password</span>
                     <div class="form-floating">
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                         <label for="txtLoginPassword" class="form-label">Password</label>
                     </div>
                     <button id="btnLogin" class="btn btn-success col-12 mt-4 rounded" aria-label = "Submit Login" type="button">Submit</button>
-                        <div class ="col-12 d-flex justify-content-center">
-                        <a class="col-12 text-center btnToggle" data-card="Login">Need an account? Click Here</a>
+                    <div class ="col-12 d-flex justify-content-center">
+                        <a class="col-12 text-center btnToggle mt-1" data-card="Login">Need an account? Click Here</a>
                     </div>
                 </form>
             </div>
@@ -234,6 +235,7 @@
                         <label for="txtEmail" class="form-label">Email</label>
                     </div>
                     <br>
+                    <input type="checkbox" onclick="showPassword()"><span>&nbsp;Show Password</span>
                     <div class="form-floating">
                         <input id="txtPassword" class="form-control rounded" type="password" aria-required="true" placeholder="Password">
                         <label for="txtPassword" class="form-label">Password</label>
@@ -286,9 +288,9 @@
                     <br>
 
                     <button class="col-12 btn btn-success mt-4 rounded" id="btnRegister" aria-label="Register" type="button">Register</button>
-                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-tertiary col-12 mt-1 rounded">Reset Form</button>
+                    <button id="btnReset" aria-label="Reset Form" type="button" class="btn btn-outline-secondary col-12 mt-1 rounded">Reset Form</button>
                     <div class="col-12 d-flex justify-content-center">
-                        <a class="col-12 text-center btnToggle" data-card="Register">Return To Login</a>
+                        <a class="col-12 text-center btnToggle mt-1" data-card="Register">Return To Login</a>
                     </div>
                 </form>
             </div>
