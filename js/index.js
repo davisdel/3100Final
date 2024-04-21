@@ -598,6 +598,17 @@ $('#btnRegister').on('click',function(){
         })
              
     }
+    $('#txtFirstName').val('');
+    $('#txtLastName').val('');
+    $('#txtEmail').val('');
+    $('#txtPassword').val('');
+    $('#txtStreetAddress1').val('');
+    $('#txtStreetAddress2').val('');
+    $('#txtCity').val('');
+    $('#txtState').val('');
+    $('#txtZip').val('');
+    $('#telPhoneNum').val('');
+    $('#txtCoopID').val('');
 })
 
 // environment.php start
@@ -1080,3 +1091,4 @@ function switchActive(targetId) {
         }
     }
 }
+
