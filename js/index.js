@@ -1078,25 +1078,6 @@ $('.toggleCard').on('click', function(){
 
 })
 
-
-function showPassword() {
-    var x = document.getElementById('txtPassword');
-    if (x.type === "password") {
-      x.type = "text";
-    } else {
-      x.type = "password";
-    }
-}
-
-function showLoginPassword() {
-    var x = document.getElementById('txtLoginPassword');
-    if (x.type === "password") {
-      x.type = "text";
-    } else {
-      x.type = "password";
-    }
-}
-
 function switchActive(targetId) {
     if (!toggling) {
         toggling = true;
