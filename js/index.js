@@ -370,20 +370,31 @@ $('#saveSettings').on('click', function () {
     })
 });
 
-$('#btnLogout').on('click', function(){
-    sessionStorage.removeItem("SessionID")
-    $('#txtLoginEmail').val('');
-    $('#txtLoginPassword').val('');
+$('#btnLogout').on('click', function () {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You will be logged out of your session!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, logout!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sessionStorage.removeItem("SessionID");
+            $('#txtLoginEmail').val('');
+            $('#txtLoginPassword').val('');
 
-    $('#'+activeId).slideToggle(function(){
-        $('#divLogin').slideToggle(function() {
-            $('.sidebar').attr("style", "display: none;");
-            $('.navbar').attr("style", "display: none;");
-            $('.solid-line').attr("style", "display: none;");
-        });
-
-    })
-})
+            $('#' + activeId).slideToggle(function () {
+                $('#divLogin').slideToggle(function () {
+                    $('.sidebar').attr("style", "display: none;");
+                    $('.navbar').attr("style", "display: none;");
+                    $('.solid-line').attr("style", "display: none;");
+                });
+            });
+        }
+    });
+});
          
 $('.btnToggle').on('click',function(){
     let strCard = $(this).attr('data-card');
