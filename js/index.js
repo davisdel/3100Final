@@ -1,24 +1,27 @@
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
-var primaryColor = '';
-var infoColor = '';
+var primaryColor = '#FF6384';
+var infoColor = '#36A2EA';
 
 var toggling = false;
 
-function getCSSVariableFromClass(className, variableName) {
-    // Create a temporary element with the given class
-    var tempElement = document.createElement('div');
-    tempElement.className = className;
-    document.body.appendChild(tempElement);
-
-    // Get the computed style to access the CSS variable
-    var value = getComputedStyle(tempElement).getPropertyValue(variableName);
-
-    // Clean up by removing the temporary element
-    document.body.removeChild(tempElement);
-
-    return value.trim();  // Trim to remove any extra whitespace
+function getThemeColorsFromBody() {
+    // Get the body element
+    const body = document.body;
+  
+    // Function to get the CSS property value from the body
+    function getCSSVariable(varName) {
+      return getComputedStyle(body).getPropertyValue(varName).trim();
+    }
+  
+    // Fetch the primary and secondary colors
+    const colors = {
+      primary: getCSSVariable('--bs-primary'),
+      info: getCSSVariable('--bs-info')
+    };
+  
+    return colors;
 }
 
 $(document).ready(function(){
@@ -177,8 +180,16 @@ async function setSetting(setting, value) {
             element.addClass('theme-color-'+value);
         }
 
-        var primaryColor = getCSSVariableFromClass('theme-color-'+value, '--bs-primary');
-        var infoColor = getCSSVariableFromClass('theme-color-'+value, '--bs-info');
+        
+        colors = getThemeColorsFromBody();
+        primaryColor = colors.primary;
+        infoColor = colors.info;
+
+        populateEnviromentChart();
+        populateEggChart();
+
+        $('#progressTemp').css({'background-color': primaryColor})
+        $('#progressHumidity').css({'background-color': infoColor})
 
         $('#themeStatus').html(value.charAt(0).toUpperCase() + value.slice(1));
 
@@ -755,7 +766,12 @@ function populateEnviromentChart(){
             });
             var temperatures = data.map(obj => ({y:parseFloat(obj.Temperature),x:obj.ObservationDateTime.split(' ')[0]}));
             var humidities = data.map(obj => ({y:parseFloat(obj.Humidity),x:obj.ObservationDateTime.split(' ')[0]}));
-            
+            rgbPrimaryColor = hexToRGB(primaryColor);
+            rgbaString = 'rgba(' + rgbPrimaryColor.r+ ', ' + rgbPrimaryColor.g + ', ' + rgbPrimaryColor.b + ', ';
+
+            rgbInfoColor = hexToRGB(infoColor);
+            rgbaStringInfo = 'rgba(' + rgbInfoColor.r+ ', ' + rgbInfoColor.g + ', ' + rgbInfoColor.b + ', ';
+
             var ctx = document.getElementById('myChart').getContext('2d');
             var environmentChart = new Chart(ctx, {
                 type: 'line',
@@ -764,15 +780,15 @@ function populateEnviromentChart(){
                         {
                             label: 'Temperature (F)',
                             data: temperatures,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: rgbaString + '1)',
+                            backgroundColor: rgbaString + '0.2)',
                             pointRadius: 6
                         },
                         {
                             label: 'Humidity (%)',
                             data: humidities,
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: rgbaStringInfo + '1)',
+                            backgroundColor: rgbaStringInfo + '0.2)',
                             pointRadius: 6
                         },
                     ],
@@ -853,7 +869,8 @@ function populateEggChart(){
                 return a.LogDateTime.localeCompare(b.LogDateTime);
             });
             var eggs = data.map(obj => ({y:parseFloat(obj.Harvested),x:obj.LogDateTime.split(' ')[0]}));   
-            
+            rgbPrimaryColor = hexToRGB(primaryColor);
+            rgbaString = 'rgba(' + rgbPrimaryColor.r+ ', ' + rgbPrimaryColor.g + ', ' + rgbPrimaryColor.b + ', ';
             var ctx = document.getElementById('eggCountChart').getContext('2d');
             var eggChart = new Chart(ctx, {
                 type: 'line',
@@ -862,8 +879,8 @@ function populateEggChart(){
                         {
                             label: 'Egg Count',
                             data: eggs,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: rgbaString + '1)',
+                            backgroundColor: rgbaString + '0.2)',
                             pointRadius: 6,
                         },
                     ],
@@ -1031,17 +1048,13 @@ $('#btnDeleteEgg').on('click', function() {
 // })
 
 function hexToRGB(hex) {
-    // Remove the hash at the beginning of the hex string if it's there
-    hex = hex.replace(/^#/, '');
-
-    // Parse the hex string into integers using parseInt
-    let r = parseInt(hex.substring(0, 2), 16); // Extract the first two characters and convert to decimal
-    let g = parseInt(hex.substring(2, 4), 16); // Extract the next two characters and convert to decimal
-    let b = parseInt(hex.substring(4, 6), 16); // Extract the last two characters and convert to decimal
-
-    // Return the RGB values as an object
-    return { r, g, b };
-}
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
 
 
 $('#btnReturnDashboard').on('click',function(){

@@ -414,100 +414,98 @@
 <!-- divDashboard -->
         <div class="card col-12 col-md-10 col-lg-8 rounded-shadow" id="divDashboard" style="display:none;">
             <div class="card-body">
-                <div class="container px-4">
-                    <div class="row g-3" id="sortable">
+                <div class="row">
 <!-- Egg counter widget -->
-                        <div class="col-12 col-md-12 col-lg-6">
-                            <div id="eggWidget" class="card rounded-shadow">
-                                <div class="card-header">
-                                    <h3 class="card-title">Egg Counter</h3>
-                                </div>
-                                <div class="card-body p-4">
-                                    <!-- chart -->
-                                    <canvas id="eggCountChart"></canvas>
-                                </div>
+                    <div class="col-12 col-md-12 col-lg-6">
+                        <div id="eggWidget" class="card rounded-shadow">
+                            <div class="card-header">
+                                <h3 class="card-title">Egg Counter</h3>
                             </div>
-                        </div>
-<!-- Weather Widget -->
-                        <div class="col-12 col-md-12 col-lg-6">
-                            <div id="weatherWidget" class="card rounded-shadow">
-                                <div class="card-header">
-                                    <h3 class="card-title">Environment</h3>
-                                </div>
-                                <div class="card-body p-4">
-                                    <!-- chart -->
-                                    <canvas id="myChart"></canvas>
-                                </div>
+                            <div class="card-body p-4">
+                                <!-- chart -->
+                                <canvas id="eggCountChart"></canvas>
                             </div>
                         </div>
                     </div>
-<!-- Coop Settings Widget -->
-                    <div class="col-12 mt-3">
-                        <div id="coopSettings" class="card rounded-shadow">
+<!-- Weather Widget -->
+                    <div class="col-12 col-md-12 col-lg-6">
+                        <div id="weatherWidget" class="card rounded-shadow">
                             <div class="card-header">
-                                <h3>Coop Settings</h3>
+                                <h3 class="card-title">Environment</h3>
                             </div>
                             <div class="card-body p-4">
-                                <h5 id="tempLabel">Error!</h5>
-                                <hr>
-                                <div class="progress">
-                                    <div id="progressTemp" class="progress-bar tempProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Temperature Progress" style="width: 75%;"></div>
-                                </div>
-                                <br>
-                                <h5 id="humidityLabel">Error!</h5>
-                                <hr>
-                                <div class="progress progressHumidity">
-                                    <div id="progressHumidity" class="progress-bar humidityProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Humidity Progress" style="width: 75%;"></div>
-                                </div>
-                                <hr>
-                                <hr>
-                                <div class="row">
-                                     <div class="col-lg-4 col-md-6">
-                                        <div class="card bg-soft-warning">
-                                           <div class="card-body">
-                                              <div class="d-flex justify-content-between align-items-center">
-                                                 <div class="bg-soft-warning rounded p-3">
-                                                    <i class="bi bi-lightbulb"></i>
-                                                 </div>
-                                                 <div class="text-end">
-                                                       <h2 id="lightStatus" class="counter" style="visibility: visible;">Error!</h2>
-                                                    Light Status
-                                                 </div>
-                                              </div>
-                                           </div>
+                                <!-- chart -->
+                                <canvas id="myChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!-- Coop Settings Widget -->
+                <div class="col-12 mt-3">
+                    <div id="coopSettings" class="card rounded-shadow">
+                        <div class="card-header">
+                            <h3>Coop Settings</h3>
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 id="tempLabel">Error!</h5>
+                            <hr>
+                            <div class="progress">
+                                <div id="progressTemp" class="progress-bar tempProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Temperature Progress" style="width: 75%;"></div>
+                            </div>
+                            <br>
+                            <h5 id="humidityLabel">Error!</h5>
+                            <hr>
+                            <div class="progress progressHumidity">
+                                <div id="progressHumidity" class="progress-bar humidityProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Humidity Progress" style="width: 75%;"></div>
+                            </div>
+                            <hr>
+                            <hr>
+                            <div class="row">
+                                    <div class="col-lg-4 col-md-6">
+                                    <div class="card bg-soft-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="bg-soft-primary rounded p-3">
+                                                <i class="bi bi-lightbulb"></i>
+                                                </div>
+                                                <div class="text-end">
+                                                    <h2 id="lightStatus" class="counter" style="visibility: visible;">Error!</h2>
+                                                Light Status
+                                                </div>
+                                            </div>
                                         </div>
-                                     </div>
-                                     <div class="col-lg-4 col-md-6">
-                                        <div class="card bg-soft-danger">
-                                           <div class="card-body">
-                                              <div class="d-flex justify-content-between align-items-center">
-                                                 <div class="bg-soft-danger rounded p-3">
-                                                    <i class="bi bi-door-open"></i>
-                                                 </div>
-                                                 <div class="text-end">
-                                                       <h2 id="doorStatus" class="counter" style="visibility: visible;">Error!</h2>
-                                                    Door Status
-                                                 </div>
-                                              </div>
-                                           </div>
+                                    </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                    <div class="card bg-soft-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="bg-soft-primary rounded p-3">
+                                                <i class="bi bi-door-open"></i>
+                                                </div>
+                                                <div class="text-end">
+                                                    <h2 id="doorStatus" class="counter" style="visibility: visible;">Error!</h2>
+                                                Door Status
+                                                </div>
+                                            </div>
                                         </div>
-                                     </div>
-                                     <div class="col-lg-4 col-md-6">
-                                        <div class="card bg-soft-primary">
-                                           <div class="card-body">
-                                              <div class="d-flex justify-content-between align-items-center">
-                                                 <div class="bg-soft-primary rounded p-3">
-                                                    <i class="bi bi-brush"></i>
-                                                 </div>
-                                                 <div class="text-end">
-                                                       <h2 id="themeStatus" class="counter" style="visibility: visible;">Error!</h2>
-                                                    Theme
-                                                 </div>
-                                              </div>
-                                           </div>
+                                    </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                    <div class="card bg-soft-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="bg-soft-primary rounded p-3">
+                                                <i class="bi bi-brush"></i>
+                                                </div>
+                                                <div class="text-end">
+                                                    <h2 id="themeStatus" class="counter" style="visibility: visible;">Error!</h2>
+                                                Theme
+                                                </div>
+                                            </div>
                                         </div>
-                                     </div>
-                                </div>
+                                    </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -576,7 +574,7 @@
                             <label class="form-check-label" for="settingTheme">Theme</label>
                             <select class="form-select mb-2 custom-select custom-select-lg" id="settingTheme" aria-label="Log Select">
                                 <option value="default">Default</option>
-                                <option value="blue">Blue</option>
+                                <option value="blue">Light Blue</option>
                                 <option value="gray">Gray</option>
                                 <option value="red">Red</option>
                                 <option value="yellow">Yellow</option>
