@@ -36,6 +36,7 @@ function getThemeColorsFromBody() {
 //     console.log(result)
 // })
 
+
 $(document).ready(function(){
     // Retrieves session ID
     if(sessionStorage.getItem("SessionID")){
@@ -145,8 +146,6 @@ async function setSetting(setting, value) {
     if(setting == 'settingUsername'){
         $('#dashboardHeader').text(value);
     } else if(setting == 'settingDarkMode'){
-        console.log(setting)
-        console.log(value)
         if(value == 'true'){
             $('body').removeClass('lightmode light');
             $('body').addClass('darkmode dark'); 
@@ -155,21 +154,15 @@ async function setSetting(setting, value) {
             $('body').addClass('lightmode light');
         }  
     } else if (setting == 'settingCoopTemp'){
-        console.log(setting)
-        console.log(value)
         $('#progressTemp').attr('style', 'width: ' + value + '%;');
         $('#tempLabel').html(`Coop Temperature: <b>${value} °F</b>`);
     } else if (setting == 'settingDoorOpen'){
-        console.log(setting)
-        console.log(value)
         if(value == 'true'){
             $('#doorStatus').html('Open');
         } else {
             $('#doorStatus').html('Closed');
         }
     } else if (setting == 'settingLight'){
-        console.log(setting)
-        console.log(value)
         if(value == 'true'){
             $('#lightStatus').html('On');
         } else {
@@ -523,14 +516,17 @@ $('#btnLogout').on('click', function () {
             $('#txtLoginEmail').val('');
             $('#txtLoginPassword').val('');
 
-            // Return to login
-            $('#' + activeId).slideToggle(function () {
-                $('#divLogin').slideToggle(function () {
-                    $('.sidebar').attr("style", "display: none;");
-                    $('.navbar').attr("style", "display: none;");
-                    $('.solid-line').attr("style", "display: none;");
-                });
-            });
+            // // Return to login
+            // $('#' + activeId).slideToggle(function () {
+            //     $('#divLogin').slideToggle(function () {
+            //         $('.sidebar').attr("style", "display: none;");
+            //         $('.navbar').attr("style", "display: none;");
+            //         $('.solid-line').attr("style", "display: none;");
+            //     });
+            // });
+
+            window.location.reload();
+
         }
     });
 });
