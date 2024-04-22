@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="./css/custom.min.css">
     <link rel="stylesheet" href="./css/customizer.min.css">
     <link rel="stylesheet" href="./css/dark.min.css">
-    <link rel="stylesheet" href="./css/aos.css">
     <link rel="stylesheet" href="./css/hope-ui.min.css">
     <link rel="stylesheet" href="./css/libs.min.css">
     <link rel="stylesheet" href="./css/rtl.min.css">
@@ -468,14 +467,14 @@
                         </div>
                         <!-- card showing coop settings (temperature, humidity, light, door)-->
                         <div class="card-body p-4">
-                            <h5 id="tempLabel">Error!</h5>
+                            <h5 id="tempLabel"></h5>
                             <hr>
                             <!-- temperature -->
                             <div class="progress">
                                 <div id="progressTemp" class="progress-bar tempProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Temperature Progress" style="width: 75%;"></div>
                             </div>
                             <br>
-                            <h5 id="humidityLabel">Error!</h5>
+                            <h5 id="humidityLabel"></h5>
                             <hr>
                             <!-- humidity -->
                             <div class="progress progressHumidity">
@@ -493,7 +492,7 @@
                                                 <i class="bi bi-lightbulb"></i>
                                                 </div>
                                                 <div class="text-end">
-                                                    <h2 id="lightStatus" class="counter" style="visibility: visible;">Error!</h2>
+                                                    <h2 id="lightStatus" class="counter" style="visibility: visible;"></h2>
                                                 Light Status
                                                 </div>
                                             </div>
@@ -509,7 +508,7 @@
                                                 <i class="bi bi-door-open"></i>
                                                 </div>
                                                 <div class="text-end">
-                                                    <h2 id="doorStatus" class="counter" style="visibility: visible;">Error!</h2>
+                                                    <h2 id="doorStatus" class="counter" style="visibility: visible;"></h2>
                                                 Door Status
                                                 </div>
                                             </div>
@@ -525,7 +524,7 @@
                                                 <i class="bi bi-brush"></i>
                                                 </div>
                                                 <div class="text-end">
-                                                    <h2 id="themeStatus" class="counter" style="visibility: visible;">Error!</h2>
+                                                    <h2 id="themeStatus" class="counter" style="visibility: visible;"></h2>
                                                 Theme
                                                 </div>
                                             </div>
@@ -549,7 +548,7 @@
                         <!-- section for altering account username -->
                         <fieldset class="col-6">
                             <label for="settingUsername" class="form-label">Coop Name (Max:15)</label>
-                            <input id="settingUsername" placeholder="Username" type="text" class="form-control" maxlength="15">
+                            <input id="settingUsername" placeholder="Username" type="text" class="form-control" maxlength="15" value="User">
                         </fieldset>
                         <br>
                         <!-- section for altering coop temperature -->
@@ -606,7 +605,7 @@
                         <fieldset class="col-6">
                             <label class="form-check-label" for="settingTheme">Theme</label>
                             <select class="form-select mb-2 custom-select custom-select-lg" id="settingTheme" aria-label="Log Select">
-                                <option value="default">Default</option>
+                                <option value="default" selected>Default</option>
                                 <option value="blue">Light Blue</option>
                                 <option value="gray">Gray</option>
                                 <option value="red">Red</option>
@@ -629,9 +628,6 @@
 <!-- HOPE-UI Scripts -->
     <script src="js/libs.min.js"></script>
     <script src="js/external.min.js"></script>
-    
-<!-- fslightbox Script -->
-    <script src="js/fslightbox.js" defer></script>
     
 <!-- Settings Script -->
     <script src="js/setting.js"></script>

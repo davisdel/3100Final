@@ -30,6 +30,18 @@ function getThemeColorsFromBody() {
     return colors;
 }
 
+//generate new coop id
+// $.post("https://simplecoop.swollenhippo.com/coop.php", function(result){
+//     result = JSON.parse(result)
+//     console.log(result)
+// })
+
+//generate new coop id
+// $.post("https://simplecoop.swollenhippo.com/coop.php", function(result){
+//     result = JSON.parse(result)
+//     console.log(result)
+// })
+
 $(document).ready(function(){
     // Retrieves session ID
     if(sessionStorage.getItem("SessionID")){
@@ -216,7 +228,125 @@ async function setSetting(setting, value) {
         } 
     }
 }
+function getAndSaveSettings() {
+    var sessionID = sessionStorage.getItem("SessionID");
+    $('#divSettings input, #divSettings select').each(function() {
+        var settingName = $(this).attr('id');
+        if ($('#' + settingName).attr('type') == 'checkbox' || $('#' + settingName).attr('type') == 'radio') {
+            // Print out if it's checked
+            if($(this).prop('checked')){
+                var value = true;
+            } else {
+                var value = false;
+            }
+            
+            $.ajax({
+                type: 'GET',
+                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                data: {
+                    SessionID: sessionID,
+                    setting: settingName
+                },
+                success: function(result) {
+                    result = JSON.parse(result);
+                    if (result) {
+                        $.ajax({
+                            type: 'PUT',
+                            url: 'https://simplecoop.swollenhippo.com/settings.php',
+                            data: {
+                                SessionID: sessionID,
+                                setting: settingName,
+                                value: value
+                            },
+                            success: function(result) {
+                                setSetting(settingName, value);
+                            },
+                            error: function() {
+                                blnError = true;
+                            }
+                        })
+                    }
+                    else {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'https://simplecoop.swollenhippo.com/settings.php',
+                            data: {
+                                SessionID: sessionID,
+                                setting: settingName,
+                                value: value
+                            },
+                            success: function(result) {
+                                setSetting(settingName, value);
+                            },
+                            error: function() {
+                                blnError = true;
+                            }
+                        })
+                    }
+                },
+                error: function() {
+                    blnError = true;
+                }
+            })
+        } else {
+            // For other input/select types, just print out the value
+            var value = $(this).val();
 
+            if (value.length >= 1) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://simplecoop.swollenhippo.com/settings.php',
+                    data: {
+                        SessionID: sessionID,
+                        setting: settingName
+                    },
+                    success: function(result) {
+                        result = JSON.parse(result);
+                        if (result) {
+                            $.ajax({
+                                type: 'PUT',
+                                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                                data: {
+                                    SessionID: sessionID,
+                                    setting: settingName,
+                                    value: value
+                                },
+                                success: function(result) {
+                                    setSetting(settingName, value);
+                                },
+                                error: function() {
+                                    blnError = true;
+                                }
+                            })
+                        }
+                        else {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'https://simplecoop.swollenhippo.com/settings.php',
+                                data: {
+                                    SessionID: sessionID,
+                                    setting: settingName,
+                                    value: value
+                                },
+                                success: function(result) {
+                                    setSetting(settingName, value);
+                                },
+                                error: function() {
+                                    blnError = true;
+                                }
+                            })
+                        }
+                    },
+                    error: function() {
+                        blnError = true;
+                    }
+                })
+            } else {
+                return false;
+            }
+        }
+    })
+}
 // Function to save or update a setting
 $('#saveSettings').on('click', function () {
     var sessionID = sessionStorage.getItem("SessionID");
@@ -641,10 +771,24 @@ $('#btnRegister').on('click',function(){
                                 });
                             } else {
                                 sessionStorage.setItem("SessionID",result.SessionID)
-                                fetchAndLogSettings()
+                                getAndSaveSettings();
+                                $('.sidebar').attr("style", "");
+                                $('.navbar').attr("style", "");
+                                $('.solid-line').attr("style", "");
                                 $('#divRegister').slideToggle(function(){
                                     activeId = 'divDashboard';
                                     $('#divDashboard').slideToggle();
+                                    $('#txtFirstName').val('');
+                                    $('#txtLastName').val('');
+                                    $('#txtEmail').val('');
+                                    $('#txtPassword').val('');
+                                    $('#txtStreetAddress1').val('');
+                                    $('#txtStreetAddress2').val('');
+                                    $('#txtCity').val('');
+                                    $('#txtState').val('');
+                                    $('#txtZip').val('');
+                                    $('#telPhoneNum').val('');
+                                    $('#txtCoopID').val('');
                                 });
                             }
                         })
@@ -654,18 +798,7 @@ $('#btnRegister').on('click',function(){
         })
              
     }
-    // reset registration form after account creation
-    $('#txtFirstName').val('');
-    $('#txtLastName').val('');
-    $('#txtEmail').val('');
-    $('#txtPassword').val('');
-    $('#txtStreetAddress1').val('');
-    $('#txtStreetAddress2').val('');
-    $('#txtCity').val('');
-    $('#txtState').val('');
-    $('#txtZip').val('');
-    $('#telPhoneNum').val('');
-    $('#txtCoopID').val('');
+    
 })
 
 // environment.php start
