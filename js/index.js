@@ -924,7 +924,7 @@ function populateEnviromentChart(){
 
         // set up and display environment chart
         let SessionID = sessionStorage.getItem("SessionID");
-        let days = 7; // Can be changed if needed
+        let days = 5; // Can be changed if needed
         $.ajax({
             url: 'https://simplecoop.swollenhippo.com/environment.php',
             method: 'GET',
@@ -1034,7 +1034,7 @@ function populateEggChart(){
 
         // set up and display environment chart
         let SessionID = sessionStorage.getItem("SessionID");
-        let days = 7; // Can be changed if needed
+        let days = 5; // Can be changed if needed
         $.ajax({
             url: 'https://simplecoop.swollenhippo.com/eggs.php',
             method: 'GET',
