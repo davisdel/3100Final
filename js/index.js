@@ -2,25 +2,32 @@
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
-var primaryColor = '';
-var infoColor = '';
+var primaryColor = '#FF6384';
+var infoColor = '#36A2EA';
 
+//bools to handle race conditions
 var toggling = false;
+var togglingEnviro = false;
+var togglingEgg = false;
+var togglingTheme = false;
+var activeId = 'divDashboard';
 
-// Get CSS to style page
-function getCSSVariableFromClass(className, variableName) {
-    // Create a temporary element with the given class
-    var tempElement = document.createElement('div');
-    tempElement.className = className;
-    document.body.appendChild(tempElement);
-
-    // Get the computed style to access the CSS variable
-    var value = getComputedStyle(tempElement).getPropertyValue(variableName);
-
-    // Clean up by removing the temporary element
-    document.body.removeChild(tempElement);
-
-    return value.trim();  // Trim to remove any extra whitespace
+function getThemeColorsFromBody() {
+    // Get the body element
+    const body = document.body;
+  
+    // Function to get the CSS property value from the body
+    function getCSSVariable(varName) {
+      return getComputedStyle(body).getPropertyValue(varName).trim();
+    }
+  
+    // Fetch the primary and secondary colors
+    const colors = {
+      primary: getCSSVariable('--bs-primary'),
+      info: getCSSVariable('--bs-info')
+    };
+  
+    return colors;
 }
 
 $(document).ready(function(){
@@ -132,6 +139,8 @@ async function setSetting(setting, value) {
     if(setting == 'settingUsername'){
         $('#dashboardHeader').text(value);
     } else if(setting == 'settingDarkMode'){
+        console.log(setting)
+        console.log(value)
         if(value == 'true'){
             $('body').removeClass('lightmode light');
             $('body').addClass('darkmode dark'); 
@@ -140,15 +149,21 @@ async function setSetting(setting, value) {
             $('body').addClass('lightmode light');
         }  
     } else if (setting == 'settingCoopTemp'){
+        console.log(setting)
+        console.log(value)
         $('#progressTemp').attr('style', 'width: ' + value + '%;');
         $('#tempLabel').html(`Coop Temperature: <b>${value} °F</b>`);
     } else if (setting == 'settingDoorOpen'){
+        console.log(setting)
+        console.log(value)
         if(value == 'true'){
             $('#doorStatus').html('Open');
         } else {
             $('#doorStatus').html('Closed');
         }
     } else if (setting == 'settingLight'){
+        console.log(setting)
+        console.log(value)
         if(value == 'true'){
             $('#lightStatus').html('On');
         } else {
@@ -157,37 +172,48 @@ async function setSetting(setting, value) {
     } else if (setting == 'settingCoopHumidity'){
         $('#progressHumidity').attr('style', 'width: ' + value + '%;');
         $('#humidityLabel').html(`Coop Humidity: <b>${value}%</b>`);
-    } else if (setting = 'settingTheme') {
-        var element = $('body');
+    } else if (setting == 'settingTheme') {
+        if (!togglingTheme) {
+            togglingTheme = true;
+            var element = $('body');
 
-        // Function to check if the element has any class matching "theme-color-*"
-        function findThemeColorClass(element) {
-            var classList = element.attr('class').split(/\s+/);
-            var pattern = /^theme-color-(.+)$/; // Updated to capture the color part
-    
-            for (var i = 0; i < classList.length; i++) {
-                var match = pattern.exec(classList[i]);
-                if (match) {
-                    return match[1];  // Return the color part of the class
+            // Function to check if the element has any class matching "theme-color-*"
+            function findThemeColorClass(element) {
+                var classList = element.attr('class').split(/\s+/);
+                var pattern = /^theme-color-(.+)$/; // Updated to capture the color part
+        
+                for (var i = 0; i < classList.length; i++) {
+                    var match = pattern.exec(classList[i]);
+                    if (match) {
+                        return match[1];  // Return the color part of the class
+                    }
                 }
+                return null; // Return null if no matching class found
             }
-            return null; // Return null if no matching class found
-        }
-    
-        // Example usage
-        var color = findThemeColorClass(element);
-        if (color) {
-            element.removeClass('theme-color-'+color);
-            element.addClass('theme-color-'+value);
-        } else {
-            element.addClass('theme-color-'+value);
-        }
+        
+            // Example usage
+            var color = findThemeColorClass(element);
+            if (color) {
+                element.removeClass('theme-color-'+color);
+                element.addClass('theme-color-'+value);
+            } else {
+                element.addClass('theme-color-'+value);
+            }
 
-        var primaryColor = getCSSVariableFromClass('theme-color-'+value, '--bs-primary');
-        var infoColor = getCSSVariableFromClass('theme-color-'+value, '--bs-info');
+            
+            colors = getThemeColorsFromBody();
+            primaryColor = colors.primary;
+            infoColor = colors.info;
 
-        $('#themeStatus').html(value.charAt(0).toUpperCase() + value.slice(1));
+            populateEnviromentChart();
+            populateEggChart();
 
+            $('#progressTemp').css({'background-color': primaryColor})
+            $('#progressHumidity').css({'background-color': infoColor})
+
+            $('#themeStatus').html(value.charAt(0).toUpperCase() + value.slice(1));
+            togglingTheme = false;
+        } 
     }
 }
 
@@ -358,23 +384,33 @@ $('#saveSettings').on('click', function () {
 });
 
 // Logout function
-$('#btnLogout').on('click', function(){
-    // remove logged session
-    sessionStorage.removeItem("SessionID")
-    $('#txtLoginEmail').val('');
-    $('#txtLoginPassword').val('');
+$('#btnLogout').on('click', function () {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You will be logged out of your session!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, logout!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sessionStorage.removeItem("SessionID");
+            $('#txtLoginEmail').val('');
+            $('#txtLoginPassword').val('');
 
-    // return to login
-    $('#'+activeId).slideToggle(function(){
-        $('#divLogin').slideToggle(function() {
-            $('.sidebar').attr("style", "display: none;");
-            $('.navbar').attr("style", "display: none;");
-            $('.solid-line').attr("style", "display: none;");
-        });
-
-    })
-})
-
+            // Return to login
+            $('#' + activeId).slideToggle(function () {
+                $('#divLogin').slideToggle(function () {
+                    $('.sidebar').attr("style", "display: none;");
+                    $('.navbar').attr("style", "display: none;");
+                    $('.solid-line').attr("style", "display: none;");
+                });
+            });
+        }
+    });
+});
+         
 // Toggle between Login and Register pages
 $('.btnToggle').on('click',function(){
     let strCard = $(this).attr('data-card');
@@ -750,202 +786,216 @@ $('#btnDeleteWeather').on('click', function() {
 
 // Function to populate environment chart with respective data
 function populateEnviromentChart(){
-
-    // Check if the chart already exists and destroy it
-    let existingChart = Chart.getChart("myChart");
-    let existingTable = $('#weatherTable').DataTable();
-    if (existingChart) {
-        existingChart.destroy();
-    }
-    if (existingTable) {
-        existingTable.destroy();
-        $('#weatherTable tbody').empty();
-    }
-
-    // set up and display environment chart
-    let SessionID = sessionStorage.getItem("SessionID");
-    let days = 5; // Can be changed if needed
-    $.ajax({
-        url: 'https://simplecoop.swollenhippo.com/environment.php',
-        method: 'GET',
-        data: { SessionID: SessionID, days: days },
-        success: function(data) {
-            data = JSON.parse(data);
-            data.sort(function(a, b) {
-                // Use localeCompare for string comparison
-                return a.ObservationDateTime.localeCompare(b.ObservationDateTime);
-            });
-            var temperatures = data.map(obj => ({y:parseFloat(obj.Temperature),x:obj.ObservationDateTime.split(' ')[0]}));
-            var humidities = data.map(obj => ({y:parseFloat(obj.Humidity),x:obj.ObservationDateTime.split(' ')[0]}));
-            
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var environmentChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [
-                        {
-                            label: 'Temperature (F)',
-                            data: temperatures,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            pointRadius: 6
-                        },
-                        {
-                            label: 'Humidity (%)',
-                            data: humidities,
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            pointRadius: 6
-                        },
-                    ],
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                        },
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                },
-            });
-
-            let strRow = '';
-            // Populate delete weather dropbox
-            var dropdown = $('#selWeather');
-
-            // Clear existing options
-            dropdown.empty();
-            var option = $('<option selected disabled>Please select an observation</option>');
-            dropdown.append(option);
-
-            // Iterate through each object in the data array
-            data.forEach(obj => {
-                // create a new row for the table
-                strRow = `<tr><td>${obj.ObservationDateTime}</td><td>${obj.Temperature}</td><td>${obj.Humidity}</td></tr>`
-                $('#weatherTable tbody').append(strRow)
-                // Create a new option element
-                option = $('<option></option>');
-
-                // Set the text and value of the option based on obj properties
-                option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
-                option.val(obj.LogID); // Set the value to logID
-
-                // Append the option to the dropdown
-                dropdown.append(option);
-            });
-
-            $('#weatherTable').DataTable({
-                buttons: [
-                    'copy', 'excel', 'pdf', 'csv', 'print'
-                ],
-                responsive: true,
-            })
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
+    if (!togglingEnviro) {
+        togglingEnviro = true;
+        // Check if the chart already exists and destroy it
+        let existingChart = Chart.getChart("myChart");
+        let existingTable = $('#weatherTable').DataTable();
+        if (existingChart) {
+            existingChart.destroy();
         }
-    });
+        if (existingTable) {
+            existingTable.destroy();
+            $('#weatherTable tbody').empty();
+        }
+
+        // set up and display environment chart
+        let SessionID = sessionStorage.getItem("SessionID");
+        let days = 5; // Can be changed if needed
+        $.ajax({
+            url: 'https://simplecoop.swollenhippo.com/environment.php',
+            method: 'GET',
+            data: { SessionID: SessionID, days: days },
+            success: function(data) {
+                data = JSON.parse(data);
+                data.sort(function(a, b) {
+                    // Use localeCompare for string comparison
+                    return a.ObservationDateTime.localeCompare(b.ObservationDateTime);
+                });
+                var temperatures = data.map(obj => ({y:parseFloat(obj.Temperature),x:obj.ObservationDateTime.split(' ')[0]}));
+                var humidities = data.map(obj => ({y:parseFloat(obj.Humidity),x:obj.ObservationDateTime.split(' ')[0]}));
+                rgbPrimaryColor = hexToRGB(primaryColor);
+                rgbaString = 'rgba(' + rgbPrimaryColor.r+ ', ' + rgbPrimaryColor.g + ', ' + rgbPrimaryColor.b + ', ';
+
+                rgbInfoColor = hexToRGB(infoColor);
+                rgbaStringInfo = 'rgba(' + rgbInfoColor.r+ ', ' + rgbInfoColor.g + ', ' + rgbInfoColor.b + ', ';
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var environmentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [
+                            {
+                                label: 'Temperature (F)',
+                                data: temperatures,
+                                borderColor: rgbaString + '1)',
+                                backgroundColor: rgbaString + '0.2)',
+                                pointRadius: 6
+                            },
+                            {
+                                label: 'Humidity (%)',
+                                data: humidities,
+                                borderColor: rgbaStringInfo + '1)',
+                                backgroundColor: rgbaStringInfo + '0.2)',
+                                pointRadius: 6
+                            },
+                        ],
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                    },
+                });
+
+                let strRow = '';
+                // Populate delete weather dropbox
+                var dropdown = $('#selWeather');
+
+                // Clear existing options
+                dropdown.empty();
+                var option = $('<option selected disabled>Please select an observation</option>');
+                dropdown.append(option);
+
+                // Iterate through each object in the data array
+                data.forEach(obj => {
+                    // create a new row for the table
+                    strRow = `<tr><td>${obj.ObservationDateTime}</td><td>${obj.Temperature}</td><td>${obj.Humidity}</td></tr>`
+                    $('#weatherTable tbody').append(strRow)
+                    // Create a new option element
+                    option = $('<option></option>');
+
+                    // Set the text and value of the option based on obj properties
+                    option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
+                    option.val(obj.LogID); // Set the value to logID
+
+                    // Append the option to the dropdown
+                    dropdown.append(option);
+                });
+
+                $('#weatherTable').DataTable({
+                    buttons: [
+                        'copy', 'excel', 'pdf', 'csv', 'print'
+                    ],
+                    responsive: true,
+                })
+
+                togglingEnviro = false;
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                togglingEnviro = false;
+            }
+        });
+    }
 }
 
 // Function to populate egg chart with respective data
 function populateEggChart(){
+    if (!togglingEgg) {
+        togglingEgg = true;
+        // Check if the chart already exists and destroy it
+        let existingChart = Chart.getChart("eggCountChart");
+        let existingTable = $('#eggTable').DataTable();
+        if (existingChart) {
+            existingChart.destroy();
+        }
+        if (existingTable) {
+            existingTable.destroy();
+            $('#eggTable tbody').empty();
+        }
 
-    // Check if the chart already exists and destroy it
-    let existingChart = Chart.getChart("eggCountChart");
-    let existingTable = $('#eggTable').DataTable();
-    if (existingChart) {
-        existingChart.destroy();
-    }
-    if (existingTable) {
-        existingTable.destroy();
-        $('#eggTable tbody').empty();
-    }
+        // set up and display environment chart
+        let SessionID = sessionStorage.getItem("SessionID");
+        let days = 5; // Can be changed if needed
+        $.ajax({
+            url: 'https://simplecoop.swollenhippo.com/eggs.php',
+            method: 'GET',
+            data: { SessionID: SessionID, days: days },
+            success: function(data) {
+                data = JSON.parse(data);
+                data.sort(function(a, b) {
+                    // Use localeCompare for string comparison
+                    return a.LogDateTime.localeCompare(b.LogDateTime);
+                });
+                var eggs = data.map(obj => ({y:parseFloat(obj.Harvested),x:obj.LogDateTime.split(' ')[0]}));   
+                rgbPrimaryColor = hexToRGB(primaryColor);
+                rgbaString = 'rgba(' + rgbPrimaryColor.r+ ', ' + rgbPrimaryColor.g + ', ' + rgbPrimaryColor.b + ', ';
+                var ctx = document.getElementById('eggCountChart').getContext('2d');
+                var eggChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [
+                            {
+                                label: 'Egg Count',
+                                data: eggs,
+                                borderColor: rgbaString + '1)',
+                                backgroundColor: rgbaString + '0.2)',
+                                pointRadius: 6,
+                            },
+                        ],
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                            },
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false
+                    },
 
-    // set up and display environment chart
-    let SessionID = sessionStorage.getItem("SessionID");
-    let days = 5; // Can be changed if needed
-    $.ajax({
-        url: 'https://simplecoop.swollenhippo.com/eggs.php',
-        method: 'GET',
-        data: { SessionID: SessionID, days: days },
-        success: function(data) {
-            data = JSON.parse(data);
-            data.sort(function(a, b) {
-                // Use localeCompare for string comparison
-                return a.LogDateTime.localeCompare(b.LogDateTime);
-            });
-            var eggs = data.map(obj => ({y:parseFloat(obj.Harvested),x:obj.LogDateTime.split(' ')[0]}));   
-            
-            var ctx = document.getElementById('eggCountChart').getContext('2d');
-            var eggChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [
-                        {
-                            label: 'Egg Count',
-                            data: eggs,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            pointRadius: 6,
-                        },
-                    ],
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                        },
+                });
+
+                let strRow = '';
+
+                // Populate delete weather dropbox
+                var dropdown = $('#selEggs');
+
+                // Clear existing options
+                dropdown.empty();
+                var option = $('<option selected disabled>Please select an observation</option>');
+                dropdown.append(option);
+
+                // Iterate through each object in the data array
+                data.forEach(obj => {
+                    // create a new row for the table
+                    strRow = `<tr><td>${obj.LogDateTime}</td><td>${obj.Harvested}</td></tr>`
+                    $('#eggTable tbody').append(strRow)
+                    // Create a new option element
+                    option = $('<option></option>');
+
+                    // Set the text and value of the option based on obj properties
+                    option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
+                    option.val(obj.LogID); // Set the value to logID
+
+                    // Append the option to the dropdown
+                    dropdown.append(option);
+                });
+                
+                $('#eggTable').DataTable({
+                    layout:{
+                        topStart:{
+                            buttons: [
+                                'copy', 'excel', 'pdf', 'csv', 'print'
+                            ]
+                        }
                     },
                     responsive: true,
-                    maintainAspectRatio: false
-                },
-
-            });
-
-            let strRow = '';
-
-            // Populate delete weather dropbox
-            var dropdown = $('#selEggs');
-
-            // Clear existing options
-            dropdown.empty();
-            var option = $('<option selected disabled>Please select an observation</option>');
-            dropdown.append(option);
-
-            // Iterate through each object in the data array
-            data.forEach(obj => {
-                // create a new row for the table
-                strRow = `<tr><td>${obj.LogDateTime}</td><td>${obj.Harvested}</td></tr>`
-                $('#eggTable tbody').append(strRow)
-                // Create a new option element
-                option = $('<option></option>');
-
-                // Set the text and value of the option based on obj properties
-                option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
-                option.val(obj.LogID); // Set the value to logID
-
-                // Append the option to the dropdown
-                dropdown.append(option);
-            });
-            
-            $('#eggTable').DataTable({
-                layout:{
-                    topStart:{
-                        buttons: [
-                            'copy', 'excel', 'pdf', 'csv', 'print'
-                        ]
-                    }
-                },
-                responsive: true,
-                autoWidth: false,
-            })
-
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-        }
-    });
+                    autoWidth: false,
+                })
+                togglingEgg = false;
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                togglingEgg = false;
+            }
+        }); 
+    }
 }
 
 // Function to log number of eggs (eggs.php post)
@@ -1047,32 +1097,20 @@ $('#btnDeleteEgg').on('click', function() {
     }
 });
 
-// $('#btnSettings').on('click',function(){
-//     $('#divDashboard').slideToggle(function(){
-//         $('#divSettings').slideToggle();
-//         fetchAndLogSettings();
-//     })
-// })
-
 function hexToRGB(hex) {
-    // Remove the hash at the beginning of the hex string if it's there
-    hex = hex.replace(/^#/, '');
-
-    // Parse the hex string into integers using parseInt
-    let r = parseInt(hex.substring(0, 2), 16); // Extract the first two characters and convert to decimal
-    let g = parseInt(hex.substring(2, 4), 16); // Extract the next two characters and convert to decimal
-    let b = parseInt(hex.substring(4, 6), 16); // Extract the last two characters and convert to decimal
-
-    // Return the RGB values as an object
-    return { r, g, b };
-}
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
 
 // Return to dashboard function
 $('#btnReturnDashboard').on('click',function(){
     switchActive('divDashboard');
 })
 
-var activeId = 'divDashboard';
 $('.toggleCard').on('click', function(){
     if (!toggling) {
         toggling = true; // Stop other functions from toggling a card
@@ -1086,10 +1124,6 @@ $('.toggleCard').on('click', function(){
             });
             return;
         }
-
-        // if (targetId == "divSettings" || activeId == "divSettings") {
-        //     fetchAndLogSettings();
-        // }
         
         if (activeId != '') { // If the current card is not invalid, should be default divDashboard so this is just a catch
             $('#'+activeId).slideToggle(function(){ // Toggles the current page card
