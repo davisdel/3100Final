@@ -1,3 +1,4 @@
+// create email and password regex objects to check validity
 var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g
 
@@ -9,7 +10,6 @@ var toggling = false;
 var togglingEnviro = false;
 var togglingEgg = false;
 var togglingTheme = false;
-
 var activeId = 'divDashboard';
 
 function getThemeColorsFromBody() {
@@ -31,11 +31,11 @@ function getThemeColorsFromBody() {
 }
 
 $(document).ready(function(){
-
+    // Retrieves session ID
     if(sessionStorage.getItem("SessionID")){
         $.getJSON("https://simplecoop.swollenhippo.com/sessions.php", {SessionID:sessionStorage.getItem("SessionID")}, function(result){
             if(result != null){
-                
+                // Populate charts if session is found
                 populateEnviromentChart();
                 populateEggChart();
                 fetchAndLogSettings();
@@ -50,6 +50,7 @@ $(document).ready(function(){
         })
     }
 
+    // Set Coop Temperature
     $('#settingCoopTempInt').on('input', function() {
         $('#settingCoopTemp').val($(this).val());
     });
@@ -58,6 +59,7 @@ $(document).ready(function(){
         $('#settingCoopTempInt').val($(this).val());
     });
 
+    // Set Coop Humidity
     $('#settingCoopHumidityInt').on('input', function() {
         $('#settingCoopHumidity').val($(this).val());
     });
@@ -67,6 +69,7 @@ $(document).ready(function(){
     });
 })
 
+// Retrieves user settings to alter display
 async function getSettings() {
     var sessionID = sessionStorage.getItem("SessionID");
     var maxNum = $('#divSettings input, #divSettings select').length;
@@ -131,6 +134,7 @@ async function fetchAndLogSettings() {
 
 }
 
+// Function to set user settings
 async function setSetting(setting, value) {
     if(setting == 'settingUsername'){
         $('#dashboardHeader').text(value);
@@ -251,7 +255,7 @@ $('#saveSettings').on('click', function () {
                 var value = false;
             }
             
-            $.ajax({
+            $.ajax({ // see if setting exists
                 type: 'GET',
                 url: 'https://simplecoop.swollenhippo.com/settings.php',
                 data: {
@@ -261,7 +265,7 @@ $('#saveSettings').on('click', function () {
                 success: function(result) {
                     result = JSON.parse(result);
                     if (result) {
-                        $.ajax({
+                        $.ajax({ // update setting
                             type: 'PUT',
                             url: 'https://simplecoop.swollenhippo.com/settings.php',
                             data: {
@@ -278,7 +282,7 @@ $('#saveSettings').on('click', function () {
                         })
                     }
                     else {
-                        $.ajax({
+                        $.ajax({ // save new setting
                             type: 'POST',
                             url: 'https://simplecoop.swollenhippo.com/settings.php',
                             data: {
@@ -304,7 +308,7 @@ $('#saveSettings').on('click', function () {
             var value = $(this).val();
 
             if (value.length >= 1) {
-                $.ajax({
+                $.ajax({ // see if setting exists
                     type: 'GET',
                     url: 'https://simplecoop.swollenhippo.com/settings.php',
                     data: {
@@ -314,7 +318,7 @@ $('#saveSettings').on('click', function () {
                     success: function(result) {
                         result = JSON.parse(result);
                         if (result) {
-                            $.ajax({
+                            $.ajax({ // update setting
                                 type: 'PUT',
                                 url: 'https://simplecoop.swollenhippo.com/settings.php',
                                 data: {
@@ -331,7 +335,7 @@ $('#saveSettings').on('click', function () {
                             })
                         }
                         else {
-                            $.ajax({
+                            $.ajax({ // save new setting
                                 type: 'POST',
                                 url: 'https://simplecoop.swollenhippo.com/settings.php',
                                 data: {
@@ -356,7 +360,7 @@ $('#saveSettings').on('click', function () {
                 return false;
             }
         }
-
+        // Sweetalert notification on success or failure
         if (!blnError) {
             Swal.fire({
                 title: "Success!",
@@ -371,6 +375,7 @@ $('#saveSettings').on('click', function () {
             })
         }
     })
+    // Toggle back to dashboard when complete
     $('#divSettings').slideToggle(function(){
         activeId = 'divDashboard';
         $('#divDashboard').slideToggle();
@@ -378,6 +383,7 @@ $('#saveSettings').on('click', function () {
     })
 });
 
+// Logout function
 $('#btnLogout').on('click', function () {
     Swal.fire({
         title: 'Are you sure?',
@@ -393,6 +399,7 @@ $('#btnLogout').on('click', function () {
             $('#txtLoginEmail').val('');
             $('#txtLoginPassword').val('');
 
+            // Return to login
             $('#' + activeId).slideToggle(function () {
                 $('#divLogin').slideToggle(function () {
                     $('.sidebar').attr("style", "display: none;");
@@ -404,6 +411,7 @@ $('#btnLogout').on('click', function () {
     });
 });
          
+// Toggle between Login and Register pages
 $('.btnToggle').on('click',function(){
     let strCard = $(this).attr('data-card');
     if(strCard == 'Login'){
@@ -417,6 +425,7 @@ $('.btnToggle').on('click',function(){
     }
 })
 
+// Reset registration form
 $('#btnReset').on('click', function(){
     $('#txtFirstName').val('');
     $('#txtLastName').val('');
@@ -431,12 +440,14 @@ $('#btnReset').on('click', function(){
     $('#txtCoopID').val('');
 })
 
+// Function for login with existing account
 $('#btnLogin').on("click", function () {
     let strEmail = $('#txtLoginEmail').val().trim();
     let strPassword = $('#txtLoginPassword').val().trim();
     blnError = false
     htmlError = ''
     
+    // make sure email and password exist/are correct
     if (!strEmail.match(regexEmail)){
         blnError = true
         htmlError += "<p>Email is invalid<p>"
@@ -452,6 +463,7 @@ $('#btnLogin').on("click", function () {
             icon: "error"
         });
     } else {
+        // make new session with entered email and password
         $.post('https://simplecoop.swollenhippo.com/sessions.php',{Email:strEmail,Password:strPassword},function(result){
             result = JSON.parse(result)
             if(result.Outcome == 'false'){
@@ -475,11 +487,13 @@ $('#btnLogin').on("click", function () {
         })
     }
 });
-        
+
+// Function for account registration
 $('#btnRegister').on('click',function(){
     let blnError = false;
     let strError = '';
     
+    // assign form entries to objects for entry
     let strFirstName = $('#txtFirstName').val().trim();
     let strLastName = $('#txtLastName').val().trim();
     let strEmail = $('#txtEmail').val().trim();
@@ -497,6 +511,7 @@ $('#btnRegister').on('click',function(){
     const address = strStreetAddress1 + `, ` + strCity + `, ` + strState;
     const address2 = strStreetAddress2 + `, ` + strCity + `, ` + strState;
     
+    // make sure required fields aren't empty
     if(strFirstName.length <1){
         blnError = true;
         strError += '<p>First name cannot be blank.</p>'
@@ -554,7 +569,8 @@ $('#btnRegister').on('click',function(){
     if(strZip.length < 5 || strZip.length > 5){
         blnError = true;
         strError += '<p>Zip code cannot be blank.</p>'
-    }    
+    }
+    // find address if exists
     if (strStreetAddress2.length > 0) {
         $.getJSON(url, {address: address2, key:api_key}, function(result) {
             if (result.status != "OK") {
@@ -596,6 +612,7 @@ $('#btnRegister').on('click',function(){
             icon: "error"
         });
     } else {
+        // Make post request with entered info to new account
         $.post('https://simplecoop.swollenhippo.com/users.php', {Email:strEmail,Password:strPassword,FirstName:strFirstName,LastName:strLastName,CoopID:strCoopID},function(result){
             result = JSON.parse(result)
             if(result.Error){
@@ -637,6 +654,7 @@ $('#btnRegister').on('click',function(){
         })
              
     }
+    // reset registration form after account creation
     $('#txtFirstName').val('');
     $('#txtLastName').val('');
     $('#txtEmail').val('');
@@ -719,7 +737,7 @@ $('#btnSubmitWeather').on("click", function () {
     });
 });
 
-
+// Function to delete weather data
 $('#btnDeleteWeather').on('click', function() {
     // Get the selected value from the dropdown
     var sessionId = sessionStorage.getItem("SessionID");
@@ -766,6 +784,7 @@ $('#btnDeleteWeather').on('click', function() {
     }
 });
 
+// Function to populate environment chart with respective data
 function populateEnviromentChart(){
     if (!togglingEnviro) {
         togglingEnviro = true;
@@ -875,6 +894,7 @@ function populateEnviromentChart(){
     }
 }
 
+// Function to populate egg chart with respective data
 function populateEggChart(){
     if (!togglingEgg) {
         togglingEgg = true;
@@ -978,7 +998,7 @@ function populateEggChart(){
     }
 }
 
-// eggs.php post
+// Function to log number of eggs (eggs.php post)
 $('#btnSubmitEggs').on("click", function () {
     const sessionId = sessionStorage.getItem("SessionID");
     const observationDateTime = $('#dateObservationEggs').val();
@@ -1031,6 +1051,7 @@ $('#btnSubmitEggs').on("click", function () {
     });
 });
 
+// Function to delete egg count (eggs.php delete)
 $('#btnDeleteEgg').on('click', function() {
     // Get the selected value from the dropdown
     var selectedLogID = $('#selEggs').val();
@@ -1085,7 +1106,7 @@ function hexToRGB(hex) {
     } : null;
   }
 
-
+// Return to dashboard function
 $('#btnReturnDashboard').on('click',function(){
     switchActive('divDashboard');
 })
