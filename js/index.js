@@ -36,12 +36,6 @@ function getThemeColorsFromBody() {
 //     console.log(result)
 // })
 
-//generate new coop id
-// $.post("https://simplecoop.swollenhippo.com/coop.php", function(result){
-//     result = JSON.parse(result)
-//     console.log(result)
-// })
-
 $(document).ready(function(){
     // Retrieves session ID
     if(sessionStorage.getItem("SessionID")){
