@@ -982,6 +982,7 @@ function populateEnviromentChart(){
                 });
 
                 let strRow = '';
+                let date = '';
                 // Populate delete weather dropbox
                 var dropdown = $('#selWeather');
 
@@ -992,14 +993,15 @@ function populateEnviromentChart(){
 
                 // Iterate through each object in the data array
                 data.forEach(obj => {
+                    date = obj.ObservationDateTime.split(' ')[0];
                     // create a new row for the table
-                    strRow = `<tr><td>${obj.ObservationDateTime}</td><td>${obj.Temperature}</td><td>${obj.Humidity}</td></tr>`
+                    strRow = `<tr><td>${date}</td><td>${obj.Temperature}</td><td>${obj.Humidity}</td></tr>`
                     $('#weatherTable tbody').append(strRow)
                     // Create a new option element
                     option = $('<option></option>');
 
                     // Set the text and value of the option based on obj properties
-                    option.text(obj.ObservationDateTime + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
+                    option.text(date + ' - Temp: ' + obj.Temperature + '°F, Humidity: ' + obj.Humidity + '%');
                     option.val(obj.LogID); // Set the value to logID
 
                     // Append the option to the dropdown
@@ -1092,14 +1094,15 @@ function populateEggChart(){
 
                 // Iterate through each object in the data array
                 data.forEach(obj => {
+                    date = obj.LogDateTime.split(' ')[0];
                     // create a new row for the table
-                    strRow = `<tr><td>${obj.LogDateTime}</td><td>${obj.Harvested}</td></tr>`
+                    strRow = `<tr><td>${date}</td><td>${obj.Harvested}</td></tr>`
                     $('#eggTable tbody').append(strRow)
                     // Create a new option element
                     option = $('<option></option>');
 
                     // Set the text and value of the option based on obj properties
-                    option.text(obj.LogDateTime + ', Eggs: ' + obj.Harvested);
+                    option.text(date + ', Eggs: ' + obj.Harvested);
                     option.val(obj.LogID); // Set the value to logID
 
                     // Append the option to the dropdown
