@@ -12,6 +12,8 @@ var togglingEgg = false;
 var togglingTheme = false;
 var activeId = 'divDashboard';
 
+var sidebarVar = '';
+
 function getThemeColorsFromBody() {
     // Get the body element
     const body = document.body;
@@ -55,6 +57,9 @@ $(document).ready(function(){
                 })
             }
         })
+    } else {
+        sidebarVar = $('#secSidebar');
+        $("#secSidebar").detach();
     }
 
     // Set Coop Temperature
@@ -597,12 +602,13 @@ $('#btnLogin').on("click", function () {
                 $("#divLogin").slideToggle(function(){
                     activeId='divDashboard';
                     $("#divDashboard").slideToggle()
+                    $("#divForSidebar").prepend(sidebarVar);
                     $('.sidebar').attr("style", "");
                     $('.navbar').attr("style", "");
                     $('.solid-line').attr("style", "");
+                    populateEnviromentChart();
+                    populateEggChart();
                 })
-                populateEnviromentChart();
-                populateEggChart();
             }
         })
     }
@@ -1274,29 +1280,20 @@ function switchActive(targetId) {
 }
 
 // Functions to show passwords for login and registration when box is checked
-function showLoginPassword() {
+$('#showPassword').on('click', function(){
     var x = document.getElementById("txtLoginPassword");
     if (x.type === "password") {
       x.type = "text";
     } else {
       x.type = "password";
     }
-}
-function showRegistrationPassword() {
+})
+
+$('#showRegistrationPassword').on('click', function(){
     var x = document.getElementById("txtPassword");
     if (x.type === "password") {
       x.type = "text";
     } else {
       x.type = "password";
     }
-}
-
-// Removes sidebar on login page so the card is centered
-$(document).ready(function(){
-    var x = "";
-    x = $('#secSidebar');
-    $("#secSidebar").detach();
-    $('#btnLogin').on('click', function(){
-        $("#divForSidebar").prepend(x);
-    })
 })
