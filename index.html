@@ -222,11 +222,12 @@
                         <label for="txtLoginEmail" class="form-label">Email</label>
                     </div>
                     <br>
-                    <input type="checkbox" onclick="showLoginPassword()">&nbsp;Show Password
                     <div class="form-floating">
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                         <label for="txtLoginPassword" class="form-label">Password</label>
                     </div>
+                    <label for="showPassword">Show Password</label>
+                    <input id="showPassword" type="checkbox" onclick="showLoginPassword()">
                     <button id="btnLogin" class="btn btn-success col-12 mt-4 rounded" aria-label = "Submit Login" type="button">Submit</button>
                     <div class ="col-12 d-flex justify-content-center">
                         <a href="#" class="col-12 text-center btnToggle mt-1" data-card="Login">Need an account? Click Here</a>
@@ -248,11 +249,15 @@
                         <label for="txtEmail" class="form-label">Email</label>
                     </div>
                     <br>
-                    <input type="checkbox" onclick="showRegistrationPassword()">&nbsp;Show Password
+                    
                     <div class="form-floating">
                         <input id="txtPassword" class="form-control rounded" type="password" aria-required="true" placeholder="Password">
                         <label for="txtPassword" class="form-label">Password</label>
                     </div>
+
+                    <label for="showRegistrationPassword">Show Password</label>
+                    <input id="showRegistrationPassword" type="checkbox" onclick="showRegistrationPassword()">
+
                     <br>
                     <div class="form-floating">
                         <input id="txtFirstName" class="form-control rounded" type="text" aria-required="true" placeholder="John">
