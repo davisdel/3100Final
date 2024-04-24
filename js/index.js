@@ -1273,3 +1273,30 @@ function switchActive(targetId) {
     }
 }
 
+// Functions to show passwords for login and registration when box is checked
+function showLoginPassword() {
+    var x = document.getElementById("txtLoginPassword");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+}
+function showRegistrationPassword() {
+    var x = document.getElementById("txtPassword");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+}
+
+// Removes sidebar on login page so the card is centered
+$(document).ready(function(){
+    var x = "";
+    x = $('#secSidebar');
+    $("#secSidebar").detach();
+    $('#btnLogin').on('click', function(){
+        $("#divForSidebar").prepend(x);
+    })
+})

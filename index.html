@@ -30,11 +30,12 @@
     <div id="loading">
         <div class="loader simple-loader">
             <div class="loader-body"></div>
-        </div>    </div>
-      <!-- loader END -->
-      
+        </div>    
+    </div>
+    <!-- loader END -->
+    <div id="divForSidebar">
     <!-- sidebar -->
-    <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all" style="display: none; float: left;">
+    <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all" style="display: none; float: left;" id="secSidebar">
         <!-- sidebar header -->
         <div class="sidebar-header d-flex align-items-center justify-content-start">
             <a href="#" class="navbar-brand">
@@ -221,6 +222,7 @@
                         <label for="txtLoginEmail" class="form-label">Email</label>
                     </div>
                     <br>
+                    <input type="checkbox" onclick="showLoginPassword()">&nbsp;Show Password
                     <div class="form-floating">
                         <input type="password" id="txtLoginPassword" class="form-control" placeholder="Password">
                         <label for="txtLoginPassword" class="form-label">Password</label>
@@ -246,6 +248,7 @@
                         <label for="txtEmail" class="form-label">Email</label>
                     </div>
                     <br>
+                    <input type="checkbox" onclick="showRegistrationPassword()">&nbsp;Show Password
                     <div class="form-floating">
                         <input id="txtPassword" class="form-control rounded" type="password" aria-required="true" placeholder="Password">
                         <label for="txtPassword" class="form-label">Password</label>
@@ -622,6 +625,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </main>
 
