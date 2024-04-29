@@ -768,6 +768,7 @@ $('#btnRegister').on('click',function(){
                             } else {
                                 sessionStorage.setItem("SessionID",result.SessionID)
                                 getAndSaveSettings();
+                                $("#divForSidebar").prepend(sidebarVar);
                                 $('.sidebar').attr("style", "");
                                 $('.navbar').attr("style", "");
                                 $('.solid-line').attr("style", "");
